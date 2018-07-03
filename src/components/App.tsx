@@ -1,6 +1,6 @@
 import { Menu } from 'antd';
 import { css, injectGlobal } from 'emotion';
-import styled, { keyframes } from 'react-emotion'
+import styled from 'react-emotion'
 import * as React from 'react';
 import { withRouter, Link, Switch, Route } from 'react-router-dom';
 import { RouteComponentProps } from "react-router";
@@ -38,10 +38,7 @@ const app: string = css`
   flex-direction: column;
   height: 100%;
 `;
-const spin: string = keyframes`
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-`;
+
 const header: string = css`
   padding: 5px 20px 5px 10px;
   display: flex;
@@ -91,7 +88,6 @@ const content: string = css`
 `;
 
 const Logo = styled('img')`
-  animation: ${spin} infinite 20s linear;
   height: 80px;
 `;
 
@@ -115,7 +111,7 @@ class App extends React.Component<RouteComponentProps<any>> {
         <div className={header}>
           <Logo src={logo} alt="logo" />
           <div className={titleContainer}>
-            <div className={title}>Soil Microbes Explorer</div>
+            <div className={title}>EMSL User Portal</div>
             <Menu
               className={menu}
               theme="dark"
