@@ -14,7 +14,7 @@ import Browse from 'components/pages/Browse';
 
 import Login from 'components/pages/Login';
 import TileUserHome from 'components/pages/TileUserHome';
-import TabUserHome from 'components/pages/TabUserHome';
+// import TabUserHome from 'components/pages/TabUserHome';
 
 import logo from 'images/logo.png';
 
@@ -148,7 +148,7 @@ class App extends React.Component<RouteComponentProps<any>> {
           <Switch>
             <Route exact path="/" component={Login} />
             <Route exact path="/homeTile" component={TileUserHome} />
-            <Route exact path="/homeTab" component={TabUserHome} />
+            <Route exact path="/homeTab" component={TileUserHome} />
             <Route exact path="/oldHome" component={Home} />
             <Route exact path="/search" component={Search} />
             <Route exact path="/browse" component={Browse} />

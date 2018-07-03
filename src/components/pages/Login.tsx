@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // import { css } from 'emotion';
 // import styled from 'react-emotion';
 import { Link } from 'react-router-dom';
+import LoginContainer from 'components/core/LoginContainer'
 
 export default class Login extends Component<any, any> {
 
@@ -16,6 +17,7 @@ export default class Login extends Component<any, any> {
         </p>
         <div>
           The login container should go here
+          <LoginContainer />
         </div>
         <div>
           <p>
