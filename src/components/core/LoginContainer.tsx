@@ -16,6 +16,10 @@ export default class LoginContainer extends Component {
                 Temp Login container
 
                 <div>
+                    Placeholder for Login Explanation
+                </div>
+                
+                <div>
                     PNNL Network ID:
                     <input name='username' />
 
@@ -32,10 +36,6 @@ export default class LoginContainer extends Component {
 
                 <div>
                     <button onClick={this.submitFunction}>Log In</button>
-                </div>
-
-                <div>
-                    Placeholder Div 3
                 </div>
 
             </div>

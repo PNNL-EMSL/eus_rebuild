@@ -31,6 +31,9 @@ export default class Login extends Component<any, any> {
             <Link to="/homeTile">Tile home view</Link>
           </div>
         </div>
+        <div>
+          Should have a forgot password link 
+        </div>
         <p>
           Should have a brief blurb about IE being slow and provide suggestions for other browsers
         </p>
