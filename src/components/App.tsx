@@ -10,7 +10,11 @@ import { colorBlack, colorLightGreen, colorDarkGreen } from 'styles/base';
 
 import Home from 'components/pages/Home';
 import Search from 'components/pages/Search';
-import Browse from 'components/pages/Browse'
+import Browse from 'components/pages/Browse';
+
+import Login from 'components/pages/Login';
+import TileUserHome from 'components/pages/TileUserHome';
+import TabUserHome from 'components/pages/TabUserHome';
 
 import logo from 'images/logo.png';
 
@@ -40,6 +44,15 @@ const app: string = css`
 `;
 
 const header: string = css`
+  padding: 5px 20px 5px 10px;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: row;
+  background-color: white;
+  align-items: center;
+  max-width: 1078px;
+`;
+const footer: string = css`
   padding: 5px 20px 5px 10px;
   display: flex;
   flex: 0 0 auto;
@@ -133,10 +146,18 @@ class App extends React.Component<RouteComponentProps<any>> {
         </div>
         <div className={content}>
           <Switch>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" component={Login} />
+            <Route exact path="/homeTile" component={TileUserHome} />
+            <Route exact path="/homeTab" component={TabUserHome} />
+            <Route exact path="/oldHome" component={Home} />
             <Route exact path="/search" component={Search} />
             <Route exact path="/browse" component={Browse} />
           </Switch>
+        </div>
+        <div className={footer}>
+          <p>
+            Footer should be taken from the existing eusi.emsl.pnl.gov/Portal/ styles
+          </p>
         </div>
       </div>
     );
