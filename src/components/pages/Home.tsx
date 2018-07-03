@@ -29,6 +29,8 @@ const Image = styled('img')`
 `;
 
 export default class Home extends Component {
+    // TODO: This will be the login page
+    
   render() {
     return (
       <div className={row}>

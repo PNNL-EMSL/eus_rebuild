@@ -1,3 +1,12 @@
-/**
- * Created by dega126 on 7/2/18.
- */
+import React, { Component } from 'react';
+
+export default class TableRow extends Component {
+
+  render() {
+    return (
+      <div>
+        Temp TableRow
+      </div>
+    )
+  }
+}
