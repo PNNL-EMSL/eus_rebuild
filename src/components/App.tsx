@@ -14,9 +14,18 @@ import Browse from 'components/pages/Browse';
 
 import Login from 'components/pages/Login';
 import TileUserHome from 'components/pages/TileUserHome';
+import Proposals from 'components/pages/Proposals';
+import Publications from 'components/pages/Publications';
+import UserInfo from 'components/pages/UserInfo';
+import Training from 'components/pages/Training';
+import ScheduleExperiments from 'components/pages/ScheduleExperiments'
+import GetData from 'components/pages/GetData';
 // import TabUserHome from 'components/pages/TabUserHome';
 
 import logo from 'images/logo.png';
+
+
+
 
 // Define global styles
 injectGlobal`
@@ -149,9 +158,15 @@ class App extends React.Component<RouteComponentProps<any>> {
             <Route exact path="/" component={Login} />
             <Route exact path="/homeTile" component={TileUserHome} />
             <Route exact path="/homeTab" component={TileUserHome} />
+            <Route exact path="/proposals" component={Proposals} />
+            <Route exact path="/publications" component={Publications} />
+            <Route exact path="/userInfo" component={UserInfo} />
+            <Route exact path="/training" component={Training} />
+            <Route exact path="/scheduleExperiments" component={ScheduleExperiments} />
             <Route exact path="/oldHome" component={Home} />
             <Route exact path="/search" component={Search} />
             <Route exact path="/browse" component={Browse} />
+            <Route exact path="/getData" component={GetData} />
           </Switch>
         </div>
         <div className={footer}>
