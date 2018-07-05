@@ -144,11 +144,23 @@ class App extends React.Component<RouteComponentProps<any>> {
               <Menu.Item key="/">
                 <Link to="/">Home</Link>
               </Menu.Item>
-              <Menu.Item key="/search">
-                <Link to="/search">Search</Link>
+              <Menu.Item key="/proposals">
+                <Link to="/proposals">Proposals</Link>
               </Menu.Item>
-              <Menu.Item key="/browse">
-                <Link to="/browse">Browse</Link>
+              <Menu.Item key="/publications">
+                <Link to="/publications">Publications</Link>
+              </Menu.Item>
+              <Menu.Item key="/userInfo">
+                <Link to="/userInfo">User Info</Link>
+              </Menu.Item>
+              <Menu.Item key="/training">
+                <Link to="/training">Training</Link>
+              </Menu.Item>
+              <Menu.Item key="/scheduleExperiments">
+                <Link to="/scheduleExperiments">Schedule Experiments</Link>
+              </Menu.Item>
+              <Menu.Item key="/getData">
+                <Link to="/getData">Get Data</Link>
               </Menu.Item>
             </Menu>
           </div>
