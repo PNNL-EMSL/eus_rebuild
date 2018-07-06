@@ -6,6 +6,10 @@ import LoginContainer from 'components/core/LoginContainer'
 
 export default class Login extends Component<any, any> {
 
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <div>

@@ -11,12 +11,12 @@ const tileContainer: string = css`
 export default class TileContainer extends Component<any, any> {
 
   tileData = [
-    {id: 0, text: 'Publications', img: "far fa-file-alt fa-3x", path: '/homeTile'},
-    {id: 1, text: 'Training', img: "far fa-list-alt fa-3x", path: '/homeTile'},
-    {id: 2, text: 'Proposals', img: "far fa-lightbulb fa-3x", path: '/homeTile'},
-    {id: 3, text: 'Schedule Experiments', img: "far fa-calendar-alt fa-3x", path: '/homeTile'},
-    {id: 4, text: 'User Information', img: "fas fa-user-tie fa-3x", path: '/homeTile'},
-    {id: 5, text: 'Get Data', img: "fas fa-database fa-3x", path: '/homeTile'}
+    {id: 0, text: 'Publications', img: "far fa-file-alt fa-3x", path: '/publications'},
+    {id: 1, text: 'Training', img: "far fa-list-alt fa-3x", path: '/training'},
+    {id: 2, text: 'Proposals', img: "far fa-lightbulb fa-3x", path: '/proposals'},
+    {id: 3, text: 'Schedule Experiments', img: "far fa-calendar-alt fa-3x", path: '/scheduleExperiments'},
+    {id: 4, text: 'User Information', img: "fas fa-user-tie fa-3x", path: '/userInfo'},
+    {id: 5, text: 'Get Data', img: "fas fa-database fa-3x", path: '/getData'}
   ];
 
   constructor(props: any) {

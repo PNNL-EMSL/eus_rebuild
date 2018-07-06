@@ -24,9 +24,6 @@ import TabUserHome from 'components/pages/TabUserHome';
 
 import logo from 'images/logo.png';
 
-
-
-
 // Define global styles
 injectGlobal`
   body {
@@ -122,9 +119,38 @@ const Logo = styled('img')`
  * properly with the withRouter HOC.
  * TODO: not sure how the prop interface declarations work...
  */
-class App extends React.Component<RouteComponentProps<any>> {
+class App extends React.Component<RouteComponentProps<any>, any> {
   static propTypes = {
     location: PropTypes.object.isRequired
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      loggedIn: false
+    };
+    this.renderLogin = this.renderLogin.bind(this);
+    this.loginHandler = this.loginHandler.bind(this);
+    this.renderHomePage = this.renderHomePage.bind(this);
+  }
+
+  loginHandler() {
+    this.setState({loggedIn: true});
+  }
+
+  renderLogin() {
+    const state = this.state;
+    const loginHandler = this.loginHandler;
+    return (<Login {...this.props} loggedIn={state.loggedIn} loginHandler={loginHandler} />)
+  }
+
+  renderHomePage() {
+    if(!this.state.loggedIn) {
+      return this.renderLogin();
+    }
+    else {
+      return (<TabUserHome />);
+    }
   }
 
   public render() {
@@ -173,9 +199,9 @@ class App extends React.Component<RouteComponentProps<any>> {
         </div>
         <div className={content}>
           <Switch>
-            <Route exact path="/" component={Login} />
+            <Route exact path="/" render={this.renderLogin}/>
             <Route exact path="/homeTile" component={TileUserHome} />
-            <Route exact path="/homeTab" component={TabUserHome} />
+            <Route exact path="/homeTab" render={this.renderHomePage} />
             <Route exact path="/proposals" component={Proposals} />
             <Route exact path="/publications" component={Publications} />
             <Route exact path="/userInfo" component={UserInfo} />
