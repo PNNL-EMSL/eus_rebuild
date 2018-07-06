@@ -20,7 +20,7 @@ import UserInfo from 'components/pages/UserInfo';
 import Training from 'components/pages/Training';
 import ScheduleExperiments from 'components/pages/ScheduleExperiments'
 import GetData from 'components/pages/GetData';
-// import TabUserHome from 'components/pages/TabUserHome';
+import TabUserHome from 'components/pages/TabUserHome';
 
 import logo from 'images/logo.png';
 
@@ -130,6 +130,12 @@ class App extends React.Component<RouteComponentProps<any>> {
   public render() {
     return (
       <div className={app}>
+        <link
+          rel="stylesheet"
+          href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
+          integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
+          crossOrigin="anonymous"
+        />
         <div className={header}>
           <Logo src={logo} alt="logo" />
           <div className={titleContainer}>
@@ -169,7 +175,7 @@ class App extends React.Component<RouteComponentProps<any>> {
           <Switch>
             <Route exact path="/" component={Login} />
             <Route exact path="/homeTile" component={TileUserHome} />
-            <Route exact path="/homeTab" component={TileUserHome} />
+            <Route exact path="/homeTab" component={TabUserHome} />
             <Route exact path="/proposals" component={Proposals} />
             <Route exact path="/publications" component={Publications} />
             <Route exact path="/userInfo" component={UserInfo} />

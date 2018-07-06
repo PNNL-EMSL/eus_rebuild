@@ -63,7 +63,7 @@ export default class TileUserHome extends Component<any, any> {
         </div>
         <div className={proposalContent}>
           <TileContainer />
-          <TableContainer />
+          <TableContainer type="proposals" />
         </div>
       </div>
     )

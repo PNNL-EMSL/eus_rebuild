@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import assets from 'components/core/TileAssets';
 import { css } from 'emotion';
 
 const tile: string = css`
-  width: 75px;
-  height: 75px;
+  width: 100px;
+  height: 100px;
 `;
 
-const tileImage: string = css`
-  width: 50px;
-  height: 50px;
+const faContainer: string = css`
+  text-align: center;
+  width: 100px;
 `;
 
 export default class NavigationTile extends Component<any, any> {
@@ -22,15 +21,17 @@ export default class NavigationTile extends Component<any, any> {
   clickHandler() {
     console.log('Clicking on ' + this.props.text);
     console.log('Will navigate to ' + this.props.path);
+
   }
 
   render() {
-    const img = assets[this.props.img];
     return (
-      <div className={tile} onClick={this.clickHandler}>
-        <img className={tileImage} src={img} alt="image" />
-        <p>{this.props.text}</p>
-      </div>
+      <span className={tile} onClick={this.clickHandler}>
+        <div className={faContainer}>
+          <i className={this.props.img}/>
+          <p>{this.props.text}</p>
+        </div>
+      </span>
     )
   }
 }
