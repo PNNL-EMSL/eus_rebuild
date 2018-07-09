@@ -115,8 +115,8 @@ class App extends React.Component<RouteComponentProps<any>, any> {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: false
-      userName: 'Bill Testuser',
+      loggedIn: false,
+      userName: '',
       navMenuType: 'tabs'
     };
     // Page Renderers
@@ -131,14 +131,15 @@ class App extends React.Component<RouteComponentProps<any>, any> {
     this.navTypeHandler = this.navTypeHandler.bind(this);
   }
 
-  loginHandler() {
-    this.setState({loggedIn: true, navMenuType: 'tabs'});
+  loginHandler(userName) {
+    this.setState({loggedIn: true, navMenuType: 'tabs', userName});
+    // window.location.assign("/home");
   }
 
   renderLogin() {
     const state = this.state;
     const loginHandler = this.loginHandler;
-    return (<Login {...this.props} loggedIn={state.loggedIn} loginHandler={loginHandler} />)
+    return (<Login {...this.props} loggedIn={state.loggedIn} loginHandler={loginHandler}/>)
   }
 
   logoutHandler() {
@@ -196,9 +197,9 @@ class App extends React.Component<RouteComponentProps<any>, any> {
               {this.state.loggedIn ? (
                 <div className={logout}>
                   <div>Welcome {this.state.userName}</div>
-                  <div onClick={this.logoutHandler}>Log Out</div>
+                  <div onClick={this.logoutHandler}>Sign out</div>
                 </div>
-              ): (<div className={logout}>Please log in</div>)}
+              ): (<div className={logout}>Please sign in</div>)}
             </span>
             <NavMenu 
               navMenuType={this.state.navMenuType} 
@@ -209,8 +210,8 @@ class App extends React.Component<RouteComponentProps<any>, any> {
         </div>
         <div className={content}>
           <Switch>
-            <Route exact path="/" render={this.renderLogin}/>
-            <Route exact path="/home" render={this.renderHomePage}/>
+            <Route exact path="/" render={this.renderHomePage}/>
+            <Route exact path="/login" render={this.renderLogin}/>
             <Route exact path="/proposals" component={Proposals} />
             <Route exact path="/publications" component={Publications} />
             <Route exact path="/userInfo" component={UserInfo} />

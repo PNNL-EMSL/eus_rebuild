@@ -80,7 +80,7 @@ export default class NavMenu extends React.Component<any, any> {
           <Menu.Item key="/getData">
             <Link to="/getData">Get Data</Link>
           </Menu.Item>
-          <Menu.Item key="navSwitch">
+          <Menu.Item style={{float: 'right'}} key="navSwitch">
             <div onClick={this.props.navChangeHandler}>Switch Nav Type</div>
           </Menu.Item>
         </Menu>
@@ -100,7 +100,7 @@ export default class NavMenu extends React.Component<any, any> {
         <Menu.Item key="/">
           <Link to="/">Home</Link>
         </Menu.Item>
-        <Menu.Item key="navSwitch">
+        <Menu.Item style={{float: 'right'}} key="navSwitch">
           <div onClick={this.props.navChangeHandler}>Switch Nav Type</div>
         </Menu.Item>
       </Menu>

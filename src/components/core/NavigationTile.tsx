@@ -18,10 +18,11 @@ export default class NavigationTile extends Component<any, any> {
     this.clickHandler = this.clickHandler.bind(this);
   }
 
-  clickHandler() {
+  clickHandler(e) {
+    e.preventDefault();
     console.log('Clicking on ' + this.props.text);
     console.log('Will navigate to ' + this.props.path);
-
+    window.location.assign(this.props.path);
   }
 
   render() {

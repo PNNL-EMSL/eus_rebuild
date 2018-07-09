@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { css } from 'emotion';
 import TileContainer from 'components/core/TileContainer';
-import TableContainer from 'components/core/TableContainer';
+import ProposalsContainer from 'components/core/ProposalsContainer';
 
 const orcid: string = css`
   border-color: #7c93b5;
@@ -73,7 +73,7 @@ export default class UserHome extends Component<any, any> {
         </div>
         <div className={proposalContent}>
           <TileContainer />
-          <TableContainer type="proposals" />
+          <ProposalsContainer />
         </div>
       </div>
     );
@@ -81,6 +81,7 @@ export default class UserHome extends Component<any, any> {
 
   render() {
     const navStyle = this.props.navStyle;
+    console.log(navStyle);
     if(navStyle === 'tabs') {
       return this.renderTab()
     }
