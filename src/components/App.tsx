@@ -1,12 +1,12 @@
-import { Menu } from 'antd';
+// import { Menu } from 'antd';
 import { css, injectGlobal } from 'emotion';
 import styled from 'react-emotion'
 import * as React from 'react';
-import { withRouter, Link, Switch, Route } from 'react-router-dom';
+import { withRouter, Switch, Route } from 'react-router-dom';
 import { RouteComponentProps } from "react-router";
 import PropTypes from 'prop-types';
 
-import { colorBlack, colorLightGreen, colorDarkGreen } from 'styles/base';
+// import { colorBlack, colorLightGreen, colorDarkGreen } from 'styles/base';
 
 import Home from 'components/pages/Home';
 import Search from 'components/pages/Search';
@@ -21,6 +21,9 @@ import Training from 'components/pages/Training';
 import ScheduleExperiments from 'components/pages/ScheduleExperiments'
 import GetData from 'components/pages/GetData';
 import TabUserHome from 'components/pages/TabUserHome';
+import UserHome from 'components/pages/UserHome';
+
+import NavMenu from 'components/core/NavMenu';
 
 import logo from 'images/logo.png';
 
@@ -79,27 +82,6 @@ const title: string = css`
   font-size: 28px;
   text-shadow: 2px 2px 8px #aaa;
 `;
-const menu: string = css`
-  line-height: 20px;
-  background: ${colorDarkGreen};
-  border-bottom-color: ${colorDarkGreen};
-  border-radius: 4px;
-  li:first-child {
-    border-radius: 4px 0 0 4px;
-  }
-  li {
-    &.ant-menu-item-selected {
-      background-color: ${colorLightGreen} !important;
-      a {
-       font-weight: 500;
-        color: ${colorBlack};
-        &:hover {
-          color: ${colorBlack};
-        }
-      }
-    }
-  }
-`;
 const content: string = css`
   margin: 5px 20px 15px 100px;
   display: flex;
@@ -108,6 +90,12 @@ const content: string = css`
 
 const Logo = styled('img')`
   height: 80px;
+`;
+
+const logout: string = css`
+  text-align: right;
+  float: right;
+  width: 72%;
 `;
 
 /**
@@ -128,14 +116,23 @@ class App extends React.Component<RouteComponentProps<any>, any> {
     super(props);
     this.state = {
       loggedIn: false
+      userName: 'Bill Testuser',
+      navMenuType: 'tabs'
     };
+    // Page Renderers
     this.renderLogin = this.renderLogin.bind(this);
-    this.loginHandler = this.loginHandler.bind(this);
+    this.renderHomePageTab = this.renderHomePageTab.bind(this);
+    this.renderHomePageTile = this.renderHomePageTile.bind(this);
     this.renderHomePage = this.renderHomePage.bind(this);
+
+    // Action handlers
+    this.logoutHandler = this.logoutHandler.bind(this);
+    this.loginHandler = this.loginHandler.bind(this);
+    this.navTypeHandler = this.navTypeHandler.bind(this);
   }
 
   loginHandler() {
-    this.setState({loggedIn: true});
+    this.setState({loggedIn: true, navMenuType: 'tabs'});
   }
 
   renderLogin() {
@@ -144,12 +141,41 @@ class App extends React.Component<RouteComponentProps<any>, any> {
     return (<Login {...this.props} loggedIn={state.loggedIn} loginHandler={loginHandler} />)
   }
 
-  renderHomePage() {
+  logoutHandler() {
+    this.setState({loggedIn: false, navMenuType: 'login'});
+  }
+
+  navTypeHandler() {
+    console.log('Old state: ' + this.state.navMenuType);
+    console.log('New State: ' + this.state.navMenuType === 'tabs' ? 'tiles' : 'tabs');
+    this.state.navMenuType === 'tabs' ?
+      this.setState({navMenuType: 'tiles'}) :
+      this.setState({navMenuType: 'tabs'});
+  }
+
+  renderHomePageTab() {
     if(!this.state.loggedIn) {
       return this.renderLogin();
     }
     else {
       return (<TabUserHome />);
+    }
+  }
+
+  renderHomePageTile() {
+    if(!this.state.loggedIn) {
+      return this.renderLogin();
+    }
+    else {
+      return (<TileUserHome />);
+    }
+  }
+  
+  renderHomePage() {
+    if(!this.state.loggedIn) {
+      return this.renderLogin();
+    } else {
+      return (<UserHome navStyle={this.state.navMenuType} />);
     }
   }
 
@@ -165,43 +191,26 @@ class App extends React.Component<RouteComponentProps<any>, any> {
         <div className={header}>
           <Logo src={logo} alt="logo" />
           <div className={titleContainer}>
-            <div className={title}>EMSL User Portal</div>
-            <Menu
-              className={menu}
-              theme="dark"
-              mode="horizontal"
-              defaultSelectedKeys={['home']}
-              selectedKeys={[this.props.location.pathname]}
-            >
-              <Menu.Item key="/">
-                <Link to="/">Home</Link>
-              </Menu.Item>
-              <Menu.Item key="/proposals">
-                <Link to="/proposals">Proposals</Link>
-              </Menu.Item>
-              <Menu.Item key="/publications">
-                <Link to="/publications">Publications</Link>
-              </Menu.Item>
-              <Menu.Item key="/userInfo">
-                <Link to="/userInfo">User Info</Link>
-              </Menu.Item>
-              <Menu.Item key="/training">
-                <Link to="/training">Training</Link>
-              </Menu.Item>
-              <Menu.Item key="/scheduleExperiments">
-                <Link to="/scheduleExperiments">Schedule Experiments</Link>
-              </Menu.Item>
-              <Menu.Item key="/getData">
-                <Link to="/getData">Get Data</Link>
-              </Menu.Item>
-            </Menu>
+            <span>
+              <div className={title}>EMSL User Portal</div>
+              {this.state.loggedIn ? (
+                <div className={logout}>
+                  <div>Welcome {this.state.userName}</div>
+                  <div onClick={this.logoutHandler}>Log Out</div>
+                </div>
+              ): (<div className={logout}>Please log in</div>)}
+            </span>
+            <NavMenu 
+              navMenuType={this.state.navMenuType} 
+              pathname={this.props.location.pathname}
+              navChangeHandler={this.navTypeHandler}
+            />
           </div>
         </div>
         <div className={content}>
           <Switch>
             <Route exact path="/" render={this.renderLogin}/>
-            <Route exact path="/homeTile" component={TileUserHome} />
-            <Route exact path="/homeTab" render={this.renderHomePage} />
+            <Route exact path="/home" render={this.renderHomePage}/>
             <Route exact path="/proposals" component={Proposals} />
             <Route exact path="/publications" component={Publications} />
             <Route exact path="/userInfo" component={UserInfo} />

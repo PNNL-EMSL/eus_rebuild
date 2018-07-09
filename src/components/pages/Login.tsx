@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import { css } from 'emotion';
 // import styled from 'react-emotion';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import LoginContainer from 'components/core/LoginContainer'
 
 export default class Login extends Component<any, any> {
@@ -9,7 +9,13 @@ export default class Login extends Component<any, any> {
   constructor(props) {
     super(props);
   }
-
+  
+  doLogin() {
+    // do my logic
+    // if passing
+    this.props.loginHandler();
+  }
+  
   render() {
     return (
       <div>
@@ -28,12 +34,6 @@ export default class Login extends Component<any, any> {
             TEMP item to allow access to access to home page while login is developed, 
             remove this once login logic has been developed
           </p>
-          <div>
-            <Link to="/homeTab">Tab home view</Link>
-          </div>
-          <div>
-            <Link to="/homeTile">Tile home view</Link>
-          </div>
         </div>
         <div>
           Should have a forgot password link 

@@ -46,7 +46,7 @@ export default class LoginContainer extends Component {
 
     submitFunction(e) {
         e.preventDefault();
-        window.location.assign("/homeTab");
+        window.location.assign("/home");
         // console.log("Hello World");
     }
 }
