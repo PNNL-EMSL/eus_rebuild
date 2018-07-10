@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import ApolloClient from 'apollo-boost';
 import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory';
+// import gql from "graphql-tag";
 
 import { ApolloProvider } from 'react-apollo';
 
@@ -25,12 +26,12 @@ const apolloCache = new InMemoryCache({
 // to the server.
 const clientState = {
   defaults: {
-    isConnected: true
+    isLoggedIn: false
   },
   resolvers: {
     Mutation: {
-      updateNetworkStatus: (_, { isConnected }, { cache }) => {
-        cache.writeData({ data: { isConnected }});
+      updateLoginStatus: (_, { isLoggedIn }, { cache }) => {
+        cache.writeData({ data: { isLoggedIn }});
         return null;
       }
     }
@@ -43,6 +44,16 @@ const client = new ApolloClient({
   cache: apolloCache,
   clientState
 });
+
+// const loggedIn = client.readQuery({
+//   query: gql`
+//     {
+//       isLoggedIn
+//     }
+//   `,
+// });
+
+// console.log('client cache', loggedIn.isLoggedIn);
 
 // This is the starting point to the react application.  It will 
 // render the App component into the <div id="root"></div> element

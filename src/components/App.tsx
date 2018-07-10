@@ -92,11 +92,11 @@ const Logo = styled('img')`
   height: 80px;
 `;
 
-const logout: string = css`
-  text-align: right;
-  float: right;
-  width: 72%;
-`;
+// const logout: string = css`
+//   text-align: right;
+//   float: right;
+//   width: 72%;
+// `;
 
 /**
  * The App component creates the main layout for the application,
@@ -115,9 +115,9 @@ class App extends React.Component<RouteComponentProps<any>, any> {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: false,
-      userName: '',
-      navMenuType: 'tabs'
+      loggedIn: true,
+      userName: 'admin',
+      navMenuType: 'tiles'
     };
     // Page Renderers
     this.renderLogin = this.renderLogin.bind(this);
@@ -131,9 +131,10 @@ class App extends React.Component<RouteComponentProps<any>, any> {
     this.navTypeHandler = this.navTypeHandler.bind(this);
   }
 
+
   loginHandler(userName) {
     this.setState({loggedIn: true, navMenuType: 'tabs', userName});
-    // window.location.assign("/home");
+    window.location.assign("/home");
   }
 
   renderLogin() {
@@ -181,6 +182,7 @@ class App extends React.Component<RouteComponentProps<any>, any> {
   }
 
   public render() {
+    console.log('graphql URL: ' + process.env.REACT_APP_GRAPHQL_URL);
     return (
       <div className={app}>
         <link
@@ -194,12 +196,14 @@ class App extends React.Component<RouteComponentProps<any>, any> {
           <div className={titleContainer}>
             <span>
               <div className={title}>EMSL User Portal</div>
-              {this.state.loggedIn ? (
-                <div className={logout}>
-                  <div>Welcome {this.state.userName}</div>
-                  <div onClick={this.logoutHandler}>Sign out</div>
-                </div>
-              ): (<div className={logout}>Please sign in</div>)}
+              {
+              //   this.state.loggedIn ? (
+              //   <div className={logout}>
+              //     <div>Welcome {this.state.userName}</div>
+              //     <div onClick={this.logoutHandler}>Sign out</div>
+              //   </div>
+              // ): (<div className={logout}>Please sign in</div>)
+              }
             </span>
             <NavMenu 
               navMenuType={this.state.navMenuType} 
@@ -210,8 +214,8 @@ class App extends React.Component<RouteComponentProps<any>, any> {
         </div>
         <div className={content}>
           <Switch>
-            <Route exact path="/" render={this.renderHomePage}/>
-            <Route exact path="/login" render={this.renderLogin}/>
+            <Route exact path="/home" render={this.renderHomePage}/>
+            <Route exact path="/" render={this.renderLogin}/>
             <Route exact path="/proposals" component={Proposals} />
             <Route exact path="/publications" component={Publications} />
             <Route exact path="/userInfo" component={UserInfo} />

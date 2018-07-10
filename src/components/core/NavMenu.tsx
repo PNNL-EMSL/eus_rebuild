@@ -60,7 +60,7 @@ export default class NavMenu extends React.Component<any, any> {
           selectedKeys={[this.props.pathname]}
         >
           <Menu.Item key="/">
-            <Link to="/">Home</Link>
+            <Link to="/home">Home</Link>
           </Menu.Item>
           <Menu.Item key="/proposals">
             <Link to="/proposals">Proposals</Link>
@@ -98,7 +98,7 @@ export default class NavMenu extends React.Component<any, any> {
         selectedKeys={[this.props.pathname]}
       >
         <Menu.Item key="/">
-          <Link to="/">Home</Link>
+          <Link to="/home">Home</Link>
         </Menu.Item>
         <Menu.Item style={{float: 'right'}} key="navSwitch">
           <div onClick={this.props.navChangeHandler}>Switch Nav Type</div>
