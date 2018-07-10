@@ -32,14 +32,29 @@ export default class UserHome extends Component<any, any> {
 
   renderTab() {
     return (
-      <div>
-        Temp tab user home
-      </div>
+      <div />
     );
   }
 
   renderTile() {
     return (
+      <div>
+        <TileContainer />
+      </div>
+    );
+  }
+
+  render() {
+    const navStyle = this.props.navStyle;
+    console.log(navStyle);
+    let content;
+    if(navStyle === 'tabs') {
+      content = this.renderTab()
+    } else {
+      content = this.renderTile();
+    }
+    return (
+
       <div>
         <div className={orcid}>
           <p>
@@ -52,9 +67,9 @@ export default class UserHome extends Component<any, any> {
               Click on the User Info tab above.
             </li>
             <li>
-          Indicate whether or not you authorize EMSL to post non-proprietary user
-        research awards, as well as other professional service activities, to your ORCID
-        record by clicking on the "Yes" or "No" buttons.
+              Indicate whether or not you authorize EMSL to post non-proprietary user
+            research awards, as well as other professional service activities, to your ORCID
+            record by clicking on the "Yes" or "No" buttons.
             </li>
             <li>
               You will be redirected to the ORCID login page. If you already have an ID,
@@ -72,19 +87,11 @@ export default class UserHome extends Component<any, any> {
           </ul>
         </div>
         <div className={proposalContent}>
-          <TileContainer />
+          {content}
+          <br />
           <ProposalsContainer />
         </div>
       </div>
-    );
-  }
-
-  render() {
-    const navStyle = this.props.navStyle;
-    console.log(navStyle);
-    if(navStyle === 'tabs') {
-      return this.renderTab()
-    }
-    return this.renderTile();
+    )
   }
 }

@@ -3,8 +3,8 @@ import TableRow from 'components/core/TableRow';
 import { css } from 'emotion';
 
 const table: string = css`
-  width: 48%;
-  text-align: center;
+  width: 75%;
+  text-align: left;
 `;
 
 export default class TableContainer extends Component<any, any> {
