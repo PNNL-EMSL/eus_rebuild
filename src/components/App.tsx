@@ -25,7 +25,7 @@ import UserHome from 'components/pages/UserHome';
 
 import NavMenu from 'components/core/NavMenu';
 
-import logo from 'images/logo.png';
+import logo from 'images/emsl_logo_notag.jpg';
 
 // Define global styles
 injectGlobal`
@@ -192,9 +192,9 @@ class App extends React.Component<RouteComponentProps<any>, any> {
           crossOrigin="anonymous"
         />
         <div className={header}>
-          <Logo src={logo} alt="logo" />
           <div className={titleContainer}>
             <span>
+               <Logo src={logo} alt="logo" />
               <div className={title}>EMSL User Portal</div>
               {
               //   this.state.loggedIn ? (

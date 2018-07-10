@@ -4,8 +4,21 @@ import { css } from 'emotion';
 // import { Link } from 'react-router-dom';
 
 const container: string = css`
-    background-color: #6699ff;
-`
+    border-style: solid;
+    padding: 10px;
+    background-color: rgba(215,118,0,0.5);
+`;
+
+const submitButton: string = css`
+  background-color: rgba(114, 148, 26, 1);
+  color: #FFFFFF
+`;
+
+const noteText: string = css`
+    width: 600px;
+    margin: 2em auto;
+`;
+
 export default class Login extends Component<any, any> {
 
   constructor(props) {
@@ -54,21 +67,10 @@ export default class Login extends Component<any, any> {
     return (
       <div>
         <p>
-          If the user has gone from logged in to logged out, should inform this
-        </p>
-        <p>
-          The Login page should have a brief blurb about how to log in
+          Enter your PNNL Netowrk ID and PNNL Password to log in.
         </p>
         <div>
-          The login container should go here
-
           <div className={container}>
-            Temp Login container
-
-            <div>
-              Placeholder for Login Explanation
-            </div>
-
             <div>
               PNNL Network ID:
               <input name='username' type="text" onChange={this.updateUN} />
@@ -79,22 +81,15 @@ export default class Login extends Component<any, any> {
               <input name='pass' type="password" onChange={this.updatePassword} />
             </div>
             <div>
-              <button onClick={this.submitFunction}>Log In</button>
+              <button className={submitButton} onClick={this.submitFunction}>Log In</button>
             </div>
 
           </div>
         </div>
-        <div>
-          <p>
-            TEMP item to allow access to access to home page while login is developed, 
-            remove this once login logic has been developed
-          </p>
-        </div>
-        <div>
-          Should have a forgot password link 
-        </div>
-        <p>
-          Should have a brief blurb about IE being slow and provide suggestions for other browsers
+        <p className={noteText}>
+          NOTE: If you are using Internet Explorer and are experiencing slow page loads and/or overall slowness, try using
+          <a target="_blank" href="http://www.mozilla.com/en-US/firefox/personal.html">Firefox</a> or
+          <a target="_blank" href="http://www.google.com/chrome">Chrome</a> instead.
         </p>
       </div>
     )
