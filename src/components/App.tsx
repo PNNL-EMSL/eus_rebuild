@@ -191,6 +191,10 @@ class App extends React.Component<RouteComponentProps<any>, any> {
           integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
           crossOrigin="anonymous"
         />
+        <link 
+          rel="stylesheet"
+          href="../react-responsive-carousel/lib/styles/carousel.min.css"
+        />
         <div className={header}>
           <div className={titleContainer}>
             <span>
