@@ -117,7 +117,7 @@ class App extends React.Component<RouteComponentProps<any>, any> {
     this.state = {
       loggedIn: true,
       userName: 'admin',
-      navMenuType: 'tiles'
+      navMenuType: 'tabs'
     };
     // Page Renderers
     this.renderLogin = this.renderLogin.bind(this);
