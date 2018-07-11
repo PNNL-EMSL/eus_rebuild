@@ -1,10 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component} from 'react';
 import { css } from 'emotion';
 import TileContainer from 'components/core/TileContainer';
 import ProposalsContainer from 'components/core/ProposalsContainer';
 import logo from 'images/emsl_logo_notag.jpg'
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import Marquee from 'react-smooth-marquee'; 
+// import TextTicker from 'react-native-text-ticker';
+
 
 
 const orcid: string = css`
@@ -24,6 +27,8 @@ const proposalContent: string = css`
   padding: 4em 1em 1em;
   margin-top: 30px;
 `;
+
+
 
 export default class UserHome extends Component<any, any> {
 
@@ -60,6 +65,12 @@ export default class UserHome extends Component<any, any> {
     return (
 
       <div>
+        <div>
+          Placeholder for React Text Ticker
+          <Marquee>Content goes here </Marquee>
+          
+        </div>
+        
         <div>
           <Carousel autoPlay>
             <div>
