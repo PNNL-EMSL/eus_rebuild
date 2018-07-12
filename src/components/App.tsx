@@ -22,7 +22,7 @@ import ScheduleExperiments from 'components/pages/ScheduleExperiments'
 import GetData from 'components/pages/GetData';
 import TabUserHome from 'components/pages/TabUserHome';
 import UserHome from 'components/pages/UserHome';
-
+import MessageSettings from 'components/pages/MessageSettings'
 import NavMenu from 'components/core/NavMenu';
 
 import logo from 'images/emsl_logo_notag.jpg';
@@ -229,6 +229,7 @@ class App extends React.Component<RouteComponentProps<any>, any> {
             <Route exact path="/search" component={Search} />
             <Route exact path="/browse" component={Browse} />
             <Route exact path="/getData" component={GetData} />
+            <Route exact path="/messageSystem" component={MessageSettings} />
           </Switch>
         </div>
         <div className={footer}>
