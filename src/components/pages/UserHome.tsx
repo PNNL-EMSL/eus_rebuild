@@ -28,6 +28,11 @@ const proposalContent: string = css`
   margin-top: 30px;
 `;
 
+const marquee: string = css`
+  width: 60%;
+  font-size:20px;
+  
+`
 
 
 export default class UserHome extends Component<any, any> {
@@ -65,14 +70,15 @@ export default class UserHome extends Component<any, any> {
     return (
 
       <div>
-        <div>
-          Placeholder for React Text Ticker
-          <Marquee>Content goes here </Marquee>
+        <div className={marquee}>
+          <Marquee>
+            Content goes here 
+          </Marquee>
           
         </div>
         
         <div>
-          <Carousel autoPlay>
+          <Carousel autoPlay width="70%">
             <div>
               <img src={logo}/>
               <p>Legend</p>
