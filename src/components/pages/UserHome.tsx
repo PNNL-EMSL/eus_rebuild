@@ -1,11 +1,9 @@
 import React, { Component} from 'react';
 import { css } from 'emotion';
 import TileContainer from 'components/core/TileContainer';
-import ProposalsContainer from 'components/core/ProposalsContainer';
-import logo from 'images/emsl_logo_notag.jpg'
-import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import Marquee from 'react-smooth-marquee'; 
+import NotificationsContainer from 'components/core/NotificationsContainer';
+import ProposalsContainer from 'components/core/ProposalsContainer';
 // import TextTicker from 'react-native-text-ticker';
 
 
@@ -27,12 +25,6 @@ const proposalContent: string = css`
   padding: 4em 1em 1em;
   margin-top: 30px;
 `;
-
-const marquee: string = css`
-  width: 60%;
-  font-size:20px;
-  
-`
 
 
 export default class UserHome extends Component<any, any> {
@@ -70,29 +62,7 @@ export default class UserHome extends Component<any, any> {
     return (
 
       <div>
-        <div className={marquee}>
-          <Marquee>
-            Content goes here 
-          </Marquee>
-          
-        </div>
-        
-        <div>
-          <Carousel autoPlay width="70%">
-            <div>
-              <img src={logo}/>
-              <p>Legend</p>
-            </div>
-            <div>
-              <img src={logo}/>
-              <p>Legend 2</p>
-            </div>
-            <div>
-              <img src={logo}/>
-              <p>Legend 3</p>
-            </div>
-          </Carousel>
-        </ div>
+        <NotificationsContainer />
         <div className={orcid}>
           <p>
             An ORCID iD is now required for all users and must be included for the PI and co-PI
