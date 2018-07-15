@@ -59,7 +59,7 @@ export default class Login extends Component<any, any> {
     const goodPass = "admin";
     // if passing
     if(this.state.userName === goodUN && this.state.password === goodPass) {
-      client.writeQuery({ query: this.GET_LOGIN_FILTER, data: { isLoggedIn: true, userName: this.state.userName }});
+      client.writeData({ data: { isLoggedIn: true, userName: this.state.userName }});
       console.log(client);
       this.props.loginHandler(this.state.userName, history);
     }
