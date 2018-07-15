@@ -4,7 +4,10 @@ import styled from 'react-emotion'
 import * as React from 'react';
 import { withRouter, Switch, Route } from 'react-router-dom';
 import { RouteComponentProps } from "react-router";
+import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
+import ExternalStyleSheets from 'components/core/ExternalStyleSheets';
 
 // import { colorBlack, colorLightGreen, colorDarkGreen } from 'styles/base';
 
@@ -92,11 +95,11 @@ const Logo = styled('img')`
   height: 80px;
 `;
 
-// const logout: string = css`
-//   text-align: right;
-//   float: right;
-//   width: 72%;
-// `;
+const logout: string = css`
+  text-align: right;
+  float: right;
+  width: 72%;
+`;
 
 /**
  * The App component creates the main layout for the application,
@@ -112,13 +115,27 @@ class App extends React.Component<RouteComponentProps<any>, any> {
     location: PropTypes.object.isRequired
   };
 
+  GET_HEADER_INFORMATION = gql`
+    {
+      isLoggedIn @client,
+      userName @client,
+      navStyle @client
+    }
+  `;
+  
+  GET_NAV_INFORMATION = gql`
+    {
+      navStyle @client
+    }
+  `;
+  
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: true,
-      userName: 'admin',
+      loggedIn: false,
       navMenuType: 'tabs'
     };
+
     // Page Renderers
     this.renderLogin = this.renderLogin.bind(this);
     this.renderHomePageTab = this.renderHomePageTab.bind(this);
@@ -134,7 +151,7 @@ class App extends React.Component<RouteComponentProps<any>, any> {
 
   loginHandler(userName) {
     this.setState({loggedIn: true, navMenuType: 'tabs', userName});
-    window.location.assign("/home");
+    this.props.history.push('/home');
   }
 
   renderLogin() {
@@ -185,37 +202,41 @@ class App extends React.Component<RouteComponentProps<any>, any> {
     console.log('graphql URL: ' + process.env.REACT_APP_GRAPHQL_URL);
     return (
       <div className={app}>
-        <link
-          rel="stylesheet"
-          href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
-          integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
-          crossOrigin="anonymous"
-        />
-        <link 
-          rel="stylesheet"
-          href="../react-responsive-carousel/lib/styles/carousel.min.css"
-        />
-        <div className={header}>
-          <div className={titleContainer}>
-            <span>
-               <Logo src={logo} alt="logo" />
-              <div className={title}>EMSL User Portal</div>
-              {
-              //   this.state.loggedIn ? (
-              //   <div className={logout}>
-              //     <div>Welcome {this.state.userName}</div>
-              //     <div onClick={this.logoutHandler}>Sign out</div>
-              //   </div>
-              // ): (<div className={logout}>Please sign in</div>)
-              }
-            </span>
-            <NavMenu 
-              navMenuType={this.state.navMenuType} 
-              pathname={this.props.location.pathname}
-              navChangeHandler={this.navTypeHandler}
-            />
-          </div>
-        </div>
+        <ExternalStyleSheets />
+        <Query query={this.GET_HEADER_INFORMATION}>
+          {({loading, error, data, client}) => {
+            if(loading) {
+              return <p>Loading...</p>;
+            } else if(error) {
+              return <p>Error...</p>;
+            } else {
+              console.log('data', data);
+              return (
+                <div className={header}>
+                  <div className={titleContainer}>
+                  <span>
+                     <Logo src={logo} alt="logo"/>
+                    <div className={title}>EMSL User Portal</div>
+                    {
+                      data.isLoggedIn ? (
+                        <div className={logout}>
+                          <div>Welcome {data.userName}</div>
+                          <div onClick={this.logoutHandler}>Sign out</div>
+                        </div>
+                      ) : (<div className={logout}>NOT SIGNED IN: Please sign in</div>)
+                    }
+                  </span>
+                    <NavMenu
+                      navMenuType={data.navStyle}
+                      pathname={this.props.location.pathname}
+                      navChangeHandler={this.navTypeHandler}
+                    />
+                  </div>
+                </div>
+              );
+            }
+          }}
+        </Query>
         <div className={content}>
           <Switch>
             <Route exact path="/home" render={this.renderHomePage}/>

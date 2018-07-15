@@ -22,21 +22,26 @@ const apolloCache = new InMemoryCache({
   }
 });
 
+console.log('re calling index.tsx');
 // This defines default values and resolvers for any local client variables that are not passed through
 // to the server.
 const clientState = {
   defaults: {
-    isLoggedIn: false
+    isLoggedIn: false,
+    navStyle: 'tabs',
+    userName: '',
+    marqueeTest: 'Place Content Here!',
+    marqueeOn: true
   },
   resolvers: {
     Mutation: {
-      updateLoginStatus: (_, { isLoggedIn }, { cache }) => {
-        cache.writeData({ data: { isLoggedIn }});
+      updateLoginStatus: (_, { loggedIn }, { cache }) => {
+        cache.writeData({ data: { isLoggedIn: loggedIn }});
         return null;
       }
     }
   }
-}
+};
 
 const client = new ApolloClient({
   // url is set via environment parameter in .env or .env.local file
@@ -62,7 +67,7 @@ const client = new ApolloClient({
 ReactDOM.render(
   <BrowserRouter>
     <ApolloProvider client={client}>
-      <App />
+      <App client={client} />
     </ApolloProvider>
   </BrowserRouter>,
   document.getElementById('root') as HTMLElement

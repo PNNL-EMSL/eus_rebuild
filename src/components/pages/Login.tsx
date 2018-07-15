@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { css } from 'emotion';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 // import styled from 'react-emotion';
 // import { Link } from 'react-router-dom';
 
@@ -21,9 +23,21 @@ const noteText: string = css`
 
 export default class Login extends Component<any, any> {
 
+  GET_LOGIN_FILTER = gql`
+    {
+      isLoggedIn @client,
+      userName @client
+    }
+  `;
+
   constructor(props) {
     super(props);
-    this.state = {username: '', password: ''}
+    this.state = {
+      userName: '',
+      password: '',
+      loginAttempted: false,
+      displayError: false,
+    };
 
     this.updateUN = this.updateUN.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
@@ -32,65 +46,99 @@ export default class Login extends Component<any, any> {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if((this.state.username !== nextState.userName) ||
+    if((this.state.userName !== nextState.userName) ||
       (this.state.password !== nextState.password)) {
       return false;
     }
     return true;
   }
   
-  doLogin() {
+  doLogin(client, history) {
     // do my logic
     const goodUN = "admin";
     const goodPass = "admin";
     // if passing
-    if(this.state.username === goodUN && this.state.password === goodPass) {
-      this.props.loginHandler(this.state.username);
-    } else {
-      // display error
+    if(this.state.userName === goodUN && this.state.password === goodPass) {
+      client.writeQuery({ query: this.GET_LOGIN_FILTER, data: { isLoggedIn: true, userName: this.state.userName }});
+      console.log(client);
+      this.props.loginHandler(this.state.userName, history);
     }
+    this.setState({loginAttempted: true, displayError: true});
+    
   }
 
   updateUN(e) {
-    this.setState({username: e.target.value});
+    // console.log('updating userName state');
+    this.setState({userName: e.target.value});
   }
   updatePassword(e) {
     this.setState({password: e.target.value});
   }
 
-  submitFunction(e) {
-    e.preventDefault();
-    this.doLogin()
+  submitFunction() {
+    // e.preventDefault();
+    this.doLogin(this.props.client, this.props.history)
   }
-  
+
+  errorDisplay() {
+    if(this.state.displayError) {
+      return (
+        <p>
+          Invalid login credentials. Please validate your credentials and try again.
+        </p>
+      );
+    }
+    return(<p />);
+  }
+
   render() {
+    console.log('re-render');
+    console.log('login props: ', this.props);
     return (
       <div>
-        <p>
-          Enter your PNNL Netowrk ID and PNNL Password to log in.
-        </p>
-        <div>
-          <div className={container}>
-            <div>
-              PNNL Network ID:
-              <input name='username' type="text" onChange={this.updateUN} />
-            </div>
-            <br />
-            <div>
-              PNNL Password:
-              <input name='pass' type="password" onChange={this.updatePassword} />
-            </div>
-            <div>
-              <button className={submitButton} onClick={this.submitFunction}>Log In</button>
-            </div>
+        <Query query={this.GET_LOGIN_FILTER}>
+          {({loading, error, data, client}) => {
+            if (loading) {
+              return <p>Loading...</p>;
+            } else if (error) {
 
-          </div>
-        </div>
-        <p className={noteText}>
-          NOTE: If you are using Internet Explorer and are experiencing slow page loads and/or overall slowness, try using
-          <a target="_blank" href="http://www.mozilla.com/en-US/firefox/personal.html">Firefox</a> or
-          <a target="_blank" href="http://www.google.com/chrome">Chrome</a> instead.
-        </p>
+              return <p>Error...</p>;
+            } else {
+              console.log('data: ', data.isLoggedIn);
+              return (
+                <div>
+                  <p>
+                    Enter your PNNL Netowrk ID and PNNL Password to log in.
+                    LoggedIn? : {data.isLoggedIn ? 'true' : 'false'}
+                  </p>
+                  {this.errorDisplay()}
+                  <div>
+                    <div className={container}>
+                      <div>
+                        PNNL Network ID:
+                        <input name='userName' type="text" onChange={this.updateUN}/>
+                      </div>
+                      <br />
+                      <div>
+                        PNNL Password:
+                        <input name='pass' type="password" onChange={this.updatePassword}/>
+                      </div>
+                      <div>
+                        <button className={submitButton} onClick={this.submitFunction}>Log In</button>
+                      </div>
+
+                    </div>
+                  </div>
+                  <p className={noteText}>
+                    NOTE: If you are using Internet Explorer and are experiencing slow page loads and/or overall slowness, try using
+                    <a target="_blank" href="http://www.mozilla.com/en-US/firefox/personal.html">Firefox</a> or
+                    <a target="_blank" href="http://www.google.com/chrome">Chrome</a> instead.
+                  </p>
+                </div>
+              )
+            }
+          }}
+        </Query>
       </div>
     )
   }
