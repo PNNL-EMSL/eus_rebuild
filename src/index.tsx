@@ -27,6 +27,13 @@ console.log('re calling index.tsx');
 // to the server.
 const clientState = {
   defaults: {
+    MarqueeInfos: [{
+      id: 1,
+      text: 'Place Content Here!',
+      color: '000000',
+      display: true,
+      __typename: 'MarqueeInfoItem',
+    }],
     isLoggedIn: false,
     navStyle: 'tiles',
     userName: '',
