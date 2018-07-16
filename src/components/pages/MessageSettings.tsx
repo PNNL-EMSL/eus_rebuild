@@ -16,7 +16,6 @@ export default class MessageSettings extends Component {
 
   constructor(props) {
     super(props);
-
   }
 
   render() {
