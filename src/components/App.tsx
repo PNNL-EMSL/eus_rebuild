@@ -11,19 +11,13 @@ import ExternalStyleSheets from 'components/core/ExternalStyleSheets';
 
 // import { colorBlack, colorLightGreen, colorDarkGreen } from 'styles/base';
 
-import Home from 'components/pages/Home';
-import Search from 'components/pages/Search';
-import Browse from 'components/pages/Browse';
-
 import Login from 'components/pages/Login';
-import TileUserHome from 'components/pages/TileUserHome';
 import Proposals from 'components/pages/Proposals';
 import Publications from 'components/pages/Publications';
 import UserInfo from 'components/pages/UserInfo';
 import Training from 'components/pages/Training';
 import ScheduleExperiments from 'components/pages/ScheduleExperiments'
 import GetData from 'components/pages/GetData';
-import TabUserHome from 'components/pages/TabUserHome';
 import UserHome from 'components/pages/UserHome';
 import MessageSettings from 'components/pages/MessageSettings'
 import NavMenu from 'components/core/NavMenu';
@@ -138,8 +132,6 @@ class App extends React.Component<RouteComponentProps<any>, any> {
 
     // Page Renderers
     this.renderLogin = this.renderLogin.bind(this);
-    this.renderHomePageTab = this.renderHomePageTab.bind(this);
-    this.renderHomePageTile = this.renderHomePageTile.bind(this);
     this.renderHomePage = this.renderHomePage.bind(this);
 
     // Action handlers
@@ -165,41 +157,27 @@ class App extends React.Component<RouteComponentProps<any>, any> {
   }
 
   navTypeHandler() {
-    console.log('Old state: ' + this.state.navMenuType);
-    console.log('New State: ' + this.state.navMenuType === 'tabs' ? 'tiles' : 'tabs');
     this.state.navMenuType === 'tabs' ?
       this.setState({navMenuType: 'tiles'}) :
       this.setState({navMenuType: 'tabs'});
   }
-
-  renderHomePageTab() {
-    if(!this.state.loggedIn) {
-      return this.renderLogin();
-    }
-    else {
-      return (<TabUserHome />);
-    }
-  }
-
-  renderHomePageTile() {
-    if(!this.state.loggedIn) {
-      return this.renderLogin();
-    }
-    else {
-      return (<TileUserHome />);
-    }
-  }
   
   renderHomePage() {
-    if(!this.state.loggedIn) {
-      return this.renderLogin();
-    } else {
-      return (<UserHome navStyle={this.state.navMenuType} />);
-    }
+    // if(!this.state.loggedIn) {
+      // return this.renderLogin();
+    // } else {
+      return (<UserHome navStyle={this.state.navMenuType} {...this.props}/>);
+    // }
   }
 
+  // updateStateFromCache(data) {
+  //   this.setState({
+  //     loggedIn: data.isLoggedIn,
+  //     navMenuType: data.navStyle,
+  //   });
+  // }
+
   public render() {
-    console.log('graphql URL: ' + process.env.REACT_APP_GRAPHQL_URL);
     return (
       <div className={app}>
         <ExternalStyleSheets />
@@ -246,9 +224,6 @@ class App extends React.Component<RouteComponentProps<any>, any> {
             <Route exact path="/userInfo" component={UserInfo} />
             <Route exact path="/training" component={Training} />
             <Route exact path="/scheduleExperiments" component={ScheduleExperiments} />
-            <Route exact path="/oldHome" component={Home} />
-            <Route exact path="/search" component={Search} />
-            <Route exact path="/browse" component={Browse} />
             <Route exact path="/getData" component={GetData} />
             <Route exact path="/messageSystem" component={MessageSettings} />
           </Switch>

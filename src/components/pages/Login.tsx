@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { css } from 'emotion';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-// import styled from 'react-emotion';
-// import { Link } from 'react-router-dom';
 
 const container: string = css`
     border-style: solid;
