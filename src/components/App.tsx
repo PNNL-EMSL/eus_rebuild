@@ -81,8 +81,6 @@ const title: string = css`
 `;
 const content: string = css`
   margin: 5px 20px 15px 100px;
-  display: flex;
-  flex: 1;
 `;
 
 const Logo = styled('img')`
@@ -117,17 +115,11 @@ class App extends React.Component<RouteComponentProps<any>, any> {
     }
   `;
   
-  GET_NAV_INFORMATION = gql`
-    {
-      navStyle @client
-    }
-  `;
-  
   constructor(props) {
     super(props);
     this.state = {
       loggedIn: false,
-      navMenuType: 'tabs'
+      navMenuType: 'tiles'
     };
 
     // Page Renderers
@@ -182,13 +174,12 @@ class App extends React.Component<RouteComponentProps<any>, any> {
       <div className={app}>
         <ExternalStyleSheets />
         <Query query={this.GET_HEADER_INFORMATION}>
-          {({loading, error, data, client}) => {
+          {({loading, error, data}) => {
             if(loading) {
               return <p>Loading...</p>;
             } else if(error) {
               return <p>Error...</p>;
             } else {
-              console.log('data', data);
               return (
                 <div className={header}>
                   <div className={titleContainer}>

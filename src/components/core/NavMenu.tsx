@@ -2,6 +2,8 @@ import { Menu } from 'antd';
 import { css } from 'emotion';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
 
 import { colorBlack, colorLightGreen, colorDarkGreen } from 'styles/base';
 
@@ -29,24 +31,21 @@ const menu: string = css`
 `;
 
 export default class NavMenu extends React.Component<any, any> {
+  UPDATE_NAV_TYPE = gql`
+    mutation UpdateNavType($navStyle: String!) {
+      updateNavType(navStyle: $navStyle) @client
+    }
+  `;
+
   constructor(props) {
     super(props);
 
-    this.renderLoginNav = this.renderLoginNav.bind(this);
     this.renderTabNav = this.renderTabNav.bind(this);
     this.renderTileNav = this.renderTileNav.bind(this);
   }
 
   shouldComponentUpdate(nextProps) {
     return this.props.navMenuType !== nextProps.navMenuType;
-  }
-
-  renderLoginNav() {
-    return (
-      <div>
-        Do we need to show a nav for this?
-      </div>
-    );
   }
   
   renderTabNav() {
@@ -84,9 +83,7 @@ export default class NavMenu extends React.Component<any, any> {
             <Link to="/messageSystem">Message System</Link>
           </Menu.Item>
 
-          <Menu.Item style={{float: 'right'}} key="navSwitch">
-            <div onClick={this.props.navChangeHandler}>Switch Nav Type</div>
-          </Menu.Item>
+          {this.renderNavSwitchItem()}
         </Menu>
       </div>
     );
@@ -94,33 +91,50 @@ export default class NavMenu extends React.Component<any, any> {
 
   renderTileNav() {
     return (
-      <Menu
-        className={menu}
-        theme="dark"
-        mode="horizontal"
-        defaultSelectedKeys={['home']}
-        selectedKeys={[this.props.pathname]}
-      >
-        <Menu.Item key="/">
-          <Link to="/home">Home</Link>
-        </Menu.Item>
-        <Menu.Item style={{float: 'right'}} key="navSwitch">
-          <div onClick={this.props.navChangeHandler}>Switch Nav Type</div>
-        </Menu.Item>
-      </Menu>
+      <div>
+        <Menu
+          className={menu}
+          theme="dark"
+          mode="horizontal"
+          defaultSelectedKeys={['home']}
+          selectedKeys={[this.props.pathname]}
+        >
+          <Menu.Item key="/">
+            <Link to="/home">Home</Link>
+          </Menu.Item>
+          {this.renderNavSwitchItem()}
+        </Menu>
+      </div>
     );
+  }
+
+  renderNavSwitchItem() {
+    const navStyle = this.props.navMenuType === 'tabs' ? 'tiles' : 'tabs';
+    return (
+      <Mutation mutation={this.UPDATE_NAV_TYPE} variables={{navStyle}}>
+        {updateNavType => (
+          <Menu.Item style={{float: 'right'}} key="navSwitch" onClick={updateNavType}>
+            <div>Switch Nav Type</div>
+          </Menu.Item>
+        )}
+      </Mutation>
+    )
   }
   
   render() {
     const navMenuType = this.props.navMenuType;
-    if(navMenuType === 'login') {
-      return this.renderLoginNav();
-    } else if(navMenuType === 'tabs') {
-      return this.renderTabNav();
+    let items;
+    if(navMenuType === 'tabs') {
+      items = this.renderTabNav();
     } else if(navMenuType === 'tiles') {
-      return this.renderTileNav();
+      items = this.renderTileNav();
     } else {
-      return (<div>ERROR</div>);
+      items = (<div>ERROR</div>);
     }
+    return (
+      <div>
+        {items}
+      </div>
+    )
   }
 }

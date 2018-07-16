@@ -71,9 +71,6 @@ export default class UserHome extends Component<any, any> {
       <Query query={this.GET_LOGIN_FILTER}>
         {({data, client}) => (
           <div>
-            <p>
-              loggedIn: {data.isLoggedIn}
-            </p>
             <NotificationsContainer />
             <div className={orcid}>
               <p>

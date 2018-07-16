@@ -28,15 +28,21 @@ console.log('re calling index.tsx');
 const clientState = {
   defaults: {
     isLoggedIn: false,
-    navStyle: 'tabs',
+    navStyle: 'tiles',
     userName: '',
-    marqueeTest: 'Place Content Here!',
-    marqueeOn: true
+    marqueeText: 'Place Content Here!',
+    marqueeDisplaying: true,
+    marqueeColor: '000000',
+    carouselInfo: 'ice cream',
   },
   resolvers: {
     Mutation: {
-      updateLoginStatus: (_, { loggedIn }, { cache }) => {
-        cache.writeData({ data: { isLoggedIn: loggedIn }});
+      updateLoginStatus: (_, { loggedIn, userName }, { cache }) => {
+        cache.writeData({ data: { isLoggedIn: loggedIn, userName }});
+        return null;
+      },
+      updateNavType: (_, {navStyle}, { cache }) => {
+        cache.writeData({ data: { navStyle }});
         return null;
       }
     }
