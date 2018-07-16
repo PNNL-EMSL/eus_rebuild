@@ -8,9 +8,12 @@ export default class MessageSettings extends Component {
 
   GET_MESSAGE_INFORMATION = gql`
     {
-      marqueeText,
-      marqueeDisplaying,
-      marqueeColor,
+      MarqueeInfos @client {
+        id,
+        text,
+        color,
+        display,
+      }
     }
   `;
 
@@ -31,21 +34,20 @@ export default class MessageSettings extends Component {
             } else if(error) {
               return <p>ERROR LOADING MESSAGE SETTINGS!</p>
             } else {
-              console.log(data, data.marqueeInfo);
-              // const carouselInfo = data.carouselInfo;
+              const marqueeData = data.MarqueeInfos[0]; // marquee data is going to be a single object
               return (
                 <div>
                   <div>
                     Marquee text:
-                    <input name='marqueeText' type='text' defaultValue={data.marqueeText} />
+                    <input name='marqueeText' type='text' defaultValue={marqueeData.text} />
                   </div>
                   <div>
                     Marquee displaying:
-                    <input name='marqueeDisplay' type='checkbox' defaultChecked={data.marqueeDisplaying}/>
+                    <input name='marqueeDisplay' type='checkbox' defaultChecked={marqueeData.display}/>
                   </div>
                   <div>
-                    Marquee text:
-                    <input name='marqueeColor' type='text' defaultValue={data.marqueeColor} />
+                    Marquee color:
+                    <input name='marqueeColor' type='text' defaultValue={marqueeData.color} />
                   </div>
                 </div>
               );
