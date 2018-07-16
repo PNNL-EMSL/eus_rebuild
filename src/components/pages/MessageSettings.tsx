@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import NotificationsContainer from 'components/core/NotificationsContainer';
+import CarouselContainer from 'components/core/CarouselContainer';
+import MarqueeContainer from 'components/core/MarqueeContainer';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -21,7 +22,8 @@ export default class MessageSettings extends Component {
   render() {
     return (
       <div>
-        <NotificationsContainer />
+        <MarqueeContainer />
+        <CarouselContainer />
         <Query query={this.GET_MESSAGE_INFORMATION} >
           {({loading, error, data}) => {
             if (loading) {

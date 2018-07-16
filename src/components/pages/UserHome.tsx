@@ -4,7 +4,8 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import TileContainer from 'components/core/TileContainer';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import NotificationsContainer from 'components/core/NotificationsContainer';
+import CarouselContainer from 'components/core/CarouselContainer';
+import MarqueeContainer from 'components/core/MarqueeContainer';
 import ProposalsContainer from 'components/core/ProposalsContainer';
 // import TextTicker from 'react-native-text-ticker';
 
@@ -71,7 +72,11 @@ export default class UserHome extends Component<any, any> {
       <Query query={this.GET_LOGIN_FILTER}>
         {({data, client}) => (
           <div>
-            <NotificationsContainer />
+            <p>
+              loggedIn: {data.isLoggedIn}
+            </p>
+            <MarqueeContainer />
+            <CarouselContainer />
             <div className={orcid}>
               <p>
                 An ORCID iD is now required for all users and must be included for the PI and co-PI
