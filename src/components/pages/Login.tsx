@@ -16,7 +16,14 @@ const submitButton: string = css`
 
 const noteText: string = css`
     width: 600px;
+    text-align: center;
     margin: 2em auto;
+`;
+
+const loginContainer: string = css`
+  width: 800px;
+  margin: 2em auto;
+  float: left;
 `;
 
 export default class Login extends Component<any, any> {
@@ -102,12 +109,10 @@ export default class Login extends Component<any, any> {
 
               return <p>Error...</p>;
             } else {
-              console.log('data: ', data.isLoggedIn);
               return (
-                <div>
+                <div className={loginContainer}>
                   <p>
                     Enter your PNNL Netowrk ID and PNNL Password to log in.
-                    LoggedIn? : {data.isLoggedIn ? 'true' : 'false'}
                   </p>
                   {this.errorDisplay()}
                   <div>

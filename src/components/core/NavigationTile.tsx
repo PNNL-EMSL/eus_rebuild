@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { css } from 'emotion';
 
-const tile: string = css`
-  width: 100px;
-  height: 100px;
-`;
 
 const faContainer: string = css`
   text-align: center;
   width: 100px;
+  height: 100px;
+  border-style: solid;
+  margin: 5px;
+  padding-top: 5px;
 `;
 
 export default class NavigationTile extends Component<any, any> {
@@ -27,7 +27,7 @@ export default class NavigationTile extends Component<any, any> {
 
   render() {
     return (
-      <span className={tile} onClick={this.clickHandler}>
+      <span onClick={this.clickHandler}>
         <div className={faContainer}>
           <i className={this.props.img}/>
           <p>{this.props.text}</p>

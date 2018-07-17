@@ -3,7 +3,6 @@ import { css, injectGlobal } from 'emotion';
 import styled from 'react-emotion'
 import * as React from 'react';
 import { withRouter, Switch, Route } from 'react-router-dom';
-import { RouteComponentProps } from "react-router";
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
@@ -102,7 +101,7 @@ const logout: string = css`
  * properly with the withRouter HOC.
  * TODO: not sure how the prop interface declarations work...
  */
-class App extends React.Component<RouteComponentProps<any>, any> {
+class App extends React.Component<any, any> {
   static propTypes = {
     location: PropTypes.object.isRequired
   };
@@ -148,10 +147,9 @@ class App extends React.Component<RouteComponentProps<any>, any> {
     this.setState({loggedIn: false, navMenuType: 'login'});
   }
 
-  navTypeHandler() {
-    this.state.navMenuType === 'tabs' ?
-      this.setState({navMenuType: 'tiles'}) :
-      this.setState({navMenuType: 'tabs'});
+  navTypeHandler(styleTo) {
+    this.props.client.writeData({ data: { navStyle: styleTo }});
+    this.setState({navMenuType: styleTo });
   }
   
   renderHomePage() {

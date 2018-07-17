@@ -12,7 +12,13 @@ export default class CarouselContainer extends Component<any, any> {
         return (
             <div>
                 <div>
-                    <Carousel autoPlay width="70%">
+                    <Carousel
+                      autoPlay
+                      width="70%"
+                      showThumbs={false}
+                      infiniteLoop={true}
+                      showStatus={false}
+                    >
                     <div>
                         <img src={logo}/>
                         <p>Legend</p>
