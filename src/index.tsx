@@ -34,6 +34,7 @@ const clientState = {
       display: true,
       __typename: 'MarqueeInfoItem',
     }],
+    CarouselInfos: [],
     isLoggedIn: false,
     navStyle: 'tiles',
     userName: '',

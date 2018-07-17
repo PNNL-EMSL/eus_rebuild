@@ -13,6 +13,13 @@ export default class MessageSettings extends Component {
         text,
         color,
         display,
+      },
+      CarouselInfos @client {
+        id,
+        text,
+        imgUrl,
+        display,
+        order,
       }
     }
   `;

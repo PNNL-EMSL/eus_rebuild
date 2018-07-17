@@ -2,8 +2,6 @@ import { Menu } from 'antd';
 import { css } from 'emotion';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
 
 import { colorBlack, colorLightGreen, colorDarkGreen } from 'styles/base';
 
@@ -31,17 +29,19 @@ const menu: string = css`
 `;
 
 export default class NavMenu extends React.Component<any, any> {
-  UPDATE_NAV_TYPE = gql`
-    mutation UpdateNavType($navStyle: String!) {
-      updateNavType(navStyle: $navStyle) @client
-    }
-  `;
 
   constructor(props) {
     super(props);
 
     this.renderTabNav = this.renderTabNav.bind(this);
     this.renderTileNav = this.renderTileNav.bind(this);
+    this.renderNavSwitchItem = this.renderNavSwitchItem.bind(this);
+    this.updateNavType = this.updateNavType.bind(this);
+  }
+
+  updateNavType() {
+    const styleTo = this.props.navMenuType === 'tabs' ? 'tiles' : 'tabs';
+    this.props.navChangeHandler(styleTo);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -109,16 +109,11 @@ export default class NavMenu extends React.Component<any, any> {
   }
 
   renderNavSwitchItem() {
-    const navStyle = this.props.navMenuType === 'tabs' ? 'tiles' : 'tabs';
     return (
-      <Mutation mutation={this.UPDATE_NAV_TYPE} variables={{navStyle}}>
-        {updateNavType => (
-          <Menu.Item style={{float: 'right'}} key="navSwitch" onClick={updateNavType}>
-            <div>Switch Nav Type</div>
-          </Menu.Item>
-        )}
-      </Mutation>
-    )
+      <Menu.Item style={{float: 'right'}} key="navSwitch" onClick={this.updateNavType}>
+        <div>Switch Nav Type</div>
+      </Menu.Item>
+    );
   }
   
   render() {
