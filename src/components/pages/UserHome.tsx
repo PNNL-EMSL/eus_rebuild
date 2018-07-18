@@ -7,7 +7,6 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import CarouselContainer from 'components/core/CarouselContainer';
 import MarqueeContainer from 'components/core/MarqueeContainer';
 import ProposalsContainer from 'components/core/ProposalsContainer';
-// import TextTicker from 'react-native-text-ticker';
 
 
 const orcid:string = css`
@@ -31,9 +30,9 @@ const proposalContent:string = css`
 
 export default class UserHome extends Component<any, any> {
 
-  GET_LOGIN_FILTER = gql`
+  GET_USER_ROLE = gql`
     {
-      isLoggedIn @client
+      role @client
     }
   `;
 
@@ -60,33 +59,21 @@ export default class UserHome extends Component<any, any> {
   constructor(props) {
     super(props);
 
-    this.renderTab = this.renderTab.bind(this);
     this.renderTile = this.renderTile.bind(this);
   }
 
-  renderTab() {
-    return (
-      <div />
-    );
-  }
-
   renderTile() {
+    const query = this.GET_USER_ROLE;
+    const role = this.props.client.readQuery({query}).role;
     return (
       <div>
-        <TileContainer />
+        <TileContainer role={role} />
       </div>
     );
   }
 
   render() {
-    const navStyle = this.props.navStyle;
-    console.log(navStyle);
-    let content;
-    if (navStyle === 'tabs') {
-      content = this.renderTab()
-    } else {
-      content = this.renderTile();
-    }
+    const content = this.renderTile();
     return (
       <div>
         <Query query={this.GET_MESSAGE_INFORMATION}>

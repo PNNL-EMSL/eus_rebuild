@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { css } from 'emotion';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
 
 const container: string = css`
     border-style: solid;
@@ -26,14 +24,25 @@ const loginContainer: string = css`
   float: left;
 `;
 
-export default class Login extends Component<any, any> {
+const validUsers = {
+  admin: { 
+    userName: 'admin',
+    password: 'admin',
+    role: 'admin'
+  },
+  guest: {
+    userName: 'guest',
+    password: 'password',
+    role: 'guest'
+  },
+  user: {
+    userName: 'user',
+    password: 'password',
+    role: 'user'
+  }
+};
 
-  GET_LOGIN_FILTER = gql`
-    {
-      isLoggedIn @client,
-      userName @client
-    }
-  `;
+export default class Login extends Component<any, any> {
 
   constructor(props) {
     super(props);
@@ -60,16 +69,17 @@ export default class Login extends Component<any, any> {
   
   doLogin(client, history) {
     // do my logic
-    const goodUN = "admin";
-    const goodPass = "admin";
     // if passing
-    if(this.state.userName === goodUN && this.state.password === goodPass) {
-      client.writeData({ data: { isLoggedIn: true, userName: this.state.userName }});
+    const userName = this.state.userName;
+    const password = this.state.password;
+    if(validUsers[userName] !== undefined && validUsers[userName].password === password) {
+    // if(this.state.userName === goodUN && this.state.password === goodPass) {
+      client.writeData({ data: { isLoggedIn: true, userName, role: validUsers[userName].role }});
       console.log(client);
       this.props.loginHandler(this.state.userName, history);
+    } else {
+      this.setState({loginAttempted: true, displayError: true});
     }
-    this.setState({loginAttempted: true, displayError: true});
-    
   }
 
   updateUN(e) {
@@ -97,52 +107,35 @@ export default class Login extends Component<any, any> {
   }
 
   render() {
-    console.log('re-render');
-    console.log('login props: ', this.props);
     return (
-      <div>
-        <Query query={this.GET_LOGIN_FILTER}>
-          {({loading, error, data, client}) => {
-            if (loading) {
-              return <p>Loading...</p>;
-            } else if (error) {
+      <div className={loginContainer}>
+        <p>
+          Enter your PNNL Netowrk ID and PNNL Password to log in.
+        </p>
+        {this.errorDisplay()}
+        <div>
+          <div className={container}>
+            <div>
+              PNNL Network ID:
+              <input name='userName' type="text" onChange={this.updateUN}/>
+            </div>
+            <br />
+            <div>
+              PNNL Password:
+              <input name='pass' type="password" onChange={this.updatePassword}/>
+            </div>
+            <div>
+              <button className={submitButton} onClick={this.submitFunction}>Log In</button>
+            </div>
 
-              return <p>Error...</p>;
-            } else {
-              return (
-                <div className={loginContainer}>
-                  <p>
-                    Enter your PNNL Netowrk ID and PNNL Password to log in.
-                  </p>
-                  {this.errorDisplay()}
-                  <div>
-                    <div className={container}>
-                      <div>
-                        PNNL Network ID:
-                        <input name='userName' type="text" onChange={this.updateUN}/>
-                      </div>
-                      <br />
-                      <div>
-                        PNNL Password:
-                        <input name='pass' type="password" onChange={this.updatePassword}/>
-                      </div>
-                      <div>
-                        <button className={submitButton} onClick={this.submitFunction}>Log In</button>
-                      </div>
-
-                    </div>
-                  </div>
-                  <p className={noteText}>
-                    NOTE: If you are using Internet Explorer and are experiencing slow page loads and/or overall slowness, try using
-                    <a target="_blank" href="http://www.mozilla.com/en-US/firefox/personal.html">Firefox</a> or
-                    <a target="_blank" href="http://www.google.com/chrome">Chrome</a> instead.
-                  </p>
-                </div>
-              )
-            }
-          }}
-        </Query>
+          </div>
+        </div>
+        <p className={noteText}>
+          NOTE: If you are using Internet Explorer and are experiencing slow page loads and/or overall slowness, try using
+          <a target="_blank" href="http://www.mozilla.com/en-US/firefox/personal.html">Firefox</a> or
+          <a target="_blank" href="http://www.google.com/chrome">Chrome</a> instead.
+        </p>
       </div>
-    )
+)
   }
 }

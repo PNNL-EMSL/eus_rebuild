@@ -41,6 +41,7 @@ const clientState = {
     isLoggedIn: false,
     navStyle: 'tiles',
     userName: '',
+    role: 'UNDEFINED',
     marqueeText: 'Place Content Here!',
     marqueeDisplaying: true,
     marqueeColor: '000000',

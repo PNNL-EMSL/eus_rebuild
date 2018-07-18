@@ -110,7 +110,14 @@ class App extends React.Component<any, any> {
     {
       isLoggedIn @client,
       userName @client,
+      role @client,
       navStyle @client
+    }
+  `;
+
+  GET_USER_LOGGED_IN = gql`
+    {
+      isLoggedIn @client
     }
   `;
   
@@ -126,10 +133,16 @@ class App extends React.Component<any, any> {
     this.renderHomePage = this.renderHomePage.bind(this);
     this.renderMessageSettings = this.renderMessageSettings.bind(this);
 
+    // Redirection functions
+    this.redirectFromIndex = this.redirectFromIndex.bind(this);
+    this.redirectToLogin = this.redirectToLogin.bind(this);
+
     // Action handlers
     this.logoutHandler = this.logoutHandler.bind(this);
     this.loginHandler = this.loginHandler.bind(this);
     this.navTypeHandler = this.navTypeHandler.bind(this);
+
+    this.userIsLoggedIn = this.userIsLoggedIn.bind(this);
   }
 
 
@@ -139,38 +152,50 @@ class App extends React.Component<any, any> {
   }
 
   renderLogin() {
-    const state = this.state;
     const loginHandler = this.loginHandler;
-    return (<Login {...this.props} loggedIn={state.loggedIn} loginHandler={loginHandler}/>)
+    return (<Login {...this.props} loginHandler={loginHandler}/>)
   }
 
   logoutHandler() {
-    this.setState({loggedIn: false, navMenuType: 'login'});
+    this.props.client.writeData({isLoggedIn: false, userName: '', role: 'UNDEFINED'});
+    this.redirectToLogin();
   }
 
   navTypeHandler(styleTo) {
     this.props.client.writeData({ data: { navStyle: styleTo }});
-    this.setState({navMenuType: styleTo });
   }
   
   renderHomePage() {
-    // if(!this.state.loggedIn) {
-      // return this.renderLogin();
-    // } else {
+    if(!this.userIsLoggedIn()) {
+      return this.redirectToLogin();
+    } else {
       return (<UserHome navStyle={this.state.navMenuType} {...this.props}/>);
-    // }
+    }
   }
   
   renderMessageSettings() {
     return (<MessageSettings {...this.props}/>);
   }
 
-  // updateStateFromCache(data) {
-  //   this.setState({
-  //     loggedIn: data.isLoggedIn,
-  //     navMenuType: data.navStyle,
-  //   });
-  // }
+  userIsLoggedIn() {
+    const query = this.GET_USER_LOGGED_IN;
+    return this.props.client.readQuery({query}).isLoggedIn;
+  }
+
+  redirectFromIndex() {
+    if(this.userIsLoggedIn) {
+      this.props.history.push('/home');
+    }
+    else {
+      this.redirectToLogin();
+    }
+    return null;
+  }
+
+  redirectToLogin() {
+    this.props.history.push('/login');
+    return null;
+  }
 
   public render() {
     return (
@@ -211,8 +236,9 @@ class App extends React.Component<any, any> {
         </Query>
         <div className={content}>
           <Switch>
+            <Route exact path="/" render={this.redirectFromIndex} />
             <Route exact path="/home" render={this.renderHomePage}/>
-            <Route exact path="/" render={this.renderLogin}/>
+            <Route exact path="/login" render={this.renderLogin}/>
             <Route exact path="/proposals" component={Proposals} />
             <Route exact path="/publications" component={Publications} />
             <Route exact path="/userInfo" component={UserInfo} />
