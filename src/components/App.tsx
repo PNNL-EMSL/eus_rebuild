@@ -158,7 +158,7 @@ class App extends React.Component<any, any> {
   }
 
   logoutHandler() {
-    this.props.client.writeData({isLoggedIn: false, userName: '', role: 'UNDEFINED'});
+    this.props.client.writeData({data: {isLoggedIn: false, userName: '', role: 'UNDEFINED'}});
     this.redirectToLogin();
   }
 
@@ -221,7 +221,7 @@ class App extends React.Component<any, any> {
                           <div>Welcome {data.userName}</div>
                           <div onClick={this.logoutHandler}>Sign out</div>
                         </div>
-                      ) : (<div className={logout}>NOT SIGNED IN: Please sign in</div>)
+                      ) : (<div />)
                     }
                   </span>
                     <NavMenu
