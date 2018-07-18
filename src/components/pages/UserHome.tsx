@@ -6,7 +6,7 @@ import TileContainer from 'components/core/TileContainer';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import CarouselContainer from 'components/core/CarouselContainer';
 import MarqueeContainer from 'components/core/MarqueeContainer';
-import ProposalsContainer from 'components/core/ProposalsContainer';
+// import ProposalsContainer from 'components/core/ProposalsContainer';
 
 
 const orcid:string = css`
@@ -17,14 +17,24 @@ const orcid:string = css`
   margin-top: 1.5em;
   min-height: 3em;
   float: left;
-  width: 45%
 `;
 
-const proposalContent:string = css`
-  width: 48%;
+// const proposalContent:string = css`
+//   width: 48%;
+//   float: right;
+//   padding: 4em 1em 1em;
+//   margin-top: 30px;
+// `;
+
+const newsDiv:string = css`
+  width: 45%;
+  display: inline-block;
+`;
+
+const tilesDiv:string = css`
+  display: flex;
+  width: 50%;
   float: right;
-  padding: 4em 1em 1em;
-  margin-top: 30px;
 `;
 
 
@@ -36,7 +46,7 @@ export default class UserHome extends Component<any, any> {
     }
   `;
 
-  GET_MESSAGE_INFORMATION = gql`
+  GET_MARQUEE_INFORMATION = gql`
     {
       MarqueeInfos @client {
         id,
@@ -45,6 +55,11 @@ export default class UserHome extends Component<any, any> {
         background,
         display,
       }
+    }
+  `;
+
+  GET_CAROUSEL_INFORMATION = gql`
+    {
       CarouselInfos @client {
         id,
         text,
@@ -67,7 +82,7 @@ export default class UserHome extends Component<any, any> {
     const role = this.props.client.readQuery({query}).role;
     return (
       <div>
-        <TileContainer role={role} />
+        <TileContainer role={role} {...this.props}/>
       </div>
     );
   }
@@ -76,62 +91,78 @@ export default class UserHome extends Component<any, any> {
     const content = this.renderTile();
     return (
       <div>
-        <Query query={this.GET_MESSAGE_INFORMATION}>
+        <Query query={this.GET_MARQUEE_INFORMATION}>
           {({loading, error, data}) => {
             if (loading) {
               return (<div />);
             } else if (error) {
               return (
                 <div>
-                  Error encountered retrieving Nofication and News Data. We apologize for the inconvenience.
+                  Error encountered retrieving Notification Data. We apologize for the inconvenience.
                 </div>
               )
             } else {
               const marqueeData = data.MarqueeInfos[0];
-              const carouselData = data.CarouselInfos;
               return (
                 <div>
                   <MarqueeContainer settings={marqueeData}/>
-                  <CarouselContainer settings={carouselData}/>
                 </div>
               )
             }
           }}
         </Query>
-        <div className={orcid}>
-          <p>
-            An ORCID iD is now required for all users and must be included for the PI and co-PI
-            in the proposal form in order to submit. You don't need your number. To link an
-            ORCID iD with your user account:
-          </p>
-          <ul>
-            <li>
-              Click on the User Info tab above.
-            </li>
-            <li>
-              Indicate whether or not you authorize EMSL to post non-proprietary user
-            research awards, as well as other professional service activities, to your ORCID
-            record by clicking on the "Yes" or "No" buttons.
-            </li>
-            <li>
-              You will be redirected to the ORCID login page. If you already have an ID,
-            sign in using your ORCID credentials. Otherwise, click "Register now" to
-            create an account.
-            </li>
-            <li>
-              After signing into ORCID, click "Authorize", which will redirect you back
-            to the Portal and add the ID to the User Info page.
-            </li>
-            <li>
-              To save your settings, be sure to click on "Save User Now" in the top
-            right-hand corner.
-            </li>
-          </ul>
+        <div className={newsDiv}>
+          <Query query={this.GET_CAROUSEL_INFORMATION}>
+            {({loading, error, data}) => {
+              if (loading) {
+                return (<div />);
+              } else if (error) {
+                return (
+                  <div>
+                    Error encountered retrieving Nofication and News Data. We apologize for the inconvenience.
+                  </div>
+                )
+              } else {
+                const carouselData = data.CarouselInfos;
+                return (
+                  <CarouselContainer settings={carouselData}/>
+                )
+              }
+            }}
+          </Query>
+          <div className={orcid}>
+            <p>
+              An ORCID iD is now required for all users and must be included for the PI and co-PI
+              in the proposal form in order to submit. You don't need your number. To link an
+              ORCID iD with your user account:
+            </p>
+            <ul>
+              <li>
+                Click on the User Info tab above.
+              </li>
+              <li>
+                Indicate whether or not you authorize EMSL to post non-proprietary user
+              research awards, as well as other professional service activities, to your ORCID
+              record by clicking on the "Yes" or "No" buttons.
+              </li>
+              <li>
+                You will be redirected to the ORCID login page. If you already have an ID,
+              sign in using your ORCID credentials. Otherwise, click "Register now" to
+              create an account.
+              </li>
+              <li>
+                After signing into ORCID, click "Authorize", which will redirect you back
+              to the Portal and add the ID to the User Info page.
+              </li>
+              <li>
+                To save your settings, be sure to click on "Save User Now" in the top
+              right-hand corner.
+              </li>
+            </ul>
+          </div>
         </div>
-        <div className={proposalContent}>
+        <div className={tilesDiv}>
           {content}
-          <br />
-          <ProposalsContainer />
         </div>
       </div>
     )

@@ -14,14 +14,13 @@ export default class CarouselContainer extends Component<any, any> {
                 <div>
                     <Carousel
                       autoPlay
-                      width="70%"
                       showThumbs={false}
                       infiniteLoop={true}
                       showStatus={false}
                     >
                     <div>
                         <img src={logo}/>
-                        <p>Legend</p>
+                        <p>LARGE LEGEND WHICH WE CAN SEE OVER THE BUTTON THUMB THING!!!! Legend</p>
                     </div>
                     <div>
                         <img src={logo}/>

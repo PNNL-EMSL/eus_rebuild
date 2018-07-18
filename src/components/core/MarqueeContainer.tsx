@@ -5,7 +5,6 @@ import {css} from 'emotion';
 import 'styles/index.scss';
 
 const marquee:string = css`
-  width: 60%;
   font-size:20px;
   text-align: center;
   margin: 10px 0px;

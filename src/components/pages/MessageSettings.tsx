@@ -20,6 +20,10 @@ const marqueeEntry: string = css`
   border-top: solid darkgrey;
 `;
 
+const carousel: string = css`
+  width: 30%;
+`;
+
 export default class MessageSettings extends Component<any, any> {
 
   GET_MESSAGE_INFORMATION = gql`
@@ -139,7 +143,9 @@ export default class MessageSettings extends Component<any, any> {
                     </tbody>
                   </table>
                   <br/>
-                  <CarouselContainer />
+                  <div className={carousel}>
+                    <CarouselContainer className={carousel}/>
+                  </div>
                   <br/>
                 </div>
               );

@@ -80,6 +80,7 @@ const title: string = css`
 `;
 const content: string = css`
   margin: 5px 20px 15px 100px;
+  max-width: 958px;
 `;
 
 const Logo = styled('img')`
