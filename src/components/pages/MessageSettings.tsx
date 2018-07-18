@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import CarouselContainer from 'components/core/CarouselContainer';
 import MarqueeContainer from 'components/core/MarqueeContainer';
+import CarouselSettingsContainer from 'components/core/CarouselSettingsContainer';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { SwatchesPicker } from 'react-color';
@@ -100,6 +101,7 @@ export default class MessageSettings extends Component<any, any> {
               return <p>ERROR LOADING MESSAGE SETTINGS!</p>
             } else {
               const marqueeData = data.MarqueeInfos[0];
+              const carouselData = data.CarouselInfos;
               return (
                 <div>
                   <MarqueeContainer settings={marqueeData}/>
@@ -144,6 +146,7 @@ export default class MessageSettings extends Component<any, any> {
                   </table>
                   <br/>
                   <div className={carousel}>
+                    <CarouselSettingsContainer settings={carouselData}/>
                     <CarouselContainer className={carousel}/>
                   </div>
                   <br/>
