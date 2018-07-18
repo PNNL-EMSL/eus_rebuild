@@ -124,6 +124,7 @@ class App extends React.Component<any, any> {
     // Page Renderers
     this.renderLogin = this.renderLogin.bind(this);
     this.renderHomePage = this.renderHomePage.bind(this);
+    this.renderMessageSettings = this.renderMessageSettings.bind(this);
 
     // Action handlers
     this.logoutHandler = this.logoutHandler.bind(this);
@@ -158,6 +159,10 @@ class App extends React.Component<any, any> {
     // } else {
       return (<UserHome navStyle={this.state.navMenuType} {...this.props}/>);
     // }
+  }
+  
+  renderMessageSettings() {
+    return (<MessageSettings {...this.props}/>);
   }
 
   // updateStateFromCache(data) {
@@ -214,7 +219,7 @@ class App extends React.Component<any, any> {
             <Route exact path="/training" component={Training} />
             <Route exact path="/scheduleExperiments" component={ScheduleExperiments} />
             <Route exact path="/getData" component={GetData} />
-            <Route exact path="/messageSystem" component={MessageSettings} />
+            <Route exact path="/messageSystem" component={this.renderMessageSettings} />
           </Switch>
         </div>
         <div className={footer}>

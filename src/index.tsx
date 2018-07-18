@@ -17,6 +17,8 @@ const apolloCache = new InMemoryCache({
     switch (object.__typename) {
       case 'foo': return object.key; // use `key` as the primary key
       case 'bar': return `bar:${object.blah}`; // use `bar` prefix and `blah` as the primary key
+      case 'MarqueeInfoItem': return object.id;
+      case 'CarouselInfos': return object.id;
       default: return defaultDataIdFromObject(object); // fall back to default handling
     }
   }
@@ -30,11 +32,12 @@ const clientState = {
     MarqueeInfos: [{
       id: 1,
       text: 'Place Content Here!',
-      color: '000000',
+      color: '#000000',
+      background: '#FFFFFF',
       display: true,
       __typename: 'MarqueeInfoItem',
     }],
-    CarouselInfos: [],
+    CarouselInfos: [],  
     isLoggedIn: false,
     navStyle: 'tiles',
     userName: '',
@@ -63,16 +66,6 @@ const client = new ApolloClient({
   cache: apolloCache,
   clientState
 });
-
-// const loggedIn = client.readQuery({
-//   query: gql`
-//     {
-//       isLoggedIn
-//     }
-//   `,
-// });
-
-// console.log('client cache', loggedIn.isLoggedIn);
 
 // This is the starting point to the react application.  It will 
 // render the App component into the <div id="root"></div> element
