@@ -17,7 +17,7 @@ export default class TileContainer extends Component<any, any> {
     {id: 1, size:"small", text: 'Training', img: "far fa-list-alt fa-3x", path: '/training'},
     {id: 3, size:"small", text: 'Schedule Experiments', img: "far fa-calendar-alt fa-3x", path: '/scheduleExperiments'},
     {id: 4, size:"small", text: 'User Information', img: "fas fa-user-tie fa-3x", path: '/userInfo'},
-    {id: 4, size:"small", text: 'Messaging System', img: "far fa-comment-alt fa-3x", path: '/messageSystem'},
+    {id: 6, size:"small", text: 'Messaging System', img: "far fa-comment-alt fa-3x", path: '/messageSystem'},
   ];
 
   constructor(props: any) {
@@ -36,7 +36,7 @@ export default class TileContainer extends Component<any, any> {
       rowContent.push(
         <NavigationTile
           id={item.id}
-          key={key}
+          key={item.id}
           text={item.text}
           img={item.img}
           path={item.path}
