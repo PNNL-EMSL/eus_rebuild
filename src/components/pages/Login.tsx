@@ -24,6 +24,10 @@ const loginContainer: string = css`
   float: left;
 `;
 
+const warning: string = css`
+  color: red;
+`;
+
 const validUsers = {
   admin: { 
     userName: 'admin',
@@ -56,6 +60,7 @@ export default class Login extends Component<any, any> {
     this.updateUN = this.updateUN.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
     this.submitFunction = this.submitFunction.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.doLogin = this.doLogin.bind(this);
   }
 
@@ -65,6 +70,12 @@ export default class Login extends Component<any, any> {
       return false;
     }
     return true;
+  }
+
+  handleKeyPress(e) {
+    if(e.keyCode === 13) {
+      this.submitFunction();
+    }
   }
   
   doLogin(client, history) {
@@ -98,8 +109,8 @@ export default class Login extends Component<any, any> {
   errorDisplay() {
     if(this.state.displayError) {
       return (
-        <p>
-          Invalid login credentials. Please validate your credentials and try again.
+        <p className={warning}>
+          Invalid login credentials. Please validate and try again.
         </p>
       );
     }
@@ -117,12 +128,12 @@ export default class Login extends Component<any, any> {
           <div className={container}>
             <div>
               PNNL Network ID:
-              <input name='userName' type="text" onChange={this.updateUN}/>
+              <input name='userName' type="text" onChange={this.updateUN} onKeyUp={this.handleKeyPress}/>
             </div>
             <br />
             <div>
               PNNL Password:
-              <input name='pass' type="password" onChange={this.updatePassword}/>
+              <input name='pass' type="password" onChange={this.updatePassword} onKeyUp={this.handleKeyPress}/>
             </div>
             <div>
               <button className={submitButton} onClick={this.submitFunction}>Log In</button>
