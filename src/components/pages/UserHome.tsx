@@ -42,7 +42,9 @@ export default class UserHome extends Component<any, any> {
 
   GET_USER_ROLE = gql`
     {
-      role @client
+      CurrentUser @client {
+        roleLevel
+      }
     }
   `;
 
@@ -79,7 +81,7 @@ export default class UserHome extends Component<any, any> {
 
   renderTile() {
     const query = this.GET_USER_ROLE;
-    const role = this.props.client.readQuery({query}).role;
+    const role = this.props.client.readQuery({query}).CurrentUser[0].roleLevel;
     return (
       <div>
         <TileContainer role={role} {...this.props}/>
@@ -102,6 +104,7 @@ export default class UserHome extends Component<any, any> {
                 </div>
               )
             } else {
+              console.log('marquee data', data);
               const marqueeData = data.MarqueeInfos[0];
               return (
                 <div>
