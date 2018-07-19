@@ -15,10 +15,12 @@ import Proposals from 'components/pages/Proposals';
 import Publications from 'components/pages/Publications';
 import UserInfo from 'components/pages/UserInfo';
 import Training from 'components/pages/Training';
-import ScheduleExperiments from 'components/pages/ScheduleExperiments'
+import ScheduleExperiments from 'components/pages/ScheduleExperiments';
 import GetData from 'components/pages/GetData';
 import UserHome from 'components/pages/UserHome';
-import MessageSettings from 'components/pages/MessageSettings'
+import MessageSettings from 'components/pages/MessageSettings';
+import AccessError from 'components/pages/AccessError';
+import UserAdmin from 'components/pages/UserAdmin';
 import NavMenu from 'components/core/NavMenu';
 
 import logo from 'images/emsl_logo_notag.jpg';
@@ -120,7 +122,8 @@ class App extends React.Component<any, any> {
   // Slim query used for checking that the user is logged in, and redirecting if not.
   GET_USER_LOGGED_IN = gql`
     {
-      isLoggedIn @client
+      isLoggedIn @client,
+      role @client
     }
   `;
   
@@ -133,10 +136,18 @@ class App extends React.Component<any, any> {
     // Page Renderers
     this.renderLogin = this.renderLogin.bind(this);
     this.renderHomePage = this.renderHomePage.bind(this);
+    this.renderProposals = this.renderProposals.bind(this);
+    this.renderPublications = this.renderPublications.bind(this);
+    this.renderUserInfo = this.renderUserInfo.bind(this);
+    this.renderTraining = this.renderTraining.bind(this);
+    this.renderExperiments = this.renderExperiments.bind(this);
+    this.renderGetData = this.renderGetData.bind(this);
     this.renderMessageSettings = this.renderMessageSettings.bind(this);
+    this.renderUserAdmin = this.renderUserAdmin.bind(this);
 
     // Redirection functions
     this.redirectToLogin = this.redirectToLogin.bind(this);
+    this.redirectToAccessError = this.redirectToAccessError.bind(this);
 
     // Action handlers
     this.logoutHandler = this.logoutHandler.bind(this);
@@ -145,36 +156,80 @@ class App extends React.Component<any, any> {
     this.userIsLoggedIn = this.userIsLoggedIn.bind(this);
   }
 
-
-  renderLogin() {
-    const loginHandler = () => (this.props.history.push('/home'));
-    return (<Login {...this.props} loginHandler={loginHandler}/>)
-  }
-
   logoutHandler() {
-    this.props.client.writeData({data: {isLoggedIn: false, userName: '', role: 'UNDEFINED'}});
+    this.props.client.writeData({data: {isLoggedIn: false, userName: '', role: -1}});
     return this.redirectToLogin();
   }
 
   navTypeHandler(styleTo) {
     this.props.client.writeData({ data: { navStyle: styleTo }});
   }
-  
+
+  /*************************
+   * Render pages section
+   *************************/
+
+  renderLogin() {
+    const loginHandler = () => (this.props.history.push('/home'));
+    return (<Login {...this.props} loginHandler={loginHandler}/>);
+  }
+
   renderHomePage() {
-    return this.userIsLoggedIn(<UserHome navStyle={this.state.navMenuType} {...this.props}/>)
+    return this.userIsLoggedIn(<UserHome navStyle={this.state.navMenuType} {...this.props}/>);
+  }
+
+  renderProposals() {
+    return this.userIsLoggedIn(<Proposals {...this.props}/>);
+  }
+
+  renderPublications() {
+    return this.userIsLoggedIn(<Publications {...this.props}/>);
+  }
+
+  renderUserInfo() {
+    return this.userIsLoggedIn(<UserInfo {...this.props}/>);
+  }
+
+  renderTraining() {
+    return this.userIsLoggedIn(<Training {...this.props}/>);
+  }
+
+  renderExperiments() {
+    return this.userIsLoggedIn(<ScheduleExperiments {...this.props}/>, 10);
+  }
+
+  renderGetData() {
+    return this.userIsLoggedIn(<GetData {...this.props}/>)
   }
   
   renderMessageSettings() {
-    return this.userIsLoggedIn(<MessageSettings {...this.props}/>);
+    return this.userIsLoggedIn(<MessageSettings {...this.props}/>, 999);
   }
 
-  userIsLoggedIn(html) {
+  renderUserAdmin() {
+    return this.userIsLoggedIn(<UserAdmin {...this.props} />, 999);
+  }
+
+  userIsLoggedIn(html, role=0) {
     const query = this.GET_USER_LOGGED_IN;
-    return this.props.client.readQuery({query}).isLoggedIn ? html : this.redirectToLogin();
+    const data = this.props.client.readQuery({query});
+    if(!data.isLoggedIn) {
+      return this.redirectToLogin();
+    } else if(data.role < role) {
+      // Display access denied
+      return this.redirectToAccessError();
+    } else {
+      return html;
+    }
   }
 
   redirectToLogin() {
     this.props.history.push('/login');
+    return null;
+  }
+
+  redirectToAccessError() {
+    this.props.history.push('/accessError');
     return null;
   }
 
@@ -217,16 +272,18 @@ class App extends React.Component<any, any> {
         </Query>
         <div className={content}>
           <Switch>
-            <Route exact path="/" render={this.renderHomePage} />
-            <Route exact path="/home" render={this.renderHomePage}/>
-            <Route exact path="/login" render={this.renderLogin}/>
-            <Route exact path="/proposals" component={Proposals} />
-            <Route exact path="/publications" component={Publications} />
-            <Route exact path="/userInfo" component={UserInfo} />
-            <Route exact path="/training" component={Training} />
-            <Route exact path="/scheduleExperiments" component={ScheduleExperiments} />
-            <Route exact path="/getData" component={GetData} />
+            <Route exact path="/" component={this.renderHomePage} />
+            <Route exact path="/home" component={this.renderHomePage}/>
+            <Route exact path="/login" component={this.renderLogin}/>
+            <Route exact path="/proposals" component={this.renderProposals} />
+            <Route exact path="/publications" component={this.renderPublications} />
+            <Route exact path="/userInfo" component={this.renderUserInfo} />
+            <Route exact path="/training" component={this.renderTraining} />
+            <Route exact path="/scheduleExperiments" component={this.renderExperiments} />
+            <Route exact path="/getData" component={this.renderGetData} />
             <Route exact path="/messageSystem" component={this.renderMessageSettings} />
+            <Route exact path="/userAdmin" component={this.renderUserAdmin} />
+            <Route exact path="/accessError" component={AccessError} />
           </Switch>
         </div>
         <div className={footer}>

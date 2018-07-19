@@ -32,17 +32,17 @@ const validUsers = {
   admin: { 
     userName: 'admin',
     password: 'admin',
-    role: 'admin'
+    roleLevel: 999
   },
   guest: {
     userName: 'guest',
     password: 'password',
-    role: 'guest'
+    roleLevel: 1
   },
   user: {
     userName: 'user',
     password: 'password',
-    role: 'user'
+    roleLevel: 10
   }
 };
 
@@ -84,9 +84,7 @@ export default class Login extends Component<any, any> {
     const userName = this.state.userName;
     const password = this.state.password;
     if(validUsers[userName] !== undefined && validUsers[userName].password === password) {
-    // if(this.state.userName === goodUN && this.state.password === goodPass) {
-      client.writeData({ data: { isLoggedIn: true, userName, role: validUsers[userName].role }});
-      console.log(client);
+      client.writeData({ data: { isLoggedIn: true, userName, role: validUsers[userName].roleLevel }});
       this.props.loginHandler(this.state.userName, history);
     } else {
       this.setState({loginAttempted: true, displayError: true});
@@ -94,15 +92,14 @@ export default class Login extends Component<any, any> {
   }
 
   updateUN(e) {
-    // console.log('updating userName state');
     this.setState({userName: e.target.value});
   }
+
   updatePassword(e) {
     this.setState({password: e.target.value});
   }
 
   submitFunction() {
-    // e.preventDefault();
     this.doLogin(this.props.client, this.props.history)
   }
 

@@ -50,9 +50,7 @@ export default class MessageSettings extends Component<any, any> {
   constructor(props) {
     super(props);
 
-    // Update the state with the information from graphql server
-    console.log('calling constructor');
-
+    // Update handlers
     this.updateMarqueeSettings = this.updateMarqueeSettings.bind(this);
     this.updateMarqueeText = this.updateMarqueeText.bind(this);
     this.updateMarqueeDisplay = this.updateMarqueeDisplay.bind(this);

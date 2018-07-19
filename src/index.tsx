@@ -24,7 +24,6 @@ const apolloCache = new InMemoryCache({
   }
 });
 
-console.log('re calling index.tsx');
 // This defines default values and resolvers for any local client variables that are not passed through
 // to the server.
 const clientState = {
@@ -56,7 +55,7 @@ const clientState = {
     isLoggedIn: false,
     navStyle: 'tiles',
     userName: 'admin',
-    role: 'admin',
+    role: 999,
     marqueeText: 'Place Content Here!',
     marqueeDisplaying: true,
     marqueeColor: '000000',
