@@ -52,7 +52,7 @@ const carouselInfos = [
     id: 2,
     text: 'Second carousel item',
     imgUrl: 'https://www.catster.com/wp-content/uploads/2017/12/A-gray-kitten-meowing.jpg',
-    order: 1,
+    order: 2,
     display: true,
     __typename: 'CarouselInfoItem',
   }

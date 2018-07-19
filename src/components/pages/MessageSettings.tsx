@@ -145,7 +145,7 @@ export default class MessageSettings extends Component<any, any> {
                   <br/>
                   <div className={carousel}>
                     <CarouselSettingsContainer settings={carouselData}/>
-                    <CarouselContainer className={carousel}/>
+                    <CarouselContainer className={carousel} settings={carouselData}/>
                   </div>
                   <br/>
                 </div>

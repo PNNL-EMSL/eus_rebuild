@@ -1,6 +1,6 @@
 import React, { Component} from 'react';
-import logo from 'images/emsl_logo_notag.jpg';
 import { Carousel } from 'react-responsive-carousel';
+import CarouselItem from 'components/core/CarouselItem';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 export default class CarouselContainer extends Component<any, any> {
@@ -9,6 +9,12 @@ export default class CarouselContainer extends Component<any, any> {
     }
     
     render() {
+      const content:JSX.Element[] = [];
+      this.props.settings.filter((item) => (item.display)).sort((a,b) => (a.order - b.order)).forEach((item) => {
+        if(item.display) {
+          content.push(<CarouselItem src={item.imgUrl} text={item.text} />);
+        }
+      });
         return (
             <div>
                 <div>
@@ -18,18 +24,7 @@ export default class CarouselContainer extends Component<any, any> {
                       infiniteLoop={true}
                       showStatus={false}
                     >
-                    <div>
-                        <img src={logo}/>
-                        <p>LARGE LEGEND WHICH WE CAN SEE OVER THE BUTTON THUMB THING!!!! Legend</p>
-                    </div>
-                    <div>
-                        <img src={logo}/>
-                        <p>Legend 2</p>
-                    </div>
-                    <div>
-                        <img src={logo}/>
-                        <p>Legend 3</p>
-                    </div>
+                      {content}
                     </Carousel>
                 </div>
             </div>
