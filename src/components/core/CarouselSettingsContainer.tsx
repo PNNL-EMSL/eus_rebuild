@@ -19,6 +19,7 @@ export default class CarouselSettingsContainer extends Component<any, any> {
             content.push(
                 <div>
                     {info.text}
+                    {info.imgUrl}
                 </div >
             )
         })
