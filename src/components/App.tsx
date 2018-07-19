@@ -107,6 +107,7 @@ class App extends React.Component<any, any> {
     location: PropTypes.object.isRequired
   };
 
+  // Query to get the necessary information about the logged in user.
   GET_HEADER_INFORMATION = gql`
     {
       isLoggedIn @client,
@@ -116,6 +117,7 @@ class App extends React.Component<any, any> {
     }
   `;
 
+  // Slim query used for checking that the user is logged in, and redirecting if not.
   GET_USER_LOGGED_IN = gql`
     {
       isLoggedIn @client
@@ -125,7 +127,6 @@ class App extends React.Component<any, any> {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: false,
       navMenuType: 'tiles'
     };
 
@@ -135,31 +136,24 @@ class App extends React.Component<any, any> {
     this.renderMessageSettings = this.renderMessageSettings.bind(this);
 
     // Redirection functions
-    this.redirectFromIndex = this.redirectFromIndex.bind(this);
     this.redirectToLogin = this.redirectToLogin.bind(this);
 
     // Action handlers
     this.logoutHandler = this.logoutHandler.bind(this);
-    this.loginHandler = this.loginHandler.bind(this);
     this.navTypeHandler = this.navTypeHandler.bind(this);
 
     this.userIsLoggedIn = this.userIsLoggedIn.bind(this);
   }
 
 
-  loginHandler(userName) {
-    this.setState({loggedIn: true, navMenuType: 'tabs', userName});
-    this.props.history.push('/home');
-  }
-
   renderLogin() {
-    const loginHandler = this.loginHandler;
+    const loginHandler = () => (this.props.history.push('/home'));
     return (<Login {...this.props} loginHandler={loginHandler}/>)
   }
 
   logoutHandler() {
     this.props.client.writeData({data: {isLoggedIn: false, userName: '', role: 'UNDEFINED'}});
-    this.redirectToLogin();
+    return this.redirectToLogin();
   }
 
   navTypeHandler(styleTo) {
@@ -167,30 +161,16 @@ class App extends React.Component<any, any> {
   }
   
   renderHomePage() {
-    if(!this.userIsLoggedIn()) {
-      return this.redirectToLogin();
-    } else {
-      return (<UserHome navStyle={this.state.navMenuType} {...this.props}/>);
-    }
+    return this.userIsLoggedIn(<UserHome navStyle={this.state.navMenuType} {...this.props}/>)
   }
   
   renderMessageSettings() {
-    return (<MessageSettings {...this.props}/>);
+    return this.userIsLoggedIn(<MessageSettings {...this.props}/>);
   }
 
-  userIsLoggedIn() {
+  userIsLoggedIn(html) {
     const query = this.GET_USER_LOGGED_IN;
-    return this.props.client.readQuery({query}).isLoggedIn;
-  }
-
-  redirectFromIndex() {
-    if(this.userIsLoggedIn) {
-      this.props.history.push('/home');
-    }
-    else {
-      this.redirectToLogin();
-    }
-    return null;
+    return this.props.client.readQuery({query}).isLoggedIn ? html : this.redirectToLogin();
   }
 
   redirectToLogin() {
@@ -237,7 +217,7 @@ class App extends React.Component<any, any> {
         </Query>
         <div className={content}>
           <Switch>
-            <Route exact path="/" render={this.redirectFromIndex} />
+            <Route exact path="/" render={this.renderHomePage} />
             <Route exact path="/home" render={this.renderHomePage}/>
             <Route exact path="/login" render={this.renderLogin}/>
             <Route exact path="/proposals" component={Proposals} />
