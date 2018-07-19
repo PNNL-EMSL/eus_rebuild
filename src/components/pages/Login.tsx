@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { css } from 'emotion';
+import gql from 'graphql-tag';
 
 const container: string = css`
     border-style: solid;
@@ -28,25 +29,17 @@ const warning: string = css`
   color: red;
 `;
 
-const validUsers = {
-  admin: { 
-    userName: 'admin',
-    password: 'admin',
-    roleLevel: 999
-  },
-  guest: {
-    userName: 'guest',
-    password: 'password',
-    roleLevel: 1
-  },
-  user: {
-    userName: 'user',
-    password: 'password',
-    roleLevel: 10
-  }
-};
-
 export default class Login extends Component<any, any> {
+
+  GET_USERS = gql`
+    {
+      Users @client {
+        userName
+        password
+        roleLevel
+      }
+    }
+  `;
 
   constructor(props) {
     super(props);
@@ -59,7 +52,6 @@ export default class Login extends Component<any, any> {
 
     this.updateUN = this.updateUN.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
-    this.submitFunction = this.submitFunction.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.doLogin = this.doLogin.bind(this);
   }
@@ -74,18 +66,29 @@ export default class Login extends Component<any, any> {
 
   handleKeyPress(e) {
     if(e.keyCode === 13) {
-      this.submitFunction();
+      this.doLogin();
     }
   }
   
-  doLogin(client, history) {
-    // do my logic
-    // if passing
+  doLogin() {
     const userName = this.state.userName;
     const password = this.state.password;
-    if(validUsers[userName] !== undefined && validUsers[userName].password === password) {
-      client.writeData({ data: { isLoggedIn: true, userName, role: validUsers[userName].roleLevel }});
-      this.props.loginHandler(this.state.userName, history);
+    const query = this.GET_USERS;
+    const users = this.props.client.readQuery({query}).Users;
+    let user;
+    console.log(users);
+    users.forEach((item) => {
+      if(item.userName === userName && item.password === password) {
+        user = {
+          userName: item.userName,
+          roleLevel: item.roleLevel,
+          __typename: 'CurrentUser'
+        };
+      }
+    });
+    if(user !== undefined) {
+      this.props.client.writeData({ data: {CurrentUser: [user]}});
+      this.props.history.push('/home')
     } else {
       this.setState({loginAttempted: true, displayError: true});
     }
@@ -97,10 +100,6 @@ export default class Login extends Component<any, any> {
 
   updatePassword(e) {
     this.setState({password: e.target.value});
-  }
-
-  submitFunction() {
-    this.doLogin(this.props.client, this.props.history)
   }
 
   errorDisplay() {
@@ -133,7 +132,7 @@ export default class Login extends Component<any, any> {
               <input name='pass' type="password" onChange={this.updatePassword} onKeyUp={this.handleKeyPress}/>
             </div>
             <div>
-              <button className={submitButton} onClick={this.submitFunction}>Log In</button>
+              <button className={submitButton} onClick={this.doLogin}>Log In</button>
             </div>
 
           </div>

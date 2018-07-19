@@ -17,6 +17,7 @@ export default class TileContainer extends Component<any, any> {
     {id: 3, size:"small", visibleBy:10, text: 'Schedule Experiments', img: "far fa-calendar-alt fa-3x", path: '/scheduleExperiments'},
     {id: 4, size:"small", visibleBy:1, text: 'User Information', img: "fas fa-user-tie fa-3x", path: '/userInfo'},
     {id: 6, size:"small", visibleBy:999, text: 'Messaging System', img: "far fa-comment-alt fa-3x", path: '/messageSystem'},
+    {id: 7, size:"small", visibleBy:999, text: 'Messaging System', img: "fas fa-users-cog fa-3x", path: '/userAdmin'},
   ];
 
   constructor(props: any) {

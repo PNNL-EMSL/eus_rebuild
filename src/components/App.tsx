@@ -112,9 +112,10 @@ class App extends React.Component<any, any> {
   // Query to get the necessary information about the logged in user.
   GET_HEADER_INFORMATION = gql`
     {
-      isLoggedIn @client,
-      userName @client,
-      role @client,
+      CurrentUser @client {
+        userName,
+        roleLevel
+      }
       navStyle @client
     }
   `;
@@ -122,8 +123,10 @@ class App extends React.Component<any, any> {
   // Slim query used for checking that the user is logged in, and redirecting if not.
   GET_USER_LOGGED_IN = gql`
     {
-      isLoggedIn @client,
-      role @client
+      CurrentUser @client {
+        userName,
+        roleLevel
+      }
     }
   `;
   
@@ -157,7 +160,7 @@ class App extends React.Component<any, any> {
   }
 
   logoutHandler() {
-    this.props.client.writeData({data: {isLoggedIn: false, userName: '', role: -1}});
+    this.props.client.writeData({data: {CurrentUser: []}});
     return this.redirectToLogin();
   }
 
@@ -170,8 +173,7 @@ class App extends React.Component<any, any> {
    *************************/
 
   renderLogin() {
-    const loginHandler = () => (this.props.history.push('/home'));
-    return (<Login {...this.props} loginHandler={loginHandler}/>);
+    return (<Login {...this.props} />);
   }
 
   renderHomePage() {
@@ -212,10 +214,10 @@ class App extends React.Component<any, any> {
 
   userIsLoggedIn(html, role=0) {
     const query = this.GET_USER_LOGGED_IN;
-    const data = this.props.client.readQuery({query});
-    if(!data.isLoggedIn) {
+    const data = this.props.client.readQuery({query}).CurrentUser;
+    if(data.length === 0) {
       return this.redirectToLogin();
-    } else if(data.role < role) {
+    } else if(data[0].roleLevel < role) {
       // Display access denied
       return this.redirectToAccessError();
     } else {
@@ -251,9 +253,9 @@ class App extends React.Component<any, any> {
                      <Logo src={logo} alt="logo"/>
                     <div className={title}>EMSL User Portal</div>
                     {
-                      data.isLoggedIn ? (
+                      data.CurrentUser.length !== 0 ? (
                         <div className={logout}>
-                          <div>Welcome {data.userName}</div>
+                          <div>Welcome {data.CurrentUser[0].userName}</div>
                           <div onClick={this.logoutHandler}>Sign out</div>
                         </div>
                       ) : (<div />)

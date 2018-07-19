@@ -1,11 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import {BrowserRouter} from 'react-router-dom';
 import ApolloClient from 'apollo-boost';
-import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory';
-// import gql from "graphql-tag";
+import {InMemoryCache, defaultDataIdFromObject} from 'apollo-cache-inmemory';
 
-import { ApolloProvider } from 'react-apollo';
+import {ApolloProvider} from 'react-apollo';
 
 import App from 'components/App';
 import registerServiceWorker from 'services/registerServiceWorker';
@@ -13,62 +12,107 @@ import registerServiceWorker from 'services/registerServiceWorker';
 const apolloCache = new InMemoryCache({
   // This method is how you can provide a unique identifier for each object stored in the cache
   // (we need this since all objects are normalized into maps, so we need an id for the key)
-  dataIdFromObject: (object: any) => {
+  dataIdFromObject: (object:any) => {
     switch (object.__typename) {
-      case 'foo': return object.key; // use `key` as the primary key
-      case 'bar': return `bar:${object.blah}`; // use `bar` prefix and `blah` as the primary key
-      case 'MarqueeInfoItem': return object.id;
-      case 'CarouselInfos': return object.id;
-      default: return defaultDataIdFromObject(object); // fall back to default handling
+      case 'foo':
+        return object.key; // use `key` as the primary key
+      case 'bar':
+        return `bar:${object.blah}`; // use `bar` prefix and `blah` as the primary key
+      case 'MarqueeInfoItem':
+        return `marquee:${object.id}`;
+      case 'CarouselInfoItem':
+        return `carousel:${object.id}`;
+      case 'User':
+        return object.userName;
+      default:
+        return defaultDataIdFromObject(object); // fall back to default handling
     }
   }
 });
+
+const marqueeInfo = {
+  id: 1,
+  text: 'Place Content Here!',
+  color: '#000000',
+  background: '#FFFFFF',
+  display: true,
+  __typename: 'MarqueeInfoItem',
+};
+
+const carouselInfos = [
+  {
+    id: 1,
+    text: 'First carousel item',
+    imgUrl: 'http://cdn2-www.dogtime.com/assets/uploads/2010/12/puppies.jpg',
+    order: 1,
+    display: true,
+    __typename: 'CarouselInfoItem',
+  },
+  {
+    id: 2,
+    text: 'Second carousel item',
+    imgUrl: 'https://www.catster.com/wp-content/uploads/2017/12/A-gray-kitten-meowing.jpg',
+    order: 1,
+    display: true,
+    __typename: 'CarouselInfoItem',
+  }
+];
+
+const users = [
+  {
+    userName: 'superadmin',
+    password: 'admin',
+    email: 'admin@test.com',
+    roleLevel: 999,
+    __typename: 'User',
+  },
+  {
+    userName: 'admin',
+    password: 'admin',
+    email: 'admin@test.com',
+    roleLevel: 999,
+    __typename: 'User',
+  },
+  {
+    userName: 'guest',
+    password: 'password',
+    email: 'guest@outside.net',
+    roleLevel: 1,
+    __typename: 'User',
+  },
+  {
+    userName: 'user',
+    password: 'password',
+    email: 'user@registered.gov',
+    roleLevel: 10,
+    __typename: 'User',
+  }
+];
+
+const adminUser = {
+  userName: 'admin',
+  roleLevel: 999,
+  __typename: 'CurrentUser'
+}
 
 // This defines default values and resolvers for any local client variables that are not passed through
 // to the server.
 const clientState = {
   defaults: {
-    MarqueeInfos: [{
-      id: 1,
-      text: 'Place Content Here!',
-      color: '#000000',
-      background: '#FFFFFF',
-      display: true,
-      __typename: 'MarqueeInfoItem',
-    }],
-    CarouselInfos: [{
-      id: 1,
-      text: 'First carousel item',
-      imgUrl: 'www.google.com',
-      order: 1,
-      display: true,
-      __typename: 'CarouselInfoItem',
-    },
-      {
-        id: 2,
-        text: 'Second carousel item',
-        imgUrl: 'www.google.com',
-        order: 1,
-        display: true,
-        __typename: 'CarouselInfoItem',
-      }],
-    isLoggedIn: false,
+    MarqueeInfos: [marqueeInfo],
+    CarouselInfos: carouselInfos,
+    Users: users,
     navStyle: 'tiles',
-    userName: 'admin',
-    role: 999,
-    marqueeText: 'Place Content Here!',
-    marqueeDisplaying: true,
-    marqueeColor: '000000',
-    carouselInfo: 'ice cream',
+    CurrentUser: [adminUser],
   },
   resolvers: {
     Mutation: {
-      updateLoginStatus: (_, { loggedIn, userName }, { cache }) => {
-        cache.writeData({ data: { isLoggedIn: loggedIn, userName }});
+      updateLoginStatus: (_, {loggedIn, userName}, {cache}) => {
+        cache.writeData({data: {isLoggedIn: loggedIn, userName}});
         return null;
       },
-      updateNavType: (_, {navStyle}, { cache }) => {
-        cache.writeData({ data: { navStyle }});
+      updateNavType: (_, {navStyle}, {cache}) => {
+        cache.writeData({data: {navStyle}});
         return null;
       }
     }
@@ -89,7 +133,7 @@ const client = new ApolloClient({
 ReactDOM.render(
   <BrowserRouter>
     <ApolloProvider client={client}>
-      <App client={client} />
+      <App client={client}/>
     </ApolloProvider>
   </BrowserRouter>,
   document.getElementById('root') as HTMLElement
