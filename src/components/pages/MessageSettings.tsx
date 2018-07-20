@@ -50,7 +50,9 @@ export default class MessageSettings extends Component<any, any> {
   constructor(props) {
     super(props);
 
-    // Update handlers
+    // Update the state with the information from graphql server
+    console.log('calling constructor');
+
     this.updateMarqueeSettings = this.updateMarqueeSettings.bind(this);
     this.updateMarqueeText = this.updateMarqueeText.bind(this);
     this.updateMarqueeDisplay = this.updateMarqueeDisplay.bind(this);
@@ -100,6 +102,7 @@ export default class MessageSettings extends Component<any, any> {
             } else {
               const marqueeData = data.MarqueeInfos[0];
               const carouselData = data.CarouselInfos;
+              
               return (
                 <div>
                   <MarqueeContainer settings={marqueeData}/>
@@ -143,9 +146,9 @@ export default class MessageSettings extends Component<any, any> {
                     </tbody>
                   </table>
                   <br/>
-                  <div className={carousel}>
-                    <CarouselSettingsContainer settings={carouselData}/>
-                    <CarouselContainer className={carousel} settings={carouselData}/>
+                  <div>
+                    <CarouselSettingsContainer settings={carouselData} {...this.props}/>
+                    <CarouselContainer settings={carouselData} className={carousel}/>
                   </div>
                   <br/>
                 </div>
