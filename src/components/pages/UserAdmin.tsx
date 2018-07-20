@@ -29,30 +29,6 @@ const table: string = css`
   }
 `;
 
-// const userName: string = css`
-//   width: 15%;
-//   text-align: center;
-//  
-// `;
-//
-// const email: string = css`
-//   width: 16%;
-//   text-align: center;
-//  
-// `;
-//
-// const role: string = css`
-//   width: 17%;
-//   text-align: center;
-//  
-// `;
-//
-// const submission: string = css`
-//   width: 18%;
-//   text-align: center;
-//  
-// `;
-
 export default class UserAdmin extends Component<any, any> {
 
   GET_USERS = gql`
@@ -75,19 +51,10 @@ export default class UserAdmin extends Component<any, any> {
     };
 
     this.returnHandler = this.returnHandler.bind(this);
-    this.submitChanges = this.submitChanges.bind(this);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return false;
   }
 
   returnHandler() {
     this.props.history.push('/home');
-  }
-
-  submitChanges() {
-    // commit changes through gql query
   }
 
   render() {
@@ -114,6 +81,7 @@ export default class UserAdmin extends Component<any, any> {
                 </div>
               );
             } else {
+              console.log('UserAdmin users', data);
               const users = data.Users;
               const currentUserName = data.CurrentUser[0].userName;
               const content:JSX.Element[] = [];
@@ -121,11 +89,13 @@ export default class UserAdmin extends Component<any, any> {
                 if(user.userName !== 'superadmin') {
                   content.push(
                     <UserAdminItem 
-                      id={user.userName} 
+                      id={user.userName}
+                      key={user.userName}
                       userName={user.userName} 
                       email={user.email} 
                       role={user.roleLevel}
                       disable={user.userName === currentUserName}
+                      {...this.props}
                     />
                   );
                 }
@@ -149,7 +119,9 @@ export default class UserAdmin extends Component<any, any> {
               return (
                 <div>
                   <table className={table}>
-                    {content}
+                    <tbody>
+                      {content}
+                    </tbody>
                   </table>
                 </div>
               );

@@ -43,7 +43,7 @@ const carouselInfos = [
   {
     id: 1,
     text: 'First carousel item',
-    imgUrl: 'http://cdn2-www.dogtime.com/assets/uploads/2010/12/puppies.jpg',
+    imgUrl: 'https://us-east-1.tchyn.io/snopes-production/uploads/2017/12/science-stock-image.png',
     order: 1,
     display: true,
     __typename: 'CarouselInfoItem',
@@ -51,7 +51,7 @@ const carouselInfos = [
   {
     id: 2,
     text: 'Second carousel item',
-    imgUrl: 'https://www.catster.com/wp-content/uploads/2017/12/A-gray-kitten-meowing.jpg',
+    imgUrl: 'https://www.thegreatcourses.com/media/catalog/product/cache/1/image/800x600/0f396e8a55728e79b48334e699243c07/1/3/1350---base_image_1.1474391708.jpg',
     order: 2,
     display: true,
     __typename: 'CarouselInfoItem',

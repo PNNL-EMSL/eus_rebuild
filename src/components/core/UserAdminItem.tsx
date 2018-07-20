@@ -1,8 +1,18 @@
 import React, {Component} from 'react';
-// import gql from 'graphql-tag';
+import gql from 'graphql-tag';
 
 export default class UserAdminItem extends Component<any, any> {
-  
+
+  GET_USER_BY_NAME = gql`
+    {
+      Users @client {
+        userName
+        email
+        roleLevel
+      }
+    }
+  `;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -31,9 +41,20 @@ export default class UserAdminItem extends Component<any, any> {
   }
 
   submitChanges(e) {
+    e.preventDefault();
     // commit changes through gql query
     // check if current user is the one getting updated
     // if so, we need to update the current user role also
+    const query = this.GET_USER_BY_NAME;
+    let users = this.props.client.readQuery({query}).Users;
+    const updating = users.filter((item) => (item.userName === this.state.userName))[0];
+    users = users.filter((item) => (item.userName !== this.state.userName));
+    updating.email = this.state.email;
+    updating.roleLevel = Number(this.state.role);
+    users.push(updating);
+    const data = {Users: users};
+    console.log(data, users);
+    this.props.client.writeData({data});
   }
   
   render() {
@@ -46,14 +67,14 @@ export default class UserAdminItem extends Component<any, any> {
           <input defaultValue={this.props.email} onChange={this.handleEmailChange} />
         </td>
         <td className="role">
-          <select disabled={this.props.disable}>
-            <option selected={this.props.role === 1} value="1">Guest</option>
-            <option selected={this.props.role === 10} value="10">User</option>
-            <option selected={this.props.role === 999} value="999">Administrator</option>
+          <select disabled={this.props.disable} defaultValue={this.props.role} onChange={this.handleRoleChange}>
+            <option value="1">Guest</option>
+            <option value="10">User</option>
+            <option value="999">Administrator</option>
           </select>
         </td>
         <td className="submission">
-          <button>Confirm Changes</button>
+          <button onClick={this.submitChanges}>Confirm Changes</button>
         </td>
       </tr>
     );
