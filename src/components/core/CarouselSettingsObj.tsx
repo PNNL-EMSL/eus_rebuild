@@ -20,6 +20,9 @@ export default class CarouselSettingsObj extends Component<any, any> {
         this.updateCarouselSettings = this.updateCarouselSettings.bind(this);
         this.updateCarouselText = this.updateCarouselText.bind(this);
         this.updateCarouselImgUrl = this.updateCarouselImgUrl.bind(this);
+        this.updateCarouselOrder = this.updateCarouselOrder.bind(this);
+        this.updateCarouselDisplay = this.updateCarouselDisplay.bind(this);
+        
     }
 
     updateCarouselText(e) {
@@ -37,16 +40,46 @@ export default class CarouselSettingsObj extends Component<any, any> {
         const instance = this;
         setTimeout(() => {
             if(!target.contains(document.activeElement)) {
-            instance.updateCarouselSettings('text', target.value);
+                instance.updateCarouselSettings('imgUrl', target.value);
             }
         }, 0);
     }
 
+    updateCarouselOrder(e) {
+        const target = e.currentTarget;
+        const instance = this;
+        setTimeout(() => {
+            if(target.contains(document.activeElement)) {
+                instance.updateCarouselSettings('order', target.value);
+            }
+        }, 0);
+    }
+
+    updateCarouselDisplay(e) {
+        const target = e.currentTarget;
+        const instance = this;
+        setTimeout(() => {
+            if(target.contains(document.activeElement)) {
+                instance.updateCarouselSettings('display', target.value);
+            }
+        })
+    }
+
     updateCarouselSettings(prop, value) {
         const query = this.GET_MESSAGE_INFORMATION;
-        const prev = this.props.client.readQuery({query}).CarouselInfos;
-        prev[prop] = value;
-        const data={CarouselInfos: [prev]};
+        let prev = this.props.client.readQuery({query}).CarouselInfos;
+        const changing = prev.filter((item) => (item.id === this.props.settings.id))[0];// the prev object with id = this.props.id.
+        console.log(changing);
+        // remove changing from prev
+        prev = prev.filter((item) => (item.id !== this.props.settings.id)); 
+        console.log(prev);
+        // update changing to the new values (in state)
+        changing[prop] = value;
+        // push changing BACK into previous
+        prev.push(changing);
+        prev = prev.sort((a, b) => (a.id > b.id));
+        console.log(prev);
+        const data={CarouselInfos: prev};
         this.props.client.writeData({data});
       }
 
