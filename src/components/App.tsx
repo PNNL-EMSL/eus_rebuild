@@ -6,22 +6,20 @@ import { withRouter, Switch, Route } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
-import ExternalStyleSheets from 'components/core/ExternalStyleSheets';
+import ExternalStyleSheets from 'components/shared/components//ExternalStyleSheets';
 
-import Login from 'components/pages/Login';
 import Proposals from 'components/portal/pages/Proposals';
 import Publications from 'components/portal/pages/Publications';
 import UserInfo from 'components/portal/pages/UserInfo';
 import Training from 'components/portal/pages/Training';
 import ScheduleExperiments from 'components/portal/pages/ScheduleExperiments';
 import GetData from 'components/portal/pages/GetData';
-// import UserHome from 'components/pages/UserHome';
 import PortalHome from 'components/portal/pages/PortalHome';
 import AdminHome from 'components/admin/pages/AdminHome';
 import MessageSettings from 'components/admin/pages/MessageSettings';
-import AccessError from 'components/pages/AccessError';
+import AccessError from 'components/shared/pages/AccessError';
 import UserAdmin from 'components/admin/pages/UserAdmin';
-import NavMenu from 'components/core/NavMenu';
+import NavMenu from 'components/shared/components/NavMenu';
 
 import logo from 'images/emsl_logo_notag.jpg';
 
@@ -137,7 +135,6 @@ class App extends React.Component<any, any> {
     };
 
     // Page Renderers
-    this.renderLogin = this.renderLogin.bind(this);
     this.renderPortalPage = this.renderPortalPage.bind(this);
     this.renderAdminPage = this.renderAdminPage.bind(this);
     this.renderProposals = this.renderProposals.bind(this);
@@ -149,20 +146,14 @@ class App extends React.Component<any, any> {
     this.renderMessageSettings = this.renderMessageSettings.bind(this);
     this.renderUserAdmin = this.renderUserAdmin.bind(this);
 
-    // Redirection functions
-    this.redirectToLogin = this.redirectToLogin.bind(this);
-    this.redirectToAccessError = this.redirectToAccessError.bind(this);
-
     // Action handlers
     this.logoutHandler = this.logoutHandler.bind(this);
     this.navTypeHandler = this.navTypeHandler.bind(this);
 
-    this.userIsLoggedIn = this.userIsLoggedIn.bind(this);
   }
 
   logoutHandler() {
     this.props.client.writeData({data: {CurrentUser: []}});
-    return this.redirectToLogin();
   }
 
   navTypeHandler(styleTo) {
@@ -173,70 +164,43 @@ class App extends React.Component<any, any> {
    * Render pages section
    *************************/
 
-  renderLogin() {
-    return (<Login {...this.props} />);
-  }
-
   renderPortalPage() {
-    return this.userIsLoggedIn(<PortalHome navStyle={this.state.navMenuType} {...this.props}/>);
+    return (<PortalHome navStyle={this.state.navMenuType} {...this.props}/>);
   }
   renderAdminPage() {
-    return this.userIsLoggedIn(<AdminHome navStyle={this.state.navMenuType} {...this.props}/>);
+    return (<AdminHome navStyle={this.state.navMenuType} {...this.props}/>);
   }
 
   renderProposals() {
-    return this.userIsLoggedIn(<Proposals {...this.props}/>);
+    return (<Proposals {...this.props}/>);
   }
 
   renderPublications() {
-    return this.userIsLoggedIn(<Publications {...this.props}/>);
+    return (<Publications {...this.props}/>);
   }
 
   renderUserInfo() {
-    return this.userIsLoggedIn(<UserInfo {...this.props}/>);
+    return (<UserInfo {...this.props}/>);
   }
 
   renderTraining() {
-    return this.userIsLoggedIn(<Training {...this.props}/>);
+    return (<Training {...this.props}/>);
   }
 
   renderExperiments() {
-    return this.userIsLoggedIn(<ScheduleExperiments {...this.props}/>, 10);
+    return (<ScheduleExperiments {...this.props}/>);
   }
 
   renderGetData() {
-    return this.userIsLoggedIn(<GetData {...this.props}/>)
+    return (<GetData {...this.props}/>)
   }
   
   renderMessageSettings() {
-    return this.userIsLoggedIn(<MessageSettings {...this.props}/>, 999);
+    return (<MessageSettings {...this.props}/>);
   }
 
   renderUserAdmin() {
-    return this.userIsLoggedIn(<UserAdmin {...this.props} />, 999);
-  }
-
-  userIsLoggedIn(html, role=0) {
-    const query = this.GET_USER_LOGGED_IN;
-    const data = this.props.client.readQuery({query}).CurrentUser;
-    if(data.length === 0) {
-      return this.redirectToLogin();
-    } else if(data[0].roleLevel < role) {
-      // Display access denied
-      return this.redirectToAccessError();
-    } else {
-      return html;
-    }
-  }
-
-  redirectToLogin() {
-    this.props.history.push('/login');
-    return null;
-  }
-
-  redirectToAccessError() {
-    this.props.history.push('/accessError');
-    return null;
+    return (<UserAdmin {...this.props} />);
   }
 
   createPortalRoutes() {

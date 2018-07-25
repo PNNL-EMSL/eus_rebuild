@@ -87,8 +87,10 @@ export default class Login extends Component<any, any> {
       }
     });
     if(user !== undefined) {
+      console.log('data written');
       this.props.client.writeData({ data: {CurrentUser: [user]}});
-      this.props.history.push('/home')
+      console.log('this.props.loginHandler', this.props.loginHandler);
+      this.props.loginHandler();
     } else {
       this.setState({loginAttempted: true, displayError: true});
     }
@@ -114,6 +116,7 @@ export default class Login extends Component<any, any> {
   }
 
   render() {
+    console.log('login re-render');
     return (
       <div className={loginContainer}>
         <p>

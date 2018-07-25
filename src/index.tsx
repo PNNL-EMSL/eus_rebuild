@@ -89,11 +89,11 @@ const users = [
   }
 ];
 
-const adminUser = {
-  userName: 'admin',
-  roleLevel: 999,
-  __typename: 'CurrentUser'
-}
+// const adminUser = {
+//   userName: 'admin',
+//   roleLevel: 999,
+//   __typename: 'CurrentUser'
+// }
 
 // This defines default values and resolvers for any local client variables that are not passed through
 // to the server.
@@ -103,7 +103,7 @@ const clientState = {
     CarouselInfos: carouselInfos,
     Users: users,
     navStyle: 'tiles',
-    CurrentUser: [adminUser],
+    CurrentUser: [],
   },
   resolvers: {
     Mutation: {

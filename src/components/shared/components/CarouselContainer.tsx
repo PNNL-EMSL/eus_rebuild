@@ -1,6 +1,6 @@
 import React, { Component} from 'react';
 import { Carousel } from 'react-responsive-carousel';
-import CarouselItem from 'components/core/CarouselItem';
+import CarouselItem from 'components/shared/components/CarouselItem';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 export default class CarouselContainer extends Component<any, any> {

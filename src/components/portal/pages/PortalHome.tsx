@@ -2,12 +2,10 @@ import React, {Component} from 'react';
 import {css} from 'emotion';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
-import TileContainer from 'components/core/TileContainer';
+import TileContainer from 'components/portal/components/PortalTileContainer';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import CarouselContainer from 'components/core/CarouselContainer';
-import MarqueeContainer from 'components/core/MarqueeContainer';
-// import ProposalsContainer from 'components/core/ProposalsContainer';
-
+import CarouselContainer from 'components/shared/components/CarouselContainer';
+import MarqueeContainer from 'components/shared/components/MarqueeContainer';
 
 const orcid:string = css`
   border-color: #7c93b5;
@@ -18,13 +16,6 @@ const orcid:string = css`
   min-height: 3em;
   float: left;
 `;
-
-// const proposalContent:string = css`
-//   width: 48%;
-//   float: right;
-//   padding: 4em 1em 1em;
-//   margin-top: 30px;
-// `;
 
 const newsDiv:string = css`
   width: 45%;

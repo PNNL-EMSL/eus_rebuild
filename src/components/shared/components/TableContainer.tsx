@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TableRow from 'components/core/TableRow';
+import TableRow from 'components/shared/components/TableRow';
 import { css } from 'emotion';
 
 const table: string = css`

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import CarouselContainer from 'components/core/CarouselContainer';
-import MarqueeContainer from 'components/core/MarqueeContainer';
+import CarouselContainer from 'components/shared/components/CarouselContainer';
+import MarqueeContainer from 'components/shared/components/MarqueeContainer';
 import CarouselSettingsContainer from 'components/admin/components/CarouselSettingsContainer';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';

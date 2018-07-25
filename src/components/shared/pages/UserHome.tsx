@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import {css} from 'emotion';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
-import TileContainer from 'components/core/TileContainer';
+import TileContainer from '../components/TileContainer';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import CarouselContainer from 'components/core/CarouselContainer';
-import MarqueeContainer from 'components/core/MarqueeContainer';
+import CarouselContainer from '../components/CarouselContainer';
+import MarqueeContainer from '../components/MarqueeContainer';
 // import ProposalsContainer from 'components/core/ProposalsContainer';
 
 

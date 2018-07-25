@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import TableContainer from 'components/core/TableContainer';
+import TableContainer from 'components/shared/components/TableContainer';
 import { css } from 'emotion';
 
 const proposalsHeader: string = css`
