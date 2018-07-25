@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 // import CarouselContainer from 'components/core/CarouselContainer';
 // import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import CarouselSettingsObj from './CarouselSettingsObj';
+import CarouselSettingsObj from 'components/admin/components/CarouselSettingsObj';
 // import { SwatchesPicker } from 'react-color';
 // import { css } from 'emotion';
 

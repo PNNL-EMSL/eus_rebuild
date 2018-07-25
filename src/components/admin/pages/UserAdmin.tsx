@@ -3,7 +3,7 @@ import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 import {css} from 'emotion';
 
-import UserAdminItem from 'components/core/UserAdminItem';
+import UserAdminItem from 'components/admin/components/UserAdminItem';
 
 const table: string = css`
 

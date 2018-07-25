@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import CarouselContainer from 'components/core/CarouselContainer';
 import MarqueeContainer from 'components/core/MarqueeContainer';
-import CarouselSettingsContainer from 'components/core/CarouselSettingsContainer';
+import CarouselSettingsContainer from 'components/admin/components/CarouselSettingsContainer';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { SwatchesPicker } from 'react-color';

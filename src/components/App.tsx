@@ -8,19 +8,19 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import ExternalStyleSheets from 'components/core/ExternalStyleSheets';
 
-// import { colorBlack, colorLightGreen, colorDarkGreen } from 'styles/base';
-
 import Login from 'components/pages/Login';
-import Proposals from 'components/pages/Proposals';
-import Publications from 'components/pages/Publications';
-import UserInfo from 'components/pages/UserInfo';
-import Training from 'components/pages/Training';
-import ScheduleExperiments from 'components/pages/ScheduleExperiments';
-import GetData from 'components/pages/GetData';
-import UserHome from 'components/pages/UserHome';
-import MessageSettings from 'components/pages/MessageSettings';
+import Proposals from 'components/portal/pages/Proposals';
+import Publications from 'components/portal/pages/Publications';
+import UserInfo from 'components/portal/pages/UserInfo';
+import Training from 'components/portal/pages/Training';
+import ScheduleExperiments from 'components/portal/pages/ScheduleExperiments';
+import GetData from 'components/portal/pages/GetData';
+// import UserHome from 'components/pages/UserHome';
+import PortalHome from 'components/portal/pages/PortalHome';
+import AdminHome from 'components/admin/pages/AdminHome';
+import MessageSettings from 'components/admin/pages/MessageSettings';
 import AccessError from 'components/pages/AccessError';
-import UserAdmin from 'components/pages/UserAdmin';
+import UserAdmin from 'components/admin/pages/UserAdmin';
 import NavMenu from 'components/core/NavMenu';
 
 import logo from 'images/emsl_logo_notag.jpg';
@@ -138,7 +138,8 @@ class App extends React.Component<any, any> {
 
     // Page Renderers
     this.renderLogin = this.renderLogin.bind(this);
-    this.renderHomePage = this.renderHomePage.bind(this);
+    this.renderPortalPage = this.renderPortalPage.bind(this);
+    this.renderAdminPage = this.renderAdminPage.bind(this);
     this.renderProposals = this.renderProposals.bind(this);
     this.renderPublications = this.renderPublications.bind(this);
     this.renderUserInfo = this.renderUserInfo.bind(this);
@@ -176,8 +177,11 @@ class App extends React.Component<any, any> {
     return (<Login {...this.props} />);
   }
 
-  renderHomePage() {
-    return this.userIsLoggedIn(<UserHome navStyle={this.state.navMenuType} {...this.props}/>);
+  renderPortalPage() {
+    return this.userIsLoggedIn(<PortalHome navStyle={this.state.navMenuType} {...this.props}/>);
+  }
+  renderAdminPage() {
+    return this.userIsLoggedIn(<AdminHome navStyle={this.state.navMenuType} {...this.props}/>);
   }
 
   renderProposals() {
@@ -235,7 +239,32 @@ class App extends React.Component<any, any> {
     return null;
   }
 
+  createPortalRoutes() {
+    return [
+      (<Route exact path="/" component={this.renderPortalPage} />),
+      (<Route exact path="/Portal" component={this.renderPortalPage} />),
+      (<Route exact path="/proposals" component={this.renderProposals} />),
+      (<Route exact path="/publications" component={this.renderPublications} />),
+      (<Route exact path="/userInfo" component={this.renderUserInfo} />),
+      (<Route exact path="/training" component={this.renderTraining} />),
+      (<Route exact path="/scheduleExperiments" component={this.renderExperiments} />),
+      (<Route exact path="/getData" component={this.renderGetData} />)
+    ];
+  }
+
+  createAdminRoutes() {
+    return [
+      (<Route exact path="/EUSAdmin" component={this.renderAdminPage} />),
+      (<Route exact path="/messageSystem" component={this.renderMessageSettings} />),
+      (<Route exact path="/userAdmin" component={this.renderUserAdmin} />),
+    ];
+  }
+
+
   public render() {
+    const portalRoutes = this.createPortalRoutes();
+    const adminRoutes = this.createAdminRoutes();
+
     return (
       <div className={app}>
         <ExternalStyleSheets />
@@ -274,17 +303,8 @@ class App extends React.Component<any, any> {
         </Query>
         <div className={content}>
           <Switch>
-            <Route exact path="/" component={this.renderHomePage} />
-            <Route exact path="/home" component={this.renderHomePage}/>
-            <Route exact path="/login" component={this.renderLogin}/>
-            <Route exact path="/proposals" component={this.renderProposals} />
-            <Route exact path="/publications" component={this.renderPublications} />
-            <Route exact path="/userInfo" component={this.renderUserInfo} />
-            <Route exact path="/training" component={this.renderTraining} />
-            <Route exact path="/scheduleExperiments" component={this.renderExperiments} />
-            <Route exact path="/getData" component={this.renderGetData} />
-            <Route exact path="/messageSystem" component={this.renderMessageSettings} />
-            <Route exact path="/userAdmin" component={this.renderUserAdmin} />
+            {portalRoutes}
+            {adminRoutes}
             <Route exact path="/accessError" component={AccessError} />
           </Switch>
         </div>
