@@ -61,13 +61,7 @@ export default class CarouselSettingsObj extends Component<any, any> {
     }
 
     updateCarouselDisplay(e) {
-        const target = e.currentTarget;
-        const instance = this;
-        setTimeout(() => {
-            if(target.contains(document.activeElement)) {
-                instance.updateCarouselSettings('display', target.value);
-            }
-        }, 0);
+        this.updateCarouselSettings('display', e.currentTarget.checked);
     }
 
     updateCarouselSettings(prop, value) {
@@ -105,6 +99,10 @@ export default class CarouselSettingsObj extends Component<any, any> {
                         <td> 
                             <img className={imagePreview} src={this.props.settings.imgUrl}/>    
                         </td>
+
+                        <td>
+                            <input name='carouselDisplay' type='checkbox' checked={this.props.settings.display} value={this.props.settings.display} onChange={this.updateCarouselDisplay}/>
+                        </td> 
 
                     </tr>
                 </tbody>
