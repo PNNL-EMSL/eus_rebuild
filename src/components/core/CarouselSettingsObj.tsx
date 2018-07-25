@@ -1,5 +1,10 @@
 import React, {Component} from 'react';
 import gql from 'graphql-tag';
+import {css } from 'emotion';
+
+const imagePreview: string = css`
+    height: 100px
+`;
 
 export default class CarouselSettingsObj extends Component<any, any> {
     GET_MESSAGE_INFORMATION = gql`
@@ -62,7 +67,7 @@ export default class CarouselSettingsObj extends Component<any, any> {
             if(target.contains(document.activeElement)) {
                 instance.updateCarouselSettings('display', target.value);
             }
-        })
+        }, 0);
     }
 
     updateCarouselSettings(prop, value) {
@@ -86,7 +91,7 @@ export default class CarouselSettingsObj extends Component<any, any> {
     render() {
         console.log("settings", this.props, this.props.settings);
         return(
-            <table>
+            <table >
                 <tbody>
                     <tr>
                         <td >
@@ -95,6 +100,10 @@ export default class CarouselSettingsObj extends Component<any, any> {
 
                         <td>
                             <input name='carouselImgUrl' type='text' defaultValue={this.props.settings.imgUrl} onBlur={this.updateCarouselImgUrl} />
+                        </td>
+
+                        <td> 
+                            <img className={imagePreview} src={this.props.settings.imgUrl}/>    
                         </td>
 
                     </tr>
