@@ -11,7 +11,6 @@ export default class AdminHome extends RestrictedPage {
     this.renderPage = this.renderPage.bind(this);
   }
 
-
   renderPage() {
     const query = this.GET_USER_ROLE;
     const role = this.props.client.readQuery({query}).CurrentUser[0].roleLevel;

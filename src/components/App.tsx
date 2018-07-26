@@ -165,42 +165,42 @@ class App extends React.Component<any, any> {
    *************************/
 
   renderPortalPage() {
-    return (<PortalHome navStyle={this.state.navMenuType} {...this.props}/>);
+    return (<PortalHome navStyle={this.state.navMenuType} {...this.props} restricted={true}/>);
   }
   renderAdminPage() {
-    return (<AdminHome navStyle={this.state.navMenuType} {...this.props} roleLevel={999}/>);
+    return (<AdminHome navStyle={this.state.navMenuType} {...this.props} restricted={true} roleLevel={999}/>);
   }
 
   renderProposals() {
-    return (<Proposals {...this.props}/>);
+    return (<Proposals {...this.props} restricted={true}/>);
   }
 
   renderPublications() {
-    return (<Publications {...this.props}/>);
+    return (<Publications {...this.props} restricted={true}/>);
   }
 
   renderUserInfo() {
-    return (<UserInfo {...this.props}/>);
+    return (<UserInfo {...this.props} restricted={true}/>);
   }
 
   renderTraining() {
-    return (<Training {...this.props}/>);
+    return (<Training {...this.props} restricted={true}/>);
   }
 
   renderExperiments() {
-    return (<ScheduleExperiments {...this.props}/>);
+    return (<ScheduleExperiments {...this.props} restricted={true}/>);
   }
 
   renderGetData() {
-    return (<GetData {...this.props}/>)
+    return (<GetData {...this.props} restricted={true}/>)
   }
   
   renderMessageSettings() {
-    return (<MessageSettings {...this.props}/>);
+    return (<MessageSettings {...this.props} restricted={true}/>);
   }
 
   renderUserAdmin() {
-    return (<UserAdmin {...this.props} />);
+    return (<UserAdmin {...this.props} restricted={true}/>);
   }
 
   createPortalRoutes() {

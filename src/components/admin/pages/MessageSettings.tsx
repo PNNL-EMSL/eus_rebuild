@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+import React from 'react';
+import RestrictedPage from 'components/shared/pages/RestrictedPage';
 import CarouselContainer from 'components/shared/components/CarouselContainer';
 import MarqueeContainer from 'components/shared/components/MarqueeContainer';
 import CarouselSettingsContainer from 'components/admin/components/CarouselSettingsContainer';
@@ -25,7 +26,7 @@ const carousel: string = css`
   width: 30%;
 `;
 
-export default class MessageSettings extends Component<any, any> {
+export default class MessageSettings extends RestrictedPage {
 
   GET_MESSAGE_INFORMATION = gql`
     {
@@ -51,7 +52,6 @@ export default class MessageSettings extends Component<any, any> {
     super(props);
 
     // Update the state with the information from graphql server
-    console.log('calling constructor');
 
     this.updateMarqueeSettings = this.updateMarqueeSettings.bind(this);
     this.updateMarqueeText = this.updateMarqueeText.bind(this);
@@ -90,7 +90,7 @@ export default class MessageSettings extends Component<any, any> {
     this.props.client.writeData({data});
   }
 
-  render() {
+  renderPage() {
     return (
       <div>
         <Query query={this.GET_MESSAGE_INFORMATION} >

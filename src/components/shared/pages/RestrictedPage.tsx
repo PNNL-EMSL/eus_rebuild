@@ -33,9 +33,17 @@ export default abstract class RestrictedPage extends Component<any, any> {
     this.state = {userLoggedIn: this.isUserLoggedIn()};
 
     this.doLogin = this.doLogin.bind(this);
-    this.renderLoginContent = this.renderLoginContent.bind(this);
-    this.renderAccessDenialContent = this.renderAccessDenialContent.bind(this);
+    this.renderRestrictionContent = this.renderRestrictionContent.bind(this);
+    this.passesPageRestriction = this.passesPageRestriction.bind(this);
     this.renderPage = this.renderPage.bind(this);
+    this.userHasAccess = this.userHasAccess.bind(this);
+  }
+
+  passesPageRestriction() {
+    if(this.props.restricted) {
+      return this.state.userLoggedIn && this.userHasAccess();
+    }
+    return true;
   }
 
   isUserLoggedIn() {
@@ -56,11 +64,10 @@ export default abstract class RestrictedPage extends Component<any, any> {
     this.setState({userLoggedIn: true});
   }
 
-  renderLoginContent() {
-    return (<Login {...this.props} loginHandler={this.doLogin} />);
-  }
-
-  renderAccessDenialContent() {
+  renderRestrictionContent() {
+    if(!this.state.userLoggedIn) {
+      return (<Login {...this.props} loginHandler={this.doLogin} />);
+    }
     return (<AccessError {...this.props} />);
   }
 
@@ -68,12 +75,11 @@ export default abstract class RestrictedPage extends Component<any, any> {
 
   render() {
     let content;
-    if(!this.state.userLoggedIn) {
-      content = this.renderLoginContent();
-    } else if (!this.userHasAccess()) {
-      content = this.renderAccessDenialContent();
-    } else {
+    console.log('restrictedPage state',this.state);
+    if(this.passesPageRestriction()) {
       content = this.renderPage();
+    } else {
+      content = this.renderRestrictionContent();
     }
     return (
       <div>

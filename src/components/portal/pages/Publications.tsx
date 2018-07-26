@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
+import RestrictedPage from 'components/shared/pages/RestrictedPage';
 
-export default class Publications extends Component {
-    render() {
+export default class Publications extends RestrictedPage {
+  renderPage() {
         return (
             <div> 
                 <h1><strong>Publications</strong></h1>

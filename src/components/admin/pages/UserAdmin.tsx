@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 import {css} from 'emotion';
 
+import RestrictedPage from 'components/shared/pages/RestrictedPage';
 import UserAdminItem from 'components/admin/components/UserAdminItem';
 
 const table: string = css`
@@ -29,7 +30,7 @@ const table: string = css`
   }
 `;
 
-export default class UserAdmin extends Component<any, any> {
+export default class UserAdmin extends RestrictedPage {
 
   GET_USERS = gql`
     {
@@ -46,18 +47,9 @@ export default class UserAdmin extends Component<any, any> {
 
   constructor(props) {
     super(props);
-    this.state = {
-      users: []
-    };
-
-    this.returnHandler = this.returnHandler.bind(this);
   }
 
-  returnHandler() {
-    this.props.history.push('/home');
-  }
-
-  render() {
+  renderPage() {
     return (
       <div>
         <h1>
@@ -81,7 +73,6 @@ export default class UserAdmin extends Component<any, any> {
                 </div>
               );
             } else {
-              console.log('UserAdmin users', data);
               const users = data.Users;
               const currentUserName = data.CurrentUser[0].userName;
               const content:JSX.Element[] = [];
