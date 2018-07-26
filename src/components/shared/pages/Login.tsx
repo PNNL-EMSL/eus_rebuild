@@ -76,7 +76,6 @@ export default class Login extends Component<any, any> {
     const query = this.GET_USERS;
     const users = this.props.client.readQuery({query}).Users;
     let user;
-    console.log(users);
     users.forEach((item) => {
       if(item.userName === userName && item.password === password) {
         user = {
@@ -87,9 +86,7 @@ export default class Login extends Component<any, any> {
       }
     });
     if(user !== undefined) {
-      console.log('data written');
       this.props.client.writeData({ data: {CurrentUser: [user]}});
-      console.log('this.props.loginHandler', this.props.loginHandler);
       this.props.loginHandler();
     } else {
       this.setState({loginAttempted: true, displayError: true});
@@ -116,7 +113,6 @@ export default class Login extends Component<any, any> {
   }
 
   render() {
-    console.log('login re-render');
     return (
       <div className={loginContainer}>
         <p>

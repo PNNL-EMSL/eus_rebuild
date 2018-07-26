@@ -168,7 +168,7 @@ class App extends React.Component<any, any> {
     return (<PortalHome navStyle={this.state.navMenuType} {...this.props}/>);
   }
   renderAdminPage() {
-    return (<AdminHome navStyle={this.state.navMenuType} {...this.props}/>);
+    return (<AdminHome navStyle={this.state.navMenuType} {...this.props} roleLevel={999}/>);
   }
 
   renderProposals() {
