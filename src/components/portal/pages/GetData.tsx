@@ -1,7 +1,7 @@
 import React from 'react';
-import RestrictedPage from 'components/shared/pages/RestrictedPage';
+import PageBase from 'components/shared/pages/PageBase';
 
-export default class GetData extends RestrictedPage {
+export default class GetData extends PageBase {
     renderPage() {
         return (
             <div> TODO: Add Get Data Contents</div>

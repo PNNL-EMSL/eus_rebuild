@@ -1,7 +1,7 @@
 import React from 'react';
-import RestrictedPage from 'components/shared/pages/RestrictedPage';
+import PageBase from 'components/shared/pages/PageBase';
 
-export default class UserInfo extends RestrictedPage {
+export default class UserInfo extends PageBase {
   renderPage() {
         return (
             <div> TODO: Add User Info Contents</div>

@@ -3,7 +3,7 @@ import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 import {css} from 'emotion';
 
-import RestrictedPage from 'components/shared/pages/RestrictedPage';
+import PageBase from 'components/shared/pages/PageBase';
 import UserAdminItem from 'components/admin/components/UserAdminItem';
 
 const table: string = css`
@@ -30,7 +30,7 @@ const table: string = css`
   }
 `;
 
-export default class UserAdmin extends RestrictedPage {
+export default class UserAdmin extends PageBase {
 
   GET_USERS = gql`
     {

@@ -16,7 +16,7 @@ import gql from 'graphql-tag';
 import Login from 'components/shared/pages/Login';
 import AccessError from 'components/shared/pages/AccessError';
 
-export default abstract class RestrictedPage extends Component<any, any> {
+export default abstract class PageBase extends Component<any, any> {
 
   GET_USER_ROLE = gql`
     {
@@ -28,30 +28,48 @@ export default abstract class RestrictedPage extends Component<any, any> {
 
   constructor(props) {
     super(props);
-
-    this.isUserLoggedIn = this.isUserLoggedIn.bind(this);
     this.state = {userLoggedIn: this.isUserLoggedIn()};
 
+    this.isUserLoggedIn = this.isUserLoggedIn.bind(this);
     this.doLogin = this.doLogin.bind(this);
     this.renderRestrictionContent = this.renderRestrictionContent.bind(this);
     this.passesPageRestriction = this.passesPageRestriction.bind(this);
-    this.renderPage = this.renderPage.bind(this);
     this.userHasAccess = this.userHasAccess.bind(this);
+
+    this.renderPage = this.renderPage.bind(this);
   }
 
-  passesPageRestriction() {
+
+  /***************************
+   * Restriction logic section
+   **************************/
+
+  /**
+   * If the page is restricted checks if the user is logged in and has access to the page
+   * @returns {boolean}
+   */
+  passesPageRestriction() : boolean {
     if(this.props.restricted) {
       return this.state.userLoggedIn && this.userHasAccess();
     }
     return true;
   }
 
-  isUserLoggedIn() {
+  /**
+   * Returns true if and only if the user is logged in
+   * @returns {boolean}
+   */
+  isUserLoggedIn() : boolean {
     const query = this.GET_USER_ROLE;
     return this.props.client.readQuery({query}).CurrentUser.length !== 0;
   }
 
-  userHasAccess() {
+  /**
+   * Returns true if and only if the user has the necessary role for this page
+   * NOTE: This logic might be handled by the individual page if there is finicky logic for it.
+   * @returns {boolean}
+   */
+  userHasAccess() : boolean {
     const query = this.GET_USER_ROLE;
     const data = this.props.client.readQuery({query}).CurrentUser;
     const userRoleLevel = data.length !== 0 ? data[0].roleLevel : -999;
@@ -60,10 +78,16 @@ export default abstract class RestrictedPage extends Component<any, any> {
     return pageRoleLevel <= userRoleLevel;
   }
 
+  /**
+   * Login handler which simply updates the Page's state
+   */
   doLogin() {
     this.setState({userLoggedIn: true});
   }
 
+  /**
+   * Renders the appropriate restricted content based on if the user needs to log in or if they have insufficient access
+   */
   renderRestrictionContent() {
     if(!this.state.userLoggedIn) {
       return (<Login {...this.props} loginHandler={this.doLogin} />);
@@ -71,11 +95,13 @@ export default abstract class RestrictedPage extends Component<any, any> {
     return (<AccessError {...this.props} />);
   }
 
+  /**
+   * Abstract function which MUST be defined by the implementers.
+   */
   abstract renderPage();
 
   render() {
     let content;
-    console.log('restrictedPage state',this.state);
     if(this.passesPageRestriction()) {
       content = this.renderPage();
     } else {

@@ -32,6 +32,9 @@ export default class NavMenu extends React.Component<any, any> {
 
   constructor(props) {
     super(props);
+    this.state = {
+      collapsed: true
+    };
 
     this.renderTabNav = this.renderTabNav.bind(this);
     this.renderTileNav = this.renderTileNav.bind(this);
@@ -47,19 +50,20 @@ export default class NavMenu extends React.Component<any, any> {
   shouldComponentUpdate(nextProps) {
     return this.props.navMenuType !== nextProps.navMenuType;
   }
-  
+
   renderTabNav() {
+    console.log(this.props);
     return(
       <div>
         <Menu
           className={menu}
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={['home']}
+          defaultSelectedKeys={['/Portal']}
           selectedKeys={[this.props.pathname]}
         >
-          <Menu.Item key="/">
-            <Link to="/home">Home</Link>
+          <Menu.Item key="/Portal">
+            <Link to="/Portal">Home</Link>
           </Menu.Item>
           <Menu.Item key="/proposals">
             <Link to="/proposals">Proposals</Link>
@@ -96,11 +100,11 @@ export default class NavMenu extends React.Component<any, any> {
           className={menu}
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={['home']}
+          defaultSelectedKeys={['/Portal']}
           selectedKeys={[this.props.pathname]}
         >
           <Menu.Item key="/">
-            <Link to="/home">Home</Link>
+            <Link to="/Portal">Home</Link>
           </Menu.Item>
           {this.renderNavSwitchItem()}
         </Menu>

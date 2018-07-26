@@ -3,7 +3,7 @@ import {css} from 'emotion';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 import TileContainer from 'components/portal/components/PortalTileContainer';
-import RestrictedPage from 'components/shared/pages/RestrictedPage';
+import PageBase from 'components/shared/pages/PageBase';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import CarouselContainer from 'components/shared/components/CarouselContainer';
 import MarqueeContainer from 'components/shared/components/MarqueeContainer';
@@ -30,7 +30,7 @@ const tilesDiv:string = css`
 `;
 
 
-export default class UserHome extends RestrictedPage {
+export default class UserHome extends PageBase {
 
   GET_USER_ROLE = gql`
     {

@@ -1,5 +1,5 @@
 import React from 'react';
-import RestrictedPage from 'components/shared/pages/RestrictedPage';
+import PageBase from 'components/shared/pages/PageBase';
 import CarouselContainer from 'components/shared/components/CarouselContainer';
 import MarqueeContainer from 'components/shared/components/MarqueeContainer';
 import CarouselSettingsContainer from 'components/admin/components/CarouselSettingsContainer';
@@ -26,7 +26,7 @@ const carousel: string = css`
   width: 30%;
 `;
 
-export default class MessageSettings extends RestrictedPage {
+export default class MessageSettings extends PageBase {
 
   GET_MESSAGE_INFORMATION = gql`
     {
@@ -50,9 +50,7 @@ export default class MessageSettings extends RestrictedPage {
 
   constructor(props) {
     super(props);
-
-    // Update the state with the information from graphql server
-
+    
     this.updateMarqueeSettings = this.updateMarqueeSettings.bind(this);
     this.updateMarqueeText = this.updateMarqueeText.bind(this);
     this.updateMarqueeDisplay = this.updateMarqueeDisplay.bind(this);

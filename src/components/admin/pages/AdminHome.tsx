@@ -1,9 +1,9 @@
 import React from 'react';
 import AdminTileContainer from 'components/admin/components/AdminTileContainer';
-import RestrictedPage from 'components/shared/pages/RestrictedPage';
+import PageBase from 'components/shared/pages/PageBase';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
-export default class AdminHome extends RestrictedPage {
+export default class AdminHome extends PageBase {
 
   constructor(props) {
     super(props);

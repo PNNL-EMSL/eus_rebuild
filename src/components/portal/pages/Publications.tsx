@@ -1,7 +1,7 @@
 import React from 'react';
-import RestrictedPage from 'components/shared/pages/RestrictedPage';
+import PageBase from 'components/shared/pages/PageBase';
 
-export default class Publications extends RestrictedPage {
+export default class Publications extends PageBase {
   renderPage() {
         return (
             <div> 
