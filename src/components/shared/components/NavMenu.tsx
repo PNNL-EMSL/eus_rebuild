@@ -47,10 +47,6 @@ export default class NavMenu extends React.Component<any, any> {
     this.props.navChangeHandler(styleTo);
   }
 
-  shouldComponentUpdate(nextProps) {
-    return this.props.navMenuType !== nextProps.navMenuType;
-  }
-
   renderTabNav() {
     console.log(this.props);
     return(
@@ -65,26 +61,26 @@ export default class NavMenu extends React.Component<any, any> {
           <Menu.Item key="/Portal">
             <Link to="/Portal">Home</Link>
           </Menu.Item>
-          <Menu.Item key="/proposals">
-            <Link to="/proposals">Proposals</Link>
+          <Menu.Item key="/Portal/proposals">
+            <Link to="/Portal/proposals">Proposals</Link>
           </Menu.Item>
-          <Menu.Item key="/publications">
-            <Link to="/publications">Publications</Link>
+          <Menu.Item key="/Portal/publications">
+            <Link to="/Portal/publications">Publications</Link>
           </Menu.Item>
-          <Menu.Item key="/userInfo">
-            <Link to="/userInfo">User Info</Link>
+          <Menu.Item key="/Portal/userInfo">
+            <Link to="/Portal/userInfo">User Info</Link>
           </Menu.Item>
-          <Menu.Item key="/training">
-            <Link to="/training">Training</Link>
+          <Menu.Item key="/Portal/training">
+            <Link to="/Portal/training">Training</Link>
           </Menu.Item>
-          <Menu.Item key="/scheduleExperiments">
-            <Link to="/scheduleExperiments">Schedule Experiments</Link>
+          <Menu.Item key="/Portal/scheduleExperiments">
+            <Link to="/Portal/scheduleExperiments">Schedule Experiments</Link>
           </Menu.Item>
-          <Menu.Item key="/getData">
-            <Link to="/getData">Get Data</Link>
+          <Menu.Item key="/Portal/getData">
+            <Link to="/Portal/getData">Get Data</Link>
           </Menu.Item>
-          <Menu.Item key="/messageSystem">
-            <Link to="/messageSystem">Message System</Link>
+          <Menu.Item key="/EUSAdmin/messageSystem">
+            <Link to="/EUSAdmin/messageSystem">Message System</Link>
           </Menu.Item>
 
           {this.renderNavSwitchItem()}
@@ -94,6 +90,7 @@ export default class NavMenu extends React.Component<any, any> {
   }
 
   renderTileNav() {
+    console.log(this.props);
     return (
       <div>
         <Menu

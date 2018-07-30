@@ -207,20 +207,20 @@ class App extends React.Component<any, any> {
     return [
       (<Route exact path="/" component={this.renderPortalPage} />),
       (<Route exact path="/Portal" component={this.renderPortalPage} />),
-      (<Route exact path="/proposals" component={this.renderProposals} />),
-      (<Route exact path="/publications" component={this.renderPublications} />),
-      (<Route exact path="/userInfo" component={this.renderUserInfo} />),
-      (<Route exact path="/training" component={this.renderTraining} />),
-      (<Route exact path="/scheduleExperiments" component={this.renderExperiments} />),
-      (<Route exact path="/getData" component={this.renderGetData} />)
+      (<Route exact path="/Portal/proposals" component={this.renderProposals} />),
+      (<Route exact path="/Portal/publications" component={this.renderPublications} />),
+      (<Route exact path="/Portal/userInfo" component={this.renderUserInfo} />),
+      (<Route exact path="/Portal/training" component={this.renderTraining} />),
+      (<Route exact path="/Portal/scheduleExperiments" component={this.renderExperiments} />),
+      (<Route exact path="/Portal/getData" component={this.renderGetData} />)
     ];
   }
 
   createAdminRoutes() {
     return [
       (<Route exact path="/EUSAdmin" component={this.renderAdminPage} />),
-      (<Route exact path="/messageSystem" component={this.renderMessageSettings} />),
-      (<Route exact path="/userAdmin" component={this.renderUserAdmin} />),
+      (<Route exact path="/EUSAdmin/messageSystem" component={this.renderMessageSettings} />),
+      (<Route exact path="/EUSAdmin/userAdmin" component={this.renderUserAdmin} />),
     ];
   }
 
@@ -258,6 +258,7 @@ class App extends React.Component<any, any> {
                       navMenuType={data.navStyle}
                       pathname={this.props.location.pathname}
                       navChangeHandler={this.navTypeHandler}
+                      {...this.props}
                     />
                   </div>
                 </div>
