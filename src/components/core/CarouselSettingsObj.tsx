@@ -5,7 +5,7 @@ import {css } from 'emotion';
 const imagePreview: string = css`
     height: 100px
 `;
-
+ 
 export default class CarouselSettingsObj extends Component<any, any> {
     GET_MESSAGE_INFORMATION = gql`
     {
@@ -85,7 +85,9 @@ export default class CarouselSettingsObj extends Component<any, any> {
     render() {
         console.log("settings", this.props, this.props.settings);
         return(
-            <table >
+
+            <table>
+
                 <tbody>
                     <tr>
                         <td >
