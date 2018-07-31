@@ -36,7 +36,6 @@ export default abstract class PageBase extends Component<any, any> {
     this.passesPageRestriction = this.passesPageRestriction.bind(this);
     this.userHasAccess = this.userHasAccess.bind(this);
 
-    this.renderPage = this.renderPage.bind(this);
   }
 
 
