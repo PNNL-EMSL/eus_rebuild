@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { css } from 'emotion';
 import gql from 'graphql-tag';
+import PortalHeader from 'components/portal/components/PortalHeader';
 
 const container: string = css`
     border-style: solid;
@@ -23,6 +24,11 @@ const loginContainer: string = css`
   width: 800px;
   margin: 2em auto;
   float: left;
+`;
+
+const contentStyle: string = css`
+  margin: 5px 20px 15px 100px;
+  max-width: 958px;
 `;
 
 const warning: string = css`
@@ -114,34 +120,39 @@ export default class Login extends Component<any, any> {
 
   render() {
     return (
-      <div className={loginContainer}>
-        <p>
-          Enter your PNNL Netowrk ID and PNNL Password to log in.
-        </p>
-        {this.errorDisplay()}
-        <div>
-          <div className={container}>
+      <div>
+        <PortalHeader {...this.props} />
+        <div className={contentStyle} >
+          <div className={loginContainer}>
+            <p>
+              Enter your PNNL Network ID and PNNL Password to log in.
+            </p>
+            {this.errorDisplay()}
             <div>
-              PNNL Network ID:
-              <input name='userName' type="text" onChange={this.updateUN} onKeyUp={this.handleKeyPress}/>
-            </div>
-            <br />
-            <div>
-              PNNL Password:
-              <input name='pass' type="password" onChange={this.updatePassword} onKeyUp={this.handleKeyPress}/>
-            </div>
-            <div>
-              <button className={submitButton} onClick={this.doLogin}>Log In</button>
-            </div>
+              <div className={container}>
+                <div>
+                  PNNL Network ID:
+                  <input name='userName' type="text" onChange={this.updateUN} onKeyUp={this.handleKeyPress}/>
+                </div>
+                <br />
+                <div>
+                  PNNL Password:
+                  <input name='pass' type="password" onChange={this.updatePassword} onKeyUp={this.handleKeyPress}/>
+                </div>
+                <div>
+                  <button className={submitButton} onClick={this.doLogin}>Log In</button>
+                </div>
 
+              </div>
+            </div>
+            <p className={noteText}>
+              NOTE: If you are using Internet Explorer and are experiencing slow page loads and/or overall slowness, try using
+              <a target="_blank" href="http://www.mozilla.com/en-US/firefox/personal.html">Firefox</a> or
+              <a target="_blank" href="http://www.google.com/chrome"> Chrome</a> instead.
+            </p>
           </div>
         </div>
-        <p className={noteText}>
-          NOTE: If you are using Internet Explorer and are experiencing slow page loads and/or overall slowness, try using
-          <a target="_blank" href="http://www.mozilla.com/en-US/firefox/personal.html">Firefox</a> or
-          <a target="_blank" href="http://www.google.com/chrome">Chrome</a> instead.
-        </p>
       </div>
-)
+    )
   }
 }
