@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import CarouselSettingsObj from 'components/admin/components/CarouselSettingsObj';
 // import { SwatchesPicker } from 'react-color';
 // import { css } from 'emotion';
+import Dragula from 'react-dragula';
 
 export default class CarouselSettingsContainer extends Component<any, any> {
     GET_MESSAGE_INFORMATION = gql`
@@ -59,10 +60,22 @@ export default class CarouselSettingsContainer extends Component<any, any> {
         return(
            // object keys then for each
            
-           <div>
-               {content}
-            </div>
+              <table>
+                  <tbody>
+           <div className='container' ref={this.dragulaDecorator}>
+                    {content}
+                    </div>
+                  </tbody>
+              </table>
             
         );
     }
+
+    dragulaDecorator = (componentBackingInstnace) => {
+      if (componentBackingInstnace) {
+        const options = { };
+        Dragula([componentBackingInstnace], options);
+
+      }
+    };
 }
