@@ -1,13 +1,13 @@
-import React, {Component} from 'react';
+import React from 'react';
 // import CarouselContainer from 'components/core/CarouselContainer';
 // import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import CarouselSettingsObj from 'components/admin/components/CarouselSettingsObj';
 // import { SwatchesPicker } from 'react-color';
 // import { css } from 'emotion';
-import Dragula from 'react-dragula';
+import draggableContainer from '../../shared/components/draggableContainer';
 
-export default class CarouselSettingsContainer extends Component<any, any> {
+export default class CarouselSettingsContainer extends draggableContainer {
     GET_MESSAGE_INFORMATION = gql`
     {
       CarouselInfos @client {
@@ -25,6 +25,7 @@ export default class CarouselSettingsContainer extends Component<any, any> {
        
         this.updateCarouselSettings = this.updateCarouselSettings.bind(this);
         this.updateCarouselText = this.updateCarouselText.bind(this);
+        this.renderContent = this.renderContent.bind(this);
     }
 
     
@@ -46,36 +47,26 @@ export default class CarouselSettingsContainer extends Component<any, any> {
         this.props.client.writeData({data});
       }
 
-    render() {
+    renderContent() {
         const carousel = this.props.settings;
         const content:JSX.Element[] = [];
         Object.keys(carousel).map((key) => {
             const info = carousel[key];
             console.log(info, 'caro info');
             content.push(
+              <div>
               <CarouselSettingsObj {...this.props} settings={info}/>
+              </div>
             )
         })
-        
+        console.log('set cntainer', content)
+        return content;
         return(
            // object keys then for each
-           
-              <table>
-                  <tbody>
-           <div className='container' ref={this.dragulaDecorator}>
-                    {content}
-                    </div>
-                  </tbody>
-              </table>
-            
+           <div>
+            {content}
+            </div>
         );
     }
 
-    dragulaDecorator = (componentBackingInstnace) => {
-      if (componentBackingInstnace) {
-        const options = { };
-        Dragula([componentBackingInstnace], options);
-
-      }
-    };
 }
