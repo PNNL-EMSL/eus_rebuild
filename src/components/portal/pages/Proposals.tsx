@@ -1,8 +1,8 @@
 import React from 'react';
-import PageBase from 'components/shared/pages/PageBase';
+import PortalPageBase from 'components/portal/pages/PortalPageBase';
 
-export default class Proposals extends PageBase {
-  renderPage() {
+export default class Proposals extends PortalPageBase {
+  renderContent() {
         return (
             <div> 
                 <h1><strong>Get Started</strong></h1>

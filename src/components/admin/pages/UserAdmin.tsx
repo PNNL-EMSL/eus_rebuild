@@ -50,6 +50,7 @@ export default class UserAdmin extends AdminPageBase {
   }
 
   renderContent() {
+    // TODO: Investigate using react-table for table stuff such as user admin
     return (
       <div>
         <h1>

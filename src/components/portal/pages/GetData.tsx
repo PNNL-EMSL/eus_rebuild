@@ -1,8 +1,8 @@
 import React from 'react';
-import PageBase from 'components/shared/pages/PageBase';
+import PortalPageBase from 'components/portal/pages/PortalPageBase';
 
-export default class GetData extends PageBase {
-    renderPage() {
+export default class GetData extends PortalPageBase {
+    renderContent() {
         return (
             <div> TODO: Add Get Data Contents</div>
         );
