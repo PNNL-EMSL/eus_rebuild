@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ImageFormatter from 'react-data-grid';
+// import ImageFormatter from 'react-data-grid';
 import CarouselImgURL from 'components/admin/components/carousel_comps/CarouselImgURL';
 
 export default class CaroImgFormatter extends CarouselImgURL {
@@ -20,9 +20,8 @@ export default class CaroImgFormatter extends CarouselImgURL {
 
   render() {
     return(
-        <div>
-          title={this.props.value}>{this.props.value}
-          <ImageFormatter value={this.props.value} />  
+        <div title={this.props.value}>
+          <img src={this.props.value} style={{height: "40px"}}/> 
         </div>
     );
   }
