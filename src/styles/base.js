@@ -9,6 +9,7 @@ import { css } from 'emotion';
  export const colorDarkGreen = '#255859';
  export const colorLightGreen = '#87babe';
  export const colorRed = '#BE5959';
+ export const colorDarkGreenSubMenu = '#1e4647';
 
  export const headerFont = css`
   font-weight: 700;

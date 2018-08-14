@@ -114,7 +114,7 @@ class App extends React.Component<any, any> {
         userName,
         roleLevel
       }
-      navStyle @client
+      navCollapsed @client
     }
   `;
 
@@ -157,7 +157,7 @@ class App extends React.Component<any, any> {
   }
 
   navTypeHandler(styleTo) {
-    this.props.client.writeData({ data: { navStyle: styleTo }});
+    this.props.client.writeData({ data: { navCollapsed: styleTo }});
   }
 
   /*************************

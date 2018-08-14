@@ -38,9 +38,9 @@ export default class AdminHeader extends HeaderBase {
         <span>
           <Logo src={logo} alt="logo"/>
           <span className={loginHeader}>
-            <div className={title}>EMSL User Portal</div>
+            <div className={title}>EMSL User Admin</div>
             {
-              data.CurrentUser.length !== 0 ? (
+              (data.CurrentUser && data.CurrentUser.length !== 0) ? (
                 <div className={logout}>
                   <div>Welcome {data.CurrentUser[0].userName}</div>
                   <button onClick={this.props.logoutHandler}>Sign out</button>

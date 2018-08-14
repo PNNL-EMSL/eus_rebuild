@@ -29,7 +29,7 @@ export default abstract class HeaderBase extends Component<any, any> {
         userName,
         roleLevel
       }
-      navStyle @client
+      navCollapsed @client
     }
   `;
 
@@ -50,6 +50,7 @@ export default abstract class HeaderBase extends Component<any, any> {
           } else if(error) {
             return <p>Error...</p>;
           } else {
+            console.log('header_data', data);
             const content = this.renderContent(data);
             return (
               <div className={header}>

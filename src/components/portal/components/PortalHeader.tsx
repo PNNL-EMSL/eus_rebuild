@@ -32,6 +32,7 @@ export default class PortalHeader extends HeaderBase {
   }
 
   renderContent(data) {
+    console.log('renderContent', this.props);
     return (
       <div>
         <span>
