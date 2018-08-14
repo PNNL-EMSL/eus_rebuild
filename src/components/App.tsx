@@ -8,7 +8,9 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import ExternalStyleSheets from 'components/shared/components//ExternalStyleSheets';
 
-import Proposals from 'components/portal/pages/Proposals';
+import ProposalHome from 'components/portal/pages/proposals/Home';
+// import ProposalNew from 'components/portal/pages/proposals/Home';
+// import ProposalExisting from 'components/portal/pages/proposals/Home';
 import Publications from 'components/portal/pages/Publications';
 import UserInfo from 'components/portal/pages/UserInfo';
 import Training from 'components/portal/pages/Training';
@@ -139,6 +141,8 @@ class App extends React.Component<any, any> {
     this.renderPortalPage = this.renderPortalPage.bind(this);
     this.renderAdminPage = this.renderAdminPage.bind(this);
     this.renderProposals = this.renderProposals.bind(this);
+    this.renderNewProposal = this.renderNewProposal.bind(this);
+    this.renderExistingProposal = this.renderExistingProposal.bind(this);
     this.renderPublications = this.renderPublications.bind(this);
     this.renderUserInfo = this.renderUserInfo.bind(this);
     this.renderTraining = this.renderTraining.bind(this);
@@ -176,8 +180,22 @@ class App extends React.Component<any, any> {
     return (<AdminHome navStyle={this.state.navMenuType} {...this.props} restricted={true} roleLevel={999}/>);
   }
 
-  renderProposals() {
-    return (<Proposals {...this.props} restricted={true}/>);
+  renderProposals({match, location}) {
+    console.log('match:', match);
+    console.log('location:', location);
+    return (<ProposalHome {...this.props} restricted={true}/>);
+  }
+
+  renderNewProposal({match}) {
+    console.log('match:', match);
+    return (<ProposalHome {...this.props} restricted={true} type='new' />);
+    // return (<ProposalNew {...this.props} restricted={true}/>);
+  }
+
+  renderExistingProposal({match}) {
+    console.log('match:', match);
+    return (<ProposalHome {...this.props} restricted={true} id={match.params.id} />);
+    // return (<ProposalExisting {...this.props} restricted={true} id={match.params.id} />);
   }
 
   renderPublications() {
@@ -213,6 +231,8 @@ class App extends React.Component<any, any> {
       (<Route exact path="/" component={this.renderIndexPage} />),
       (<Route exact path="/Portal" component={this.renderPortalPage} />),
       (<Route exact path="/Portal/proposals" component={this.renderProposals} />),
+      (<Route exact path="/Portal/proposals/new" component={this.renderNewProposal} />),
+      (<Route exact path="/Portal/proposals/:id" component={this.renderExistingProposal} />),
       (<Route exact path="/Portal/publications" component={this.renderPublications} />),
       (<Route exact path="/Portal/userInfo" component={this.renderUserInfo} />),
       (<Route exact path="/Portal/training" component={this.renderTraining} />),
