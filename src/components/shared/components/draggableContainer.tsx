@@ -20,6 +20,7 @@ export default abstract class DraggableContainer extends Component<any, any> {
         if (componentBackingInstnace) {
           const options = { };
           Dragula([componentBackingInstnace], options);
+
         }
       };
 }
