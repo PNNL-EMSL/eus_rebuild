@@ -21,6 +21,7 @@ export default class CarouselSettingsContainer extends Component<any, any> {
   `;
     
     columns:Array<{key, name}>;
+    rows:object[];
 
 
     constructor(props){
@@ -40,13 +41,15 @@ export default class CarouselSettingsContainer extends Component<any, any> {
             name: 'Count'
           }
         ];
-        
+
+        this.rows = [{id: 'a', title: 'a', count: 10},{id: 'b', title: 'b', count: 11},{id: 'x', title: 'u', count: 19},];
         
         this.renderContent = this.renderContent.bind(this);
         this.updateCarouselSettings = this.updateCarouselSettings.bind(this);
         this.updateCarouselDisplay = this.updateCarouselDisplay.bind(this);
         this.onRowsSelected = this.onRowsSelected.bind(this);
         this.onRowsDeselected = this.onRowsDeselected.bind(this);
+        this.rowGetter = this.rowGetter.bind(this);
     }
 
     getColumns() {
@@ -86,15 +89,23 @@ export default class CarouselSettingsContainer extends Component<any, any> {
       this.updateCarouselDisplay(rows);
     };
 
+    rowGetter = (i) => {
+      return this.rows[i];
+    }
+
     render() {
       
   
       const selectedRows = this.props.settings.filter((item) => (item.display === true));
       console.log(selectedRows);
+      this.rows = [{id: 'a', title: 'a', count: 10},{id: 'b', title: 'b', count: 11},{id: 'x', title: 'u', count: 19},];
 
       return(
         <ReactDataGrid 
           columns={this.getColumns()}
+          rowGetter={this.rowGetter}
+          rowsCount={this.rows.length}
+          minHeight={500}
           rowSelection={{
             showCheckbox: true,
             enableShiftSelect: true,
