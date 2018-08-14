@@ -15,15 +15,18 @@ const menu: string = css`
     border-radius: 4px 0 0 4px;
   }
   .ant-menu {
-    background-color: ${colorDarkGreen};
+    background: ${colorDarkGreen};
     border-bottom-color: ${colorDarkGreen};
   }
   .ant-menu-inline.ant-menu-sub {
-    background-color: ${colorDarkGreenSubMenu};
+    background: ${colorDarkGreenSubMenu};
+  }
+  .ant-menu-vertical {
+    background: ${colorDarkGreenSubMenu} !important;
   }
   li {
     &.ant-menu-item-selected {
-      background-color: ${colorLightGreen} !important;
+      background: ${colorLightGreen} !important;
       a {
        font-weight: 500;
         color: ${colorBlack};

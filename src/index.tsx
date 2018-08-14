@@ -89,11 +89,11 @@ const users = [
   }
 ];
 
-// const adminUser = {
-//   userName: 'admin',
-//   roleLevel: 999,
-//   __typename: 'CurrentUser'
-// }
+const adminUser = {
+  userName: 'admin',
+  roleLevel: 999,
+  __typename: 'CurrentUser'
+};
 
 // This defines default values and resolvers for any local client variables that are not passed through
 // to the server.
@@ -102,8 +102,8 @@ const clientState = {
     MarqueeInfos: [marqueeInfo],
     CarouselInfos: carouselInfos,
     Users: users,
-    navStyle: 'tiles',
-    CurrentUser: [],
+    navCollapsed: true,
+    CurrentUser: [adminUser],
   },
   resolvers: {
     Mutation: {
@@ -111,8 +111,8 @@ const clientState = {
         cache.writeData({data: {isLoggedIn: loggedIn, userName}});
         return null;
       },
-      updateNavType: (_, {navStyle}, {cache}) => {
-        cache.writeData({data: {navStyle}});
+      updateNavType: (_, {navCollapsed}, {cache}) => {
+        cache.writeData({data: {navCollapsed}});
         return null;
       }
     }
