@@ -28,53 +28,102 @@ export default class CarouselSettingsContainer extends Component<any, any> {
 
     constructor(props){
         super(props);
-       
+        this.textListener = this.textListener.bind(this);
+        this.imgUrlListener = this.imgUrlListener.bind(this);
+        const instance = this;
         this.columns = [
           {
             key: 'id',
             name: 'ID',
             width: 50,
+            editable: true,
             resizable: true,
           },
           {
             key: 'text',
             name: 'Text',
-            
+            editable: true,
+            resizable: true,
+            events: {
+              onCommit: instance.textListener,
+              onKeyDown: instance.textListener
+              // function(ev, args) {
+              //   if (ev.key === 'Enter') {
+              //     console.log(ev, args);
+              //     instance.updateCarouselText(args.rowId, args);
+
+              //   }
+              // }
+              
+              // onFocusOut: instance.textListener
+              // onCellDeselected: (ev, args) {
+              //   console.log(ev, args);
+              //   instance.updateCarouselText(args.rowId, args);
+              // }
+            }
+          },
+          {
+            key: 'imgUrl',
+            name: 'Image URL',
             resizable: true,
             editable: true,
-            width: 50,
+            events: {
+              onCommit: instance.imgUrlListener,
+              onKeyDown: instance.imgUrlListener
+            }
           },
-          // {
-          //   key: 'imgUrl',
-          //   name: 'Image URL',
-          //   resizable: true,
-          //   editable: true
-          // },
           {
             key: 'imgUrl',
             name: 'Image Preview',
             // formatter: ImageFormatter,
             formatter: CaroImgFormatter,
             resizable: true,
-            editable: true,
+            editable: true
             // headerRenderer: <ImageFormatter value='https://www.google.com/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwiCu8r2yu3cAhWBL3wKHbUCC7oQjRx6BAgBEAU&url=https%3A%2F%2Fsocialnetworking.lovetoknow.com%2FAvatar_Galleries&psig=AOvVaw3loKFuYQOT6zv14M0_uzi3&ust=1534371909818288' />
           },
         ];
 
         // this.rows = [{id: 'a', title: 'a', count: 10},{id: 'b', title: 'b', count: 11},{id: 'x', title: 'u', count: 19},];
-        
         this.renderContent = this.renderContent.bind(this);
         this.updateCarouselSettings = this.updateCarouselSettings.bind(this);
+        this.updateCarouselImgUrl = this.updateCarouselImgUrl.bind(this);
         this.updateCarouselDisplay = this.updateCarouselDisplay.bind(this);
         this.onRowsSelected = this.onRowsSelected.bind(this);
         this.onRowsDeselected = this.onRowsDeselected.bind(this);
         this.rowGetter = this.rowGetter.bind(this);
     }
 
+    textListener(ev, args) {
+        if (ev.key === 'Enter') {
+          console.log(ev.target.value, args);
+          const id = this.props.settings[args.rowIdx].id;
+          this.updateCarouselText(id, ev.target.value);
+        }
+    }
+
+    imgUrlListener(ev, args) {
+      if (ev.key === 'Enter') {
+        console.log(ev.target.value, args);
+        const id = this.props.settings[args.rowIdx].id;
+        this.updateCarouselImgUrl(id, ev.target.value);
+      }
+  }
+
     getColumns() {
       return this.columns;
     }
 
+    
+    updateCarouselText(id, text) {
+      this.updateCarouselSettings(id, 'text', text);
+    }
+
+
+    updateCarouselImgUrl(id, text) {
+      this.updateCarouselSettings(id, 'imgUrl', text);
+    }
+    
+    
     updateCarouselSettings(id, prop, value) {
       const query = this.GET_MESSAGE_INFORMATION;
       let prev = this.props.client.readQuery({query}).CarouselInfos;
@@ -120,6 +169,7 @@ export default class CarouselSettingsContainer extends Component<any, any> {
 
       return(
         <ReactDataGrid 
+          enableCellSelect={true}
           columns={this.getColumns()}
           rowGetter={this.rowGetter}
           rowsCount={this.props.settings.length}
