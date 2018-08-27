@@ -28,6 +28,7 @@ export default class CarouselSettingsObj extends Component<any, any> {
     constructor(props) {
         super(props);
 
+        console.log('I AM A CAROUSEL SETTINGS OBJECT');
         this.updateCarouselSettings = this.updateCarouselSettings.bind(this);
         this.updateCarouselImgUrl = this.updateCarouselImgUrl.bind(this);
         this.updateCarouselOrder = this.updateCarouselOrder.bind(this);
@@ -86,21 +87,22 @@ export default class CarouselSettingsObj extends Component<any, any> {
 
                 <tbody>
                     <tr>
+                        <td>
+                            <input name='carouseId' type='text' defaultValue={this.props.row.id} disabled />
+
+                        </td>
                         <td >
-                            <input name='carouselText' type='text' defaultValue={this.props.settings.text} onBlur={this.props.updateCarouselText} />
+                            <input name='carouselText' type='text' defaultValue={this.props.row.text} onBlur={this.props.updateCarouselText} />
                         </td>
 
                         <td>
-                            <input name='carouselImgUrl' type='text' defaultValue={this.props.settings.imgUrl} onBlur={this.updateCarouselImgUrl} />
+                            <input name='carouselImgUrl' type='text' defaultValue={this.props.row.imgUrl} onBlur={this.updateCarouselImgUrl} />
                         </td>
 
                         <td> 
-                            <img className={imagePreview} src={this.props.settings.imgUrl}/>    
+                            <img className={imagePreview} src={this.props.row.imgUrl}/>    
                         </td>
 
-                        <td>
-                            <input name='carouselDisplay' type='checkbox' checked={this.props.settings.display} value={this.props.settings.display} onChange={this.updateCarouselDisplay}/>
-                        </td> 
 
                     </tr>
                 </tbody>

@@ -6,11 +6,30 @@ import CarouselSettingsObj from 'components/admin/components/CarouselSettingsObj
 import ReactDataGrid from 'react-data-grid';
 // import ImageFormatter from 'react-data-grid-addons';
 import CaroImgFormatter from 'components/admin/components/carousel_comps/CaroImgFormatter';
+
 // import { SwatchesPicker } from 'react-color';
 // import { css } from 'emotion';
+import PropTypes from 'prop-types';
+import  * as ReactDataGridAddons from 'react-data-grid-addons';
+const Draggable = ReactDataGridAddons.Draggable;
+const DraggableContainer = Draggable.Container;
+const RowActionsCell = Draggable.RowActionsCell;
+const DropTargetRowContainer = Draggable.DropTargetRowContainer;
+
+// const RowActionsCell = ReactDataGridAddons.RowActionsCell;
+// const DropTargetRowContainer = ReactDataGridAddons.DropTargetRowContainer;
+// const Data = ReactDataGridAddons.Selectors;
+// const RowRenderer = DropTargetRowContainer(CarouselSettingsObj);
+const RowRenderer = DropTargetRowContainer(ReactDataGrid.Row);
 
 export default class CarouselSettingsContainer extends Component<any, any> {
-    GET_MESSAGE_INFORMATION = gql`
+  static propTypes = {
+    rowKey: PropTypes.string.isRequired
+  };  
+
+  static defaultProps = { rowKey: 'id' };
+  
+  GET_MESSAGE_INFORMATION = gql`
     {
       CarouselInfos @client {
         id,
@@ -23,14 +42,14 @@ export default class CarouselSettingsContainer extends Component<any, any> {
   `;
     
     columns:object[];
-    rows:object[];
-
+    rows: Array<{id, text, imgUrl, order, display}>;
 
     constructor(props){
         super(props);
         this.textListener = this.textListener.bind(this);
         this.imgUrlListener = this.imgUrlListener.bind(this);
         const instance = this;
+        this.rows = this.props.settings;
         this.columns = [
           {
             key: 'id',
@@ -93,19 +112,27 @@ export default class CarouselSettingsContainer extends Component<any, any> {
         this.rowGetter = this.rowGetter.bind(this);
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+      if((this.rows !== nextProps.settings)) {
+        this.rows = nextProps.settings;
+        return true;
+      }
+      return false;
+    }
+
     textListener(ev, args) {
         if (ev.key === 'Enter') {
           console.log(ev.target.value, args);
-          const id = this.props.settings[args.rowIdx].id;
-          this.updateCarouselText(id, ev.target.value);
+          // const id = this.rows[args.rowIdx].id;
+          // this.updateCarouselText(id, ev.target.value);
         }
     }
 
     imgUrlListener(ev, args) {
       if (ev.key === 'Enter') {
         console.log(ev.target.value, args);
-        const id = this.props.settings[args.rowIdx].id;
-        this.updateCarouselImgUrl(id, ev.target.value);
+        // const id = this.rows[args.rowIdx].id;
+        // this.updateCarouselImgUrl(id, ev.target.value);
       }
   }
 
@@ -160,36 +187,67 @@ export default class CarouselSettingsContainer extends Component<any, any> {
     };
 
     rowGetter = (i) => {
-      return this.props.settings[i]; // this.rows[i];
+      console.log('in rowGetter', i);
+      return this.rows[i]; // this.rows[i];
     }
 
+    reorderRows = (e) => {
+      console.log('reordering rows', e)
+      const draggedRows = e.rowSource.data;
+      console.log("draggedRows", draggedRows);
+      const undraggedRows = this.rows.filter((row) => {
+        return draggedRows.id !== row.id;
+      });
+      console.log("draggedRows2", draggedRows, e.rowTarget);
+
+      const args = [e.rowTarget.idx, 0].concat(draggedRows);
+      console.log(draggedRows, undraggedRows, args);
+      console.log(undraggedRows.concat(draggedRows));
+      console.log(undraggedRows.splice(1, 0, draggedRows));
+      console.log('splice args', args);
+      this.rows = Array.prototype.splice.apply(undraggedRows, args);
+      console.log(undraggedRows.splice(e.rowTarget.idx, 0, draggedRows));
+      
+      // let draggedRows = this.isDraggedRowSelected(selectedRows, e.rowSource) ? selectedRows : [e.rowSource.data];
+      // let undraggedRows = this.state.rows.filter(function(r) {
+      //   return draggedRows.indexOf(r) === -1;
+      // });
+      // let args = [e.rowTarget.idx, 0].concat(draggedRows); // Concatonates the rows to be dragged to the target index
+      // Array.prototype.splice.apply(undraggedRows, args); // No elements deleted because start is 0. So it adds the undragged rows to the start and the dragged rows after them (?)  
+      // this.setState({rows: undraggedRows});
+    };
+  
+
     render() {
-      const selectedRows = this.props.settings.filter((item) => (item.display === true));
-      console.log("selected rows called", selectedRows);
+//      const selectedRows = this.rows.filter((item) => (item.display === true));
 
       return(
-        <ReactDataGrid 
-          enableCellSelect={true}
-          columns={this.getColumns()}
-          rowGetter={this.rowGetter}
-          rowsCount={this.props.settings.length}
-          minHeight={500}
-          rowHeight={50}
-          rowSelection={{
-            showCheckbox: true,
-            onRowsSelected: this.onRowsSelected,
-            onRowsDeselected: this.onRowsDeselected,
-            selectBy: {
-              isSelectedKey: 'display'
-            }
-          }}        
-        />
-      );
+        <DraggableContainer>
+            <ReactDataGrid 
+              enableCellSelect={true}
+              rowActionsCell={RowActionsCell}
+              columns={this.getColumns()}
+              rowGetter={this.rowGetter}
+              rowsCount={this.rows.length}
+              minHeight={500}
+              rowRenderer={<RowRenderer onRowDrop={this.reorderRows}/>}
+              rowHeight={50}
+              rowSelection={{
+                showCheckbox: true,
+                enableShiftSelect: true,
+                onRowsSelected: this.onRowsSelected,
+                onRowsDeselected: this.onRowsDeselected,
+                selectBy: {
+                  isSelectedKey: 'display'
+                }
+              }}        
+            />
+        </DraggableContainer>);
     }
 
     
     renderContent() {
-        const carousel = this.props.settings;
+        const carousel = this.rows;
         const content:JSX.Element[] = [];
         Object.keys(carousel).map((key) => {
             const info = carousel[key];
