@@ -41,8 +41,8 @@ export default class CarouselSettingsContainer extends Component<any, any> {
     }
   `;
     
-    columns:object[];
-    rows: Array<{id, text, imgUrl, order, display}>;
+    columns: any;
+    rows: any;
 
     constructor(props){
         super(props);
@@ -192,21 +192,13 @@ export default class CarouselSettingsContainer extends Component<any, any> {
     }
 
     reorderRows = (e) => {
-      console.log('reordering rows', e)
-      const draggedRows = e.rowSource.data;
-      console.log("draggedRows", draggedRows);
-      const undraggedRows = this.rows.filter((row) => {
-        return draggedRows.id !== row.id;
+      const draggedRows:any[] = [e.rowSource.data];
+      const undraggedRows:any[] = this.rows.filter((r) => {
+        return draggedRows.indexOf(r) === -1;
       });
-      console.log("draggedRows2", draggedRows, e.rowTarget);
-
-      const args = [e.rowTarget.idx, 0].concat(draggedRows);
-      console.log(draggedRows, undraggedRows, args);
-      console.log(undraggedRows.concat(draggedRows));
-      console.log(undraggedRows.splice(1, 0, draggedRows));
-      console.log('splice args', args);
-      this.rows = Array.prototype.splice.apply(undraggedRows, args);
-      console.log(undraggedRows.splice(e.rowTarget.idx, 0, draggedRows));
+      undraggedRows.splice(e.rowTarget.idx, 0, e.rowSource.data);
+      this.rows = undraggedRows;
+      console.log(this.rows);
       
       // let draggedRows = this.isDraggedRowSelected(selectedRows, e.rowSource) ? selectedRows : [e.rowSource.data];
       // let undraggedRows = this.state.rows.filter(function(r) {

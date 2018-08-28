@@ -55,6 +55,14 @@ const carouselInfos = [
     order: 2,
     display: true,
     __typename: 'CarouselInfoItem',
+  },
+  {
+    id: 3,
+    text: 'Third carousel item',
+    imgUrl: 'http://www.pngmart.com/files/4/Science-PNG-Picture.png',
+    order: 3,
+    display: false,
+    __typename: 'CarouselInfoItem',
   }
 ];
 
