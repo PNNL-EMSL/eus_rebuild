@@ -15,7 +15,7 @@ export default class CarouselItem extends Component<any, any> {
   render() {
     return (
       <div>
-        <img src={this.props.src} width={150} height={100}/>
+        <img src={this.props.src} width={300} height={200}/>
         <p className={legend}>{this.props.text}</p>
       </div>
     );

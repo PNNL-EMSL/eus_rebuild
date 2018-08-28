@@ -30,13 +30,9 @@ export default class CarouselContainer extends Component<any, any> {
       }
 
         return (
-            <div>
-                <div>
-                    <Slider {...settings}> 
-                      {content}
-                    </Slider>
-                </div>
-            </div>
+            <Slider {...settings} style={{display: 'inline-grid !important'}}> 
+                {content}
+            </Slider>
         )
     }
 

@@ -106,8 +106,44 @@ export default class UserHome extends PageBase {
             }
           }}
         </Query>
-        <div className={newsDiv}>
-          <Query query={this.GET_CAROUSEL_INFORMATION}>
+        <div>
+          <div className={newsDiv}>
+            <div className={orcid}>
+              <p>
+                An ORCID iD is now required for all users and must be included for the PI and co-PI
+                in the proposal form in order to submit. You don't need your number. To link an
+                ORCID iD with your user account:
+              </p>
+              <ul>
+                <li>
+                  Click on the User Info tab above.
+                </li>
+                <li>
+                  Indicate whether or not you authorize EMSL to post non-proprietary user
+                research awards, as well as other professional service activities, to your ORCID
+                record by clicking on the "Yes" or "No" buttons.
+                </li>
+                <li>
+                  You will be redirected to the ORCID login page. If you already have an ID,
+                sign in using your ORCID credentials. Otherwise, click "Register now" to
+                create an account.
+                </li>
+                <li>
+                  After signing into ORCID, click "Authorize", which will redirect you back
+                to the Portal and add the ID to the User Info page.
+                </li>
+                <li>
+                  To save your settings, be sure to click on "Save User Now" in the top
+                right-hand corner.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className={tilesDiv}>
+            {content}
+          </div>
+        </div>
+        <Query query={this.GET_CAROUSEL_INFORMATION}>
             {({loading, error, data}) => {
               if (loading) {
                 return (<div />);
@@ -125,40 +161,6 @@ export default class UserHome extends PageBase {
               }
             }}
           </Query>
-          <div className={orcid}>
-            <p>
-              An ORCID iD is now required for all users and must be included for the PI and co-PI
-              in the proposal form in order to submit. You don't need your number. To link an
-              ORCID iD with your user account:
-            </p>
-            <ul>
-              <li>
-                Click on the User Info tab above.
-              </li>
-              <li>
-                Indicate whether or not you authorize EMSL to post non-proprietary user
-              research awards, as well as other professional service activities, to your ORCID
-              record by clicking on the "Yes" or "No" buttons.
-              </li>
-              <li>
-                You will be redirected to the ORCID login page. If you already have an ID,
-              sign in using your ORCID credentials. Otherwise, click "Register now" to
-              create an account.
-              </li>
-              <li>
-                After signing into ORCID, click "Authorize", which will redirect you back
-              to the Portal and add the ID to the User Info page.
-              </li>
-              <li>
-                To save your settings, be sure to click on "Save User Now" in the top
-              right-hand corner.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className={tilesDiv}>
-          {content}
-        </div>
       </div>
     )
   }
