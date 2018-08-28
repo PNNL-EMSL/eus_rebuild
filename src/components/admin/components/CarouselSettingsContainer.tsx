@@ -107,6 +107,7 @@ export default class CarouselSettingsContainer extends Component<any, any> {
         this.updateCarouselSettings = this.updateCarouselSettings.bind(this);
         this.updateCarouselImgUrl = this.updateCarouselImgUrl.bind(this);
         this.updateCarouselDisplay = this.updateCarouselDisplay.bind(this);
+        this.updateCarouselOrder = this.updateCarouselOrder.bind(this);
         this.onRowsSelected = this.onRowsSelected.bind(this);
         this.onRowsDeselected = this.onRowsDeselected.bind(this);
         this.rowGetter = this.rowGetter.bind(this);
@@ -169,6 +170,11 @@ export default class CarouselSettingsContainer extends Component<any, any> {
       this.props.client.writeData({data});
     }
 
+  updateCarouselOrder(newData) {
+    const data = { CarouselInfos: newData };
+    this.props.client.writeData({data});
+  }
+
     // Next step get some columns so we can see what we are working with
 
 
@@ -189,16 +195,30 @@ export default class CarouselSettingsContainer extends Component<any, any> {
     rowGetter = (i) => {
       console.log('in rowGetter', i);
       return this.rows[i]; // this.rows[i];
-    }
+    };
 
     reorderRows = (e) => {
       const draggedRows:any[] = [e.rowSource.data];
       const undraggedRows:any[] = this.rows.filter((r) => {
         return draggedRows.indexOf(r) === -1;
       });
+      let order = 1;
       undraggedRows.splice(e.rowTarget.idx, 0, e.rowSource.data);
+      Object.keys(undraggedRows).forEach((index) => {
+        const row = undraggedRows[index];
+        const newRow = {
+          id: row.id,
+          display: row.display,
+          order,
+          text: row.text,
+          imgUrl: row.imgUrl,
+          __typename: "CarouselInfoItem"
+        };
+        undraggedRows[index] = newRow;
+        order++;
+      });
       this.rows = undraggedRows;
-      console.log(this.rows);
+      this.updateCarouselOrder(this.rows);
       
       // let draggedRows = this.isDraggedRowSelected(selectedRows, e.rowSource) ? selectedRows : [e.rowSource.data];
       // let undraggedRows = this.state.rows.filter(function(r) {
