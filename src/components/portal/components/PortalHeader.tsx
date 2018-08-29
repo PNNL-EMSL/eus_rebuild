@@ -3,7 +3,7 @@ import { css } from 'emotion';
 import styled from 'react-emotion';
 import HeaderBase from 'components/shared/components/HeaderBase';
 
-import logo from 'images/emsl_logo_notag.jpg';
+import logo from 'images/logo_white.png';
 
 const title: string = css`
   font-weight: 800;
@@ -38,12 +38,15 @@ export default class PortalHeader extends HeaderBase {
         <span>
           <Logo src={logo} alt="logo"/>
           <span className={loginHeader}>
-            <div className={title}>EMSL User Portal</div>
+            <div className={title}>USER PORTAL</div>
             {
               data.CurrentUser.length !== 0 ? (
                 <div className={logout}>
                   <div>Welcome {data.CurrentUser[0].userName}</div>
-                  <button onClick={this.props.logoutHandler}>Sign out</button>
+
+                  # Change the page
+                  <a href="#" onClick={this.props.logoutHandler}>My Profile</a>
+                  <a href="#" onClick={this.props.logoutHandler}>Sign out</a>
                 </div>
               ) : (<div />)
             }

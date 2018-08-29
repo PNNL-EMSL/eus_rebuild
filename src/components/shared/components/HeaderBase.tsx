@@ -8,7 +8,7 @@ const header: string = css`
   display: flex;
   flex: 0 0 auto;
   flex-direction: row;
-  background-color: white;
+  background-color: rgb(113, 149, 0);
   align-items: center;
   max-width: 1078px;
 `;
