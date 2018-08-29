@@ -10,6 +10,7 @@ const footer: string = css`
   background-color: white;
   align-items: center;
   max-width: 1078px;
+  width: 100%
 `;
 
 export default class PortalFooter extends FooterBase {

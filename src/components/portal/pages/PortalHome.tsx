@@ -7,6 +7,7 @@ import PortalPageBase from 'components/portal/pages/PortalPageBase';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import CarouselContainer from 'components/shared/components/CarouselContainer';
 import MarqueeContainer from 'components/shared/components/MarqueeContainer';
+import QuickLinks from 'components/portal/components/QuickLinks';
 
 const orcid:string = css`
   border-color: #7c93b5;
@@ -19,8 +20,8 @@ const orcid:string = css`
 `;
 
 const newsDiv:string = css`
-  width: 45%;
-  display: inline-block;
+  width: 30%;
+  display: inline-flex;
 `;
 
 const tilesDiv:string = css`
@@ -35,8 +36,11 @@ const announcementDiv = css`
 `;
 
 const carouselDiv:string = css`
-  width: 95%;
+  width: 80%;
+  float: right;
+  
 `;
+
 
 
 export default class UserHome extends PortalPageBase {
@@ -116,6 +120,8 @@ export default class UserHome extends PortalPageBase {
           }}
         </Query>
         <div className={announcementDiv}>
+          <QuickLinks />
+          
           <div className={newsDiv}>
             <div className={orcid}>
               <p>
