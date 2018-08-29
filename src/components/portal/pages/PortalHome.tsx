@@ -29,6 +29,15 @@ const tilesDiv:string = css`
   float: right;
 `;
 
+const announcementDiv = css`
+  display: inline-block;
+  
+`;
+
+const carouselDiv:string = css`
+  width: 95%;
+`;
+
 
 export default class UserHome extends PageBase {
 
@@ -106,7 +115,7 @@ export default class UserHome extends PageBase {
             }
           }}
         </Query>
-        <div>
+        <div className={announcementDiv}>
           <div className={newsDiv}>
             <div className={orcid}>
               <p>
@@ -143,7 +152,8 @@ export default class UserHome extends PageBase {
             {content}
           </div>
         </div>
-        <Query query={this.GET_CAROUSEL_INFORMATION}>
+        <div className={carouselDiv}>
+          <Query query={this.GET_CAROUSEL_INFORMATION}>
             {({loading, error, data}) => {
               if (loading) {
                 return (<div />);
@@ -161,6 +171,7 @@ export default class UserHome extends PageBase {
               }
             }}
           </Query>
+        </div>
       </div>
     )
   }
