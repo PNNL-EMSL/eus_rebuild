@@ -24,7 +24,7 @@ export default class CarouselContainer extends Component<any, any> {
           slidesToShow: 3,
           slidesToScroll: 1,
           autoplay: true,
-          autoplaySpeed: 200,
+          autoplaySpeed: 2000,
           speed: 500,
           pauseOnHover: true
       }

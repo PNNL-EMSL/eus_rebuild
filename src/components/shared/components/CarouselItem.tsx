@@ -3,6 +3,7 @@ import {css} from 'emotion';
 
 const legend: string = css`
   color: black;
+  text-align: center;
 `;
 
 export default class CarouselItem extends Component<any, any> {
@@ -16,7 +17,11 @@ export default class CarouselItem extends Component<any, any> {
     return (
       <div>
         <img src={this.props.src} width={300} height={200}/>
-        <p className={legend}>{this.props.text}</p>
+        <p className={legend}>
+          {this.props.text}
+          <div><a>Read more...</a></div>
+        </p>
+
       </div>
     );
   }
