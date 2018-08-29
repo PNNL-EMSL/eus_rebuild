@@ -135,6 +135,7 @@ class App extends React.Component<any, any> {
     };
 
     // Page Renderers
+    this.renderIndexPage = this.renderIndexPage.bind(this);
     this.renderPortalPage = this.renderPortalPage.bind(this);
     this.renderAdminPage = this.renderAdminPage.bind(this);
     this.renderProposals = this.renderProposals.bind(this);
@@ -164,6 +165,10 @@ class App extends React.Component<any, any> {
    * Render pages section
    *************************/
 
+  renderIndexPage() {
+    this.props.history.push('/Portal');
+    return null;
+  }
   renderPortalPage() {
     return (<PortalHome navStyle={this.state.navMenuType} {...this.props} restricted={true}/>);
   }
@@ -205,7 +210,7 @@ class App extends React.Component<any, any> {
 
   createPortalRoutes() {
     return [
-      (<Route exact path="/" component={this.renderPortalPage} />),
+      (<Route exact path="/" component={this.renderIndexPage} />),
       (<Route exact path="/Portal" component={this.renderPortalPage} />),
       (<Route exact path="/Portal/proposals" component={this.renderProposals} />),
       (<Route exact path="/Portal/publications" component={this.renderPublications} />),

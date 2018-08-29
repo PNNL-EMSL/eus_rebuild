@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {css} from 'emotion';
 
 const legend: string = css`
-  color: white;
+  color: black;
+  text-align: center;
 `;
 
 export default class CarouselItem extends Component<any, any> {
@@ -15,8 +16,12 @@ export default class CarouselItem extends Component<any, any> {
   render() {
     return (
       <div>
-        <img src={this.props.src}/>
-        <p className={legend}>{this.props.text}</p>
+        <img src={this.props.src} width={300} height={200}/>
+        <p className={legend}>
+          {this.props.text}
+          <div><a>Read more...</a></div>
+        </p>
+
       </div>
     );
   }
