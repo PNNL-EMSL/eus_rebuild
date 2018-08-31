@@ -1,5 +1,7 @@
 import React, {Component} from 'react'; 
 import {css} from 'emotion';
+import {Link} from 'react-router-dom';
+
 
 const quickLinks: string = css`
   width: 18%;
@@ -12,20 +14,25 @@ export default  class QuickLinks extends Component<any, any> {
         super(props);
     }
 
+
+    
+
+    
+   // this.renderPublications = this.renderPublications.bind(this);
+    
     render() {
         return (
 
             <div className={quickLinks}>
-                <a href="#" >My Profile </ a>  <hr />
-                <a href="#" >Submit a Proposal </ a> <hr />
-                <a href="#" >Schedule an Experiment </ a>     <hr />
-                <a href="#" >Submit a Sample</ a>  <hr />
-                <a href="#" >Search my Data</ a> <hr />
-                <a href="#" >Add a Publication</ a> <hr />
-                <a href="#" >Provide Feedback</ a> <hr />
+                QUICK LINKS <hr />
+                <Link to="/Portal/userInfo">My Profile</Link> <hr />
+                <Link to="/Portal/proposals">Submit a Proposal</Link> <hr />
+                <Link to="/Portal/scheduleExperiments">Schedule an Experiment</Link> <hr />
+                <Link to="/Portal/submitSample">Submit a Sample</Link> <hr />
+                <Link to="/Portal/scheduleExperiments">Search my Data</Link> <hr />
+                <Link to="/Portal/publications">Publications</Link> <hr />
+                <Link to="/Portal/provideFeedback">Provide Feeback</Link> <hr />
                 <a href="#" onClick={this.props.logoutHandler} >Sign Out</ a>    
-
-                
             </div>
 
         );
@@ -33,3 +40,10 @@ export default  class QuickLinks extends Component<any, any> {
         
 
 }
+
+
+// createPortalRoutes() {
+//     return [
+//       (<Route exact path="/Portal/training" component={this.renderTraining} />),
+//     ];
+//   }

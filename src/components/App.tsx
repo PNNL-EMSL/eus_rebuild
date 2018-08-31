@@ -14,6 +14,8 @@ import UserInfo from 'components/portal/pages/UserInfo';
 import Training from 'components/portal/pages/Training';
 import ScheduleExperiments from 'components/portal/pages/ScheduleExperiments';
 import GetData from 'components/portal/pages/GetData';
+import SubmitSample from 'components/portal/pages/SubmitSample';
+import ProvideFeedback from 'components/portal/pages/ProvideFeedback';
 import PortalHome from 'components/portal/pages/PortalHome';
 import AdminHome from 'components/admin/pages/AdminHome';
 import MessageSettings from 'components/admin/pages/MessageSettings';
@@ -144,6 +146,8 @@ class App extends React.Component<any, any> {
     this.renderTraining = this.renderTraining.bind(this);
     this.renderExperiments = this.renderExperiments.bind(this);
     this.renderGetData = this.renderGetData.bind(this);
+    this.renderSubmitSample = this.renderSubmitSample.bind(this);
+    this.renderProvideFeedback = this.renderProvideFeedback.bind(this);
     this.renderMessageSettings = this.renderMessageSettings.bind(this);
     this.renderUserAdmin = this.renderUserAdmin.bind(this);
 
@@ -200,6 +204,14 @@ class App extends React.Component<any, any> {
     return (<GetData {...this.props} restricted={true}/>)
   }
   
+  renderSubmitSample() {
+    return (<SubmitSample {...this.props} restricted={true}/>)
+  }
+
+  renderProvideFeedback() {
+    return (<ProvideFeedback {...this.props} restricted={true}/>)
+  }
+
   renderMessageSettings() {
     return (<MessageSettings {...this.props} restricted={true}/>);
   }
@@ -217,7 +229,9 @@ class App extends React.Component<any, any> {
       (<Route exact path="/Portal/userInfo" component={this.renderUserInfo} />),
       (<Route exact path="/Portal/training" component={this.renderTraining} />),
       (<Route exact path="/Portal/scheduleExperiments" component={this.renderExperiments} />),
-      (<Route exact path="/Portal/getData" component={this.renderGetData} />)
+      (<Route exact path="/Portal/getData" component={this.renderGetData} />),
+      (<Route exact path="/Portal/SubmitSample" component={this.renderSubmitSample} />),
+      (<Route exact path="/Portal/ProvideFeedback" component={this.renderProvideFeedback} />)
     ];
   }
 
