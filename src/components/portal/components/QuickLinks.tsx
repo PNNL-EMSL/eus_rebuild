@@ -13,12 +13,6 @@ export default  class QuickLinks extends Component<any, any> {
     constructor(props) {
         super(props);
     }
-
-
-    
-
-    
-   // this.renderPublications = this.renderPublications.bind(this);
     
     render() {
         return (
@@ -40,10 +34,3 @@ export default  class QuickLinks extends Component<any, any> {
         
 
 }
-
-
-// createPortalRoutes() {
-//     return [
-//       (<Route exact path="/Portal/training" component={this.renderTraining} />),
-//     ];
-//   }

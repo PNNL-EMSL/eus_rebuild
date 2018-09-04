@@ -25,8 +25,7 @@ const newsDiv:string = css`
 `;
 
 const tilesDiv:string = css`
-  display: flex;
-  width: 50%;
+  width: 650px;
   float: right;
 `;
 

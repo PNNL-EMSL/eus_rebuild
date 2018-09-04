@@ -26,16 +26,11 @@ export default class NavigationTile extends Component<any, any> {
   }
 
   render() {
-    let size;
-    if(this.props.size === 'large') {
-      size = 200;
-    } else if(this.props.size === 'x-large') {
-      size = 300;
-    } else {
-      size = 100;
-    }
+    const height = this.props.height;
+    const width = this.props.width;
+
     return (
-      <div className={faContainer} style={{height: size*0.67, width: size}} onClick={this.clickHandler}>
+      <div className={faContainer} style={{height, width}} onClick={this.clickHandler}>
         <i className={this.props.img}/>
         <p>{this.props.text}</p>
       </div>
