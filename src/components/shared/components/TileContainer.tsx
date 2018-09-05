@@ -20,51 +20,67 @@ export default class TileContainer extends Component<any, any> {
     const tiles = this.tileData.sort((a, b) => a.id - b.id);
     const content: JSX.Element[] = [];
     let rowContent: JSX.Element[] = [];
-   let innerRowContent: JSX.Element[] = [];
+    let innerRowContent: JSX.Element[] = [];
+    let innerRow: JSX.Element[] = [];
     Object.keys(tiles).map((key) => {
       const item = tiles[key];
       if(this.props.role >= item.visibleBy) {
         if (item.startInnerRow || innerRowContent.length !== 0) {
           // push tile to inner row array
         innerRowContent.push(
-          <NavigationTile
-            id={item.id}
-            key={item.id}
-            text={item.text}
-            img={item.img}
-            path={item.path}
-            height={item.height}
-            width={item.width}
-            {...this.props}
-          />
+          <Col span={item.span}>
+            <NavigationTile
+              id={item.id}
+              key={item.id}
+              text={item.text}
+              img={item.img}
+              path={item.path}
+              height={item.height}
+              width={item.width}
+              {...this.props}
+            />
+          </Col>
         );
         } else {
         rowContent.push(
-          <NavigationTile
-            id={item.id}
-            key={item.id}
-            text={item.text}
-            img={item.img}
-            path={item.path}
-            height={item.height}
-            width={item.width}
-            {...this.props}
-          />
+          <Col span={item.span}>
+            <NavigationTile
+              id={item.id}
+              key={item.id}
+              text={item.text}
+              img={item.img}
+              path={item.path}
+              height={item.height}
+              width={item.width}
+              {...this.props}
+            />
+          </Col>
         );
       }
         if(item.endInnerRow) {
           // push inner row content to row content
           // clear inner row content
-          rowContent.push(<Row><Col span={24}>{innerRowContent}</Col></Row>);
+          innerRow.push(<Row>{innerRowContent}</Row>);
           innerRowContent = [];
         }
         if(item.endRow) {
-          content.push(<Row><Col style={{display: 'flex'}}>{rowContent}</Col></Row>);
+          if(innerRow.length !== 0) {
+            content.push(<Row><Col span={16}>{innerRow}</Col>{rowContent}</Row>);
+            innerRow = [];
+          } else {
+            content.push(<Row>{rowContent}</Row>);
+          }
           rowContent = [];
         }
       }
     });
-    content.push(<Row><Col>{rowContent}</Col></Row>);
+    if(innerRow.length !== 0) {
+      console.log('innerRow', innerRow, 'rowContent', rowContent);
+      content.push(<Row><Col span={16}>{innerRow}</Col>{rowContent}</Row>);
+      innerRow = [];
+    } else {
+      content.push(<Row>{rowContent}</Row>);
+    }
     console.log('tile content', content);
     return (
       <div className={tileContainer}>
