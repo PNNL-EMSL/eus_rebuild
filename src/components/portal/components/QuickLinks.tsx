@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 
 
 const quickLinks: string = css`
-  width: 18%;
+  width: 12%;
   display: inline-table;
   `;
 

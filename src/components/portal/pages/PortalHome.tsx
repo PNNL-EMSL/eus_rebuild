@@ -20,17 +20,18 @@ const orcid:string = css`
 `;
 
 const newsDiv:string = css`
-  width: 30%;
+  width: 23%;
   display: inline-flex;
 `;
 
 const tilesDiv:string = css`
-  width: 650px;
+  width: 620px;
   float: right;
 `;
 
 const announcementDiv = css`
   display: inline-block;
+  
   
 `;
 
