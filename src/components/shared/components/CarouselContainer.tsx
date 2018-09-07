@@ -1,7 +1,9 @@
 import React, { Component} from 'react';
-import { Carousel } from 'react-responsive-carousel';
 import CarouselItem from 'components/shared/components/CarouselItem';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import Slider from 'react-slick';
+import "../../../../node_modules/slick-carousel/slick/slick.css"; 
+import "../../../../node_modules/slick-carousel/slick/slick-theme.css";
 
 export default class CarouselContainer extends Component<any, any> {
     constructor(props) {
@@ -12,22 +14,25 @@ export default class CarouselContainer extends Component<any, any> {
       const content:JSX.Element[] = [];
       this.props.settings.filter((item) => (item.display)).sort((a,b) => (a.order - b.order)).forEach((item) => {
         if(item.display) {
-          content.push(<CarouselItem src={item.imgUrl} text={item.text} />);
+          content.push(<div> <CarouselItem src={item.imgUrl} text={item.text} /> </div>);
         }
       });
+
+      const settings = {
+          dots: true,
+          infinite: true,
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          autoplay: true,
+          autoplaySpeed: 2000,
+          speed: 500,
+          pauseOnHover: true
+      }
+
         return (
-            <div>
-                <div>
-                    <Carousel
-                      autoPlay
-                      showThumbs={false}
-                      infiniteLoop={true}
-                      showStatus={false}
-                    >
-                      {content}
-                    </Carousel>
-                </div>
-            </div>
+            <Slider {...settings} style={{display: 'inline-grid !important'}}> 
+                {content}
+            </Slider>
         )
     }
 

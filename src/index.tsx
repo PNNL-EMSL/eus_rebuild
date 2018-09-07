@@ -55,6 +55,38 @@ const carouselInfos = [
     order: 2,
     display: true,
     __typename: 'CarouselInfoItem',
+  },
+  {
+    id: 3,
+    text: 'Third carousel item',
+    imgUrl: 'http://www.pngmart.com/files/4/Science-PNG-Picture.png',
+    order: 3,
+    display: false,
+    __typename: 'CarouselInfoItem',
+  },
+  {
+    id: 4,
+    text: 'First carousel item',
+    imgUrl: 'https://us-east-1.tchyn.io/snopes-production/uploads/2017/12/science-stock-image.png',
+    order: 4,
+    display: true,
+    __typename: 'CarouselInfoItem',
+  },
+  {
+    id: 5,
+    text: 'Second carousel item',
+    imgUrl: 'https://www.thegreatcourses.com/media/catalog/product/cache/1/image/800x600/0f396e8a55728e79b48334e699243c07/1/3/1350---base_image_1.1474391708.jpg',
+    order: 5,
+    display: true,
+    __typename: 'CarouselInfoItem',
+  },
+  {
+    id: 6,
+    text: 'Third carousel item',
+    imgUrl: 'http://www.pngmart.com/files/4/Science-PNG-Picture.png',
+    order: 6,
+    display: false,
+    __typename: 'CarouselInfoItem',
   }
 ];
 
