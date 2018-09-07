@@ -48,6 +48,7 @@ const app: string = css`
   flex: 1;
   flex-direction: column;
   height: 100%;
+  background-color: rgb(97, 98, 101);
 `;
 
 // const header: string = css`
