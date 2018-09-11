@@ -7,7 +7,7 @@ import PageBase from 'components/shared/pages/PageBase';
 
 const contentStyle: string = css`
   margin: 5px 20px 15px 100px;
-  max-width: 958px;
+  max-width: 1024px;
 `;
 
 export default abstract class PortalPageBase extends PageBase {

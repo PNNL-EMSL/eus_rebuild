@@ -4,9 +4,11 @@ import {Link} from 'react-router-dom';
 
 
 const quickLinks: string = css`
-  width: 12%;
+  width: 13%;
   display: inline-table;
   color: #F4AA00;
+  vertical-align: top;
+  padding-right: 5px
   `;
 
 export default  class QuickLinks extends Component<any, any> {

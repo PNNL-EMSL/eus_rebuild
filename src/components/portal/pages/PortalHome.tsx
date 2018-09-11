@@ -31,8 +31,8 @@ const tilesDiv:string = css`
 
 const announcementDiv = css`
   display: inline-block;
-  
-  
+  width: 87%;
+  float: right;
 `;
 
 const carouselDiv:string = css`
@@ -98,6 +98,9 @@ export default class UserHome extends PortalPageBase {
     const content = this.renderTile();
     return (
       <div>
+      <QuickLinks />
+        <div className={announcementDiv}>
+          
         <Query query={this.GET_MARQUEE_INFORMATION}>
           {({loading, error, data}) => {
             if (loading) {
@@ -119,9 +122,6 @@ export default class UserHome extends PortalPageBase {
             }
           }}
         </Query>
-        <div className={announcementDiv}>
-          <QuickLinks />
-          
           <div className={newsDiv}>
             <div className={orcid}>
               <p>

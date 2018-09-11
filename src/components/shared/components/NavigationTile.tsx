@@ -25,12 +25,15 @@ export default class NavigationTile extends Component<any, any> {
     this.props.history.push(this.props.path);
   }
 
+
   render() {
     const height = this.props.height;
     const width = this.props.width;
+    const background = this.props.background;
+    console.log('background', background);
 
     return (
-      <div className={faContainer} style={{height, width}} onClick={this.clickHandler}>
+      <div className={faContainer} style={{height, width, background}} onClick={this.clickHandler}>
         <i className={this.props.img}/>
         <p>{this.props.text}</p>
       </div>
