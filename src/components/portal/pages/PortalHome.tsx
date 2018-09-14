@@ -79,38 +79,72 @@ export default class UserHome extends PortalPageBase {
       }
     }
   `;
-
-  state = { visible: false }
   
   constructor(props) {
     super(props);
 
     this.renderTile = this.renderTile.bind(this);
-    this.showModal = this.showModal.bind(this);
-    this.handleOk = this.handleOk.bind(this);
-    this.handleCancel = this.handleCancel.bind(this);
   }
 
 
   summary = () => {
-    <p>Summary Required Page</p>
-  }
-  
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
-  }
-  
-  handleOk = (e) => {
-    console.log(e);
-    this.setState({
-      visible: false,
+    Modal.info({
+      title: 'Summary Required',
+      content: (
+        <div>
+          <p>Summary Goes Here</p>
+        </div>
+      ),
     });
   }
 
-  handleCancel = () => {
-    this.setState({ visible: false });
+  orcidId = () => {
+    Modal.info({
+      title: 'ORCID ID',
+      content: (
+        <div>
+          <p>An ORCID iD is now required for all users and must be included for the PI and co-PI
+              in the proposal form in order to submit. You don't need your number. To link an
+              ORCID iD with your user account:
+          </p>
+
+          <ul>
+            <li>
+              Click on the User Info tab above.
+            </li>
+            <li>
+              Indicate whether or not you authorize EMSL to post non-proprietary user
+              research awards, as well as other professional service activities, to your ORCID
+              record by clicking on the "Yes" or "No" buttons.
+            </li>
+            <li>
+              You will be redirected to the ORCID login page. If you already have an ID,
+              sign in using your ORCID credentials. Otherwise, click "Register now" to
+              create an account.
+            </li>
+            <li>
+              After signing into ORCID, click "Authorize", which will redirect you back
+              to the Portal and add the ID to the User Info page.
+            </li>
+            <li>
+              To save your settings, be sure to click on "Save User Now" in the top
+              right-hand corner.
+            </li>
+          </ul>
+        </div>
+      ),
+    });
+  }
+
+  training = () => {
+    Modal.info({
+      title: 'Training Due',
+      content: (
+        <div>
+          <p>What Training is due goes here</p>
+        </div>
+      ),
+    });
   }
 
 
@@ -156,47 +190,9 @@ export default class UserHome extends PortalPageBase {
             <div className={orcid}>
               <p><b>Announcements</b></p>
               <div>
-                <Button type="primary" onClick={this.showModal}>
-                  ORCID ID
-                </Button>
-                <Modal
-                  title="ORCID ID"
-                  visible={this.state.visible}
-                  onOk={this.handleOk}
-                  onCancel={this.handleCancel}
-                  footer={[
-                    <Button key="back" onClick={this.handleOk}>Return</Button>,
-                  ]}
-                >
-                <p>
-                    An ORCID iD is now required for all users and must be included for the PI and co-PI
-                    in the proposal form in order to submit. You don't need your number. To link an
-                    ORCID iD with your user account:
-                  </p>
-                  <ul>
-                    <li>
-                      Click on the User Info tab above.
-                    </li>
-                    <li>
-                      Indicate whether or not you authorize EMSL to post non-proprietary user
-                    research awards, as well as other professional service activities, to your ORCID
-                    record by clicking on the "Yes" or "No" buttons.
-                    </li>
-                    <li>
-                      You will be redirected to the ORCID login page. If you already have an ID,
-                    sign in using your ORCID credentials. Otherwise, click "Register now" to
-                    create an account.
-                    </li>
-                    <li>
-                      After signing into ORCID, click "Authorize", which will redirect you back
-                    to the Portal and add the ID to the User Info page.
-                    </li>
-                    <li>
-                      To save your settings, be sure to click on "Save User Now" in the top
-                    right-hand corner.
-                    </li>
-                  </ul>
-                </Modal>
+                <Button onClick={this.summary}>Summary Required</Button>
+                <Button onClick={this.orcidId}>ORCID</Button>
+                <Button onClick={this.training}>Training Due</Button>
               </div>
             </div>
           </div>
