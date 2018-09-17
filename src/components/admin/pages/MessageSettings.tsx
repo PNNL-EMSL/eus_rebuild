@@ -40,6 +40,7 @@ export default class MessageSettings extends AdminPageBase {
         id,
         text,
         imgUrl,
+        webUrl,
         order,
         display,
         

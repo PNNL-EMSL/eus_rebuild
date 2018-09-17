@@ -14,7 +14,7 @@ export default class CarouselContainer extends Component<any, any> {
       const content:JSX.Element[] = [];
       this.props.settings.filter((item) => (item.display)).sort((a,b) => (a.order - b.order)).forEach((item) => {
         if(item.display) {
-          content.push(<div> <CarouselItem src={item.imgUrl} text={item.text} /> </div>);
+          content.push(<div> <CarouselItem src={item.imgUrl} text={item.text} webUrl={item.webUrl}/> </div>);
         }
       });
 

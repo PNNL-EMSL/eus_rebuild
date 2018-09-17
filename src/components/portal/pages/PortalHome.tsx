@@ -44,7 +44,6 @@ const carouselDiv:string = css`
 `;
 
 
-
 export default class UserHome extends PortalPageBase {
 
   GET_USER_ROLE = gql`
@@ -73,6 +72,7 @@ export default class UserHome extends PortalPageBase {
         id,
         text,
         imgUrl,
+        webUrl,
         order,
         display,
         
@@ -188,11 +188,11 @@ export default class UserHome extends PortalPageBase {
         </Query>
           <div className={newsDiv}>
             <div className={orcid}>
-              <p><b>Announcements</b></p>
+              <p style={{ color: '#FFF', textAlign: 'center'}}><b>Announcements</b></p>
               <div>
-                <Button onClick={this.summary}>Summary Required</Button>
-                <Button onClick={this.orcidId}>ORCID</Button>
-                <Button onClick={this.training}>Training Due</Button>
+                <Button style={{ margin:3, background: '#e7f0ff', fontWeight: 'bold', textAlign: 'center'}} onClick={this.summary}>Summary Required</Button>
+                <Button style={{ margin:3, background: '#e7f0ff', fontWeight: 'bold', textAlign: 'center'}} onClick={this.orcidId}>Orcid® Info Needed</Button>
+                <Button style={{ margin:3, background: '#FFFFE7', fontWeight: 'bold', textAlign: 'center'}} onClick={this.training}>Training Due</Button>
               </div>
             </div>
           </div>
