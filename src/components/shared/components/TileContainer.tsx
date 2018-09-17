@@ -33,6 +33,7 @@ export default class TileContainer extends Component<any, any> {
               id={item.id}
               key={item.id}
               text={item.text}
+              innerText={item.innerText}
               img={item.img}
               path={item.path}
               height={item.height}
@@ -49,6 +50,7 @@ export default class TileContainer extends Component<any, any> {
               id={item.id}
               key={item.id}
               text={item.text}
+              innerText={item.innerText}
               img={item.img}
               path={item.path}
               height={item.height}

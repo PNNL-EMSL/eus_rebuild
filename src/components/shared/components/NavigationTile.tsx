@@ -36,6 +36,8 @@ export default class NavigationTile extends Component<any, any> {
       <div className={faContainer} style={{height, width, background}} onClick={this.clickHandler}>
         <i className={this.props.img}/>
         <p>{this.props.text}</p>
+        <br />
+        <p>{this.props.innerText}</p>
       </div>
     )
   }
