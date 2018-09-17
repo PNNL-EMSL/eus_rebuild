@@ -21,8 +21,13 @@ const marqueeEntry: string = css`
   border-top: solid darkgrey;
 `;
 
-const carousel: string = css`
-  width: 30%;
+// const carousel: string = css`
+//   width: 30%;
+// `;
+const carouselDiv:string = css`
+  width: 80%;
+  float: right;
+  
 `;
 
 export default class MessageSettings extends AdminPageBase {
@@ -146,7 +151,9 @@ export default class MessageSettings extends AdminPageBase {
                   <hr />
                   <div>
                     <CarouselSettingsContainer settings={carouselData} {...this.props}/>
-                    <CarouselContainer settings={carouselData} className={carousel}/>
+                    <div className={carouselDiv} >
+                      <CarouselContainer settings={carouselData} className={carouselDiv}/>
+                    </div>
                   </div>
                   <br/>
                 </div>

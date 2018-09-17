@@ -8,7 +8,6 @@ import PageBase from 'components/shared/pages/PageBase';
 const contentStyle: string = css`
   margin: 5px 20px 15px 30px;
   max-width: 958px;
-  display: inline-flex;
   vertical-align: top;
 `;
 
