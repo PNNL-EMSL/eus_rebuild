@@ -29,6 +29,7 @@
     "react": "^16.4.2",
     "react-anything-sortable": "^1.7.4",
     "react-apollo": "^2.1.11",
+    "react-bootstrap": "^0.32.4",
     "react-color": "^2.14.1",
     "react-data-grid": "^4.0.8",
     "react-data-grid-addons": "^4.0.8",
