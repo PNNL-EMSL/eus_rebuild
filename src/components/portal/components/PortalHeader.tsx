@@ -2,6 +2,9 @@ import React from 'react';
 import { css } from 'emotion';
 import styled from 'react-emotion';
 import HeaderBase from 'components/shared/components/HeaderBase';
+import { Link } from 'react-router-dom';
+
+
 
 import logo from 'images/logo_white.png';
 
@@ -26,10 +29,26 @@ const logout: string = css`
   width: 72%;
 `;
 
+const headerLinks: string = css`
+  color: #F4AA00;
+`;
+
+const dividers: string = css`
+  color: #F4AA00;
+  margin: 10px;
+  display: inline;
+`;
+
+
+
+
 export default class PortalHeader extends HeaderBase {
   constructor(props) {
     super(props);
+    
+
   }
+  
 
   renderContent(data) {
     console.log('renderContent', this.props);
@@ -43,10 +62,12 @@ export default class PortalHeader extends HeaderBase {
               data.CurrentUser.length !== 0 ? (
                 <div className={logout}>
                   <div>Welcome {data.CurrentUser[0].userName}</div>
-
-                  # Change the page
-                  <a href="#" onClick={this.props.logoutHandler}>My Profile</a>
-                  <a href="#" onClick={this.props.logoutHandler}>Sign out</a>
+                  
+                  <Link to="/Portal/userInfo" className={headerLinks}>My profile</Link>
+                  <p className={dividers}>|</p>
+                  <Link to="/Portal/ProvideFeedback" className={headerLinks}>Provide feedback</Link>
+                  <p className={dividers}>|</p>
+                  <a href="#" className={headerLinks} onClick={this.props.logoutHandler}>Sign out</a>
                 </div>
               ) : (<div />)
             }

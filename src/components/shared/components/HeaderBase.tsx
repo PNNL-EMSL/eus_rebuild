@@ -39,7 +39,7 @@ export default abstract class HeaderBase extends Component<any, any> {
   }
 
   abstract renderContent(data);
-  
+
   render() {
     console.log('headerBase', this.props);
     return (
