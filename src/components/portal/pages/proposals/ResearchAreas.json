@@ -1,0 +1,13 @@
+{"ResearchAreas": [
+  {"value": "materialsSciences", "label": "Materials Sciences (incl. condensed matter phys. & materials chem.)"},
+  {"value": "physics", "label": "Physics (excludes condensed matter physics)"},
+  {"value": "chemistry", "label": "Chemistry (excludes materials chemistry)"},
+  {"value": "polymers", "label": "Polymers"},
+  {"value": "medicalApplications", "label": "Medical Applications"},
+  {"value": "biological", "label": "Biological and Life Sciences (excludes medial applications)"},
+  {"value": "earthSciences", "label": "Earth Sciences"},
+  {"value": "environmentalSciences", "label": "Environmental Sciences"},
+  {"value": "optics", "label": "Optics"},
+  {"value": "engineering", "label": "Engineering"},
+  {"value": "other", "label": "Other"}
+]}

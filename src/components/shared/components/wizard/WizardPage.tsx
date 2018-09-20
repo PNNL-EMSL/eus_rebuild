@@ -45,13 +45,6 @@ export default class WizardPage extends React.Component<any, any> {
     onChange: PropTypes.func       // handler when any data is changed on the page;  it passes the new data and validation state
   };
 
-  /**
-   * Child classes should override any logic that needs to run before onNext function is completed
-   * @returns {*}
-   */
-  beforeNext = () => {
-    console.log('do the thing');
-  };
 
   /**
    * Child classes should override
@@ -61,34 +54,20 @@ export default class WizardPage extends React.Component<any, any> {
     return (
       <div/>
     );
-  };
-
-  /**
-   *
-   * @returns string
-   */
-  getStepName() {
-    return '';
-  };
-
-  /**
-   *
-   * @returns string[]
-   */
-  getStepErrors() {
-    return this.state.errors;
   }
-
 
   render() {
     return (
       <div className={page}>
+
         <div className={titleBox}>
-          <div className={css`flex: 1;`}>
-            <div className={title}>{this.props.title}</div>
-            <div>{this.props.description}</div>
+          <div className="titleRow">
+            <div className={css`flex: 1;`}>
+              <div className={title}>{this.props.title}</div>
+              <div>{this.props.description}</div>
+            </div>
+            <i className={cx(icon, 'fa fa-cogs fa-3x')}/>
           </div>
-          <i className={cx(icon, 'fa fa-cogs fa-3x')}/>
         </div>
 
         <div className={formBox}>

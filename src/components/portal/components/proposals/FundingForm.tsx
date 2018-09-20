@@ -37,7 +37,7 @@ export default class FundingForm extends WizardPage {
   };
 
   render() {
-
+    console.log('funding');
     return(
       <div>
         <div>Typeahead for funding sources, need to be able to display multiple selections.</div>
