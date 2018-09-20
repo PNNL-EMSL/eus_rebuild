@@ -58,6 +58,10 @@ export default class Wizard extends React.Component<any, any> {
     return false;
   }
 
+  hasStepComplete(stepName) {
+    return false;
+  }
+  
   /**
    * Children should override to provide the list of pages available to the wizard.  This lets them
    * dynamically change which pages are available.
@@ -88,6 +92,15 @@ export default class Wizard extends React.Component<any, any> {
     return stepErrors;
   }
 
+  getStepCompletes() {
+    const stepCompletes = {};
+    const stepsList = this.getSteps();
+    stepsList.forEach(step => {
+      stepCompletes[step] = this.hasStepComplete(step);
+    });
+    return stepCompletes;
+  }
+  
   /**
    * Children can override to reset other parts of the state when wizard is re-opened
    */
@@ -163,7 +176,6 @@ export default class Wizard extends React.Component<any, any> {
 
   renderCurrentPage(pages) {
     // Create the current page component and pass it the current data and change handlers
-    console.log('this.getChildProps()', this.getChildProps());
     return (
       <div>
         { React.createElement(pages[this.state.currentPageIndex].component, this.getChildProps()) }
@@ -171,28 +183,30 @@ export default class Wizard extends React.Component<any, any> {
     );
   }
 
-  renderSteps(pages, stepErrors) {
+  renderSteps(pages, stepErrors, stepCompletes) {
     const stepsList = this.getSteps();
     const lastPage = this.state.currentPageIndex === (pages.length - 1) ? true : false;
 
     if (stepsList.length > 0) {
-      console.log('renderSteps', pages, this.state.currentPageIndex)
       const currentStep = pages[this.state.currentPageIndex].stepPos;
-      // const formChanged = pages[this.state.currentPageIndex].updated;
       const steps = stepsList.map((step, index) => {
-        let stepStatus = 'process';
+        let stepStatus = '';
+        if(currentStep !== index) {
+          stepStatus = 'wait';
+        }
         const lastStep = index === (stepsList.length - 1) ? true : false;
         if (stepErrors[step]) {
           stepStatus = 'error';
         } else if (lastPage && lastStep) {
           // if we are on the last page and there is no error, then we can set the finished status
           stepStatus = 'finish';
-          console.log('');
+        // } else if (stepCompletes[step]){
+        //   console.log('yay!');
         }
         const navToStep = () => {
           this.setState({currentPageIndex: index});
         };
-        // console.log('step info', currentStep, step, index);
+        // console.log('step', step, index, 'stepStatus:', stepStatus);
         return (
           <Step key={step} title={step} status={stepStatus} onClick={navToStep}/>
         );
@@ -210,8 +224,8 @@ export default class Wizard extends React.Component<any, any> {
   renderModal() {
     const pages = this.getPages();
     const stepErrors = this.getStepErrors();
+    const stepCompletes = this.getStepCompletes();
     const canFinish = this.canFinish(stepErrors);
-    console.log('new state...?');
 
     return(
       <div>
@@ -219,7 +233,7 @@ export default class Wizard extends React.Component<any, any> {
           <div>
             {this.props.title}
           </div>
-          {this.renderSteps(pages, stepErrors)}
+          {this.renderSteps(pages, stepErrors, stepCompletes)}
         </div>
         <hr />
         <div className="body">

@@ -4,6 +4,7 @@ import AntDesignSelect from 'components/shared/components/AntDesignSelect';
 import ProposalTypeSelect from 'components/portal/pages/proposals/ProposalTypeSelect';
 import ResearchAreas from 'components/portal/pages/proposals/ResearchAreas.json';
 import ProposalTypes from 'components/portal/pages/proposals/ProposalTypes.json';
+import ProposalValidator from 'components/shared/components/validator/ProposalValidator';
 import {DatePicker, Input} from 'antd';
 
 const TextArea = Input.TextArea;
@@ -28,15 +29,28 @@ export default class DetailsForm extends WizardPage {
   }
 
   validatePage = (data) => {
-    let valid = false;
-    // Do the validation logic
-    valid = true;
-    return valid;
+    // let valid = false;
+    // if(
+    //   (this.state.researchArea === undefined) ||
+    //   (this.state.researchArea === 'other' && this.state.researchAreaOther === '')
+    // ) {
+    //   // Research area not defined
+    //   valid = false;
+    // }
+    // // Do the validation logic
+    //
+    const Validator = new ProposalValidator();
+    const errors = Validator.doValidate(data);
+    console.log('ERRORS IN DETAILS FORM', errors.length);
+
+    // valid = true;
+    return true;
   };
 
   beforeNext = () => {
     // push the data to a place? unsure what will be needed here
     console.log(this.props);
+    this.validatePage(this.state);
     this.props.updateDetailsData(this.state);
   };
   

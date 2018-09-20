@@ -55,7 +55,9 @@ class NewProposalWizard extends Wizard {
       },
       participantsData: {},
       fundingData: {},
-      resourcesData: {}
+      resourcesData: {},
+      proposalErrors: {},
+      proposalCompletes: {}
     }
     this.updateDetailsData = this.updateDetailsData.bind(this);
   }
@@ -121,6 +123,13 @@ class NewProposalWizard extends Wizard {
       }
     }
     return hasError;
+  }
+  
+  hasStepComplete(stepName) {
+    // let isComplete = false;
+    //
+    // const completes = this.state.proposalCompletes;
+    return true;
   }
 
 }
