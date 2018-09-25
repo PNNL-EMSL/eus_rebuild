@@ -3,30 +3,28 @@ import { css } from 'emotion';
 import styled from 'react-emotion';
 import HeaderBase from 'components/shared/components/HeaderBase';
 import { Link } from 'react-router-dom';
-
-
-
 import logo from 'images/logo_white.png';
+import polygon from 'images/portal_icon_no_text.png'
 
-const title: string = css`
-  font-weight: 800;
-  font-size: 28px;
-  text-shadow: 2px 2px 8px #aaa;
-  width: auto;
-`;
+// const title: string = css`
+//   font-weight: 800;
+//   font-size: 28px;
+//   text-shadow: 2px 2px 8px #aaa;
+//   width: auto;
+// `;
 
 const Logo = styled('img')`
   height: 80px;
 `;
 
-const loginHeader: string = css`
-  display: flex;
-`;
+// const loginHeader: string = css`
+//   display: flex;
+// `;
 
 const logout: string = css`
-  text-align: right;
-  float: right;
-  width: 72%;
+  position: absolute;
+  left: 775px;
+  margin-top: 25px;
 `;
 
 const headerLinks: string = css`
@@ -39,8 +37,43 @@ const dividers: string = css`
   display: inline;
 `;
 
+const Polygon = styled('img')`
+position: absolute;
+top: 0px;
+left: 12%;
+height: 91px;
+width: 530px;
+`;
 
+const headerSpan: string = css`
+  display: flex;
+`;
 
+const headerText: string = css`
+  font-size: 39px;
+  width: 500px;
+  z-index: 3;
+  position: absolute;
+  left: 357px;
+  top: 20px;
+  color: #53682B;
+`;
+
+const userText: string = css`
+  font-size: 20px;
+  text-align: center;
+  color: white;
+  font-style: italic;
+`;
+// const PolyText: string = css`
+//   position: absolute;
+//   top: 50%;
+//   left: 50%;
+//   transform: translate( -50%, -50% );
+//   text-align: center;
+//   color: white;
+//   font-weight: bold;
+// `;
 
 export default class PortalHeader extends HeaderBase {
   constructor(props) {
@@ -54,14 +87,14 @@ export default class PortalHeader extends HeaderBase {
     console.log('renderContent', this.props);
     return (
       <div>
-        <span>
+        <span className={headerSpan}>
           <Logo src={logo} alt="logo"/>
-          <span className={loginHeader}>
-            <div className={title}>USER PORTAL</div>
+          <Polygon src={polygon} alt="polygon" />
+          <p className={headerText}>USER PORTAL</p>  
             {
               data.CurrentUser.length !== 0 ? (
                 <div className={logout}>
-                  <div>Welcome {data.CurrentUser[0].userName}</div>
+                  <div className={userText}>Welcome {data.CurrentUser[0].userName}</div>
                   
                   <Link to="/Portal/userInfo" className={headerLinks}>My profile</Link>
                   <p className={dividers}>|</p>
@@ -72,7 +105,6 @@ export default class PortalHeader extends HeaderBase {
               ) : (<div />)
             }
           </span>
-        </span>
       </div>
     );
   }

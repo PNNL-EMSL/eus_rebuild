@@ -8,9 +8,10 @@ const header: string = css`
   display: flex;
   flex: 0 0 auto;
   flex-direction: row;
-  background-color: rgb(113, 149, 0);
+  background-color: #53682B;
   align-items: center;
   max-width: 1078px;
+  border-bottom: white solid 2px;
 `;
 
 const titleContainer: string = css`
@@ -18,7 +19,6 @@ const titleContainer: string = css`
   flex: 1;
   flex-direction: column;
   margin-left: 10px;
-  margin-top: -15px;
 `;
 
 export default abstract class HeaderBase extends Component<any, any> {
