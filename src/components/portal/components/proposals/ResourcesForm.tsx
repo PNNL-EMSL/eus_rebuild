@@ -11,6 +11,10 @@ export default class ResourcesForm extends WizardPage {
     super(props);
   }
 
+  componentWillUnmount() {
+    this.beforeNext();
+  }
+  
   validatePage = (data) => {
     let valid = false;
     // Do the validation logic

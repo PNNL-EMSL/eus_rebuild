@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import { Steps } from 'antd';
+import { Steps, Popover } from 'antd';
 
 // import { cx, css } from 'emotion';
 
@@ -68,7 +68,7 @@ export default class Wizard extends React.Component<any, any> {
    * @returns {Array[Object]}
    */
   getPages() {
-    const pages:Array<{component, id, stepPos}> = [];
+    const pages:any[] = [];
     return pages;
   }
 
@@ -111,14 +111,15 @@ export default class Wizard extends React.Component<any, any> {
     });
   }
 
-  canFinish(stepErrors) : boolean {
-    let canFinish = true;
-    Object.keys(stepErrors).forEach(step => {
-      if (stepErrors[step]) {
-        canFinish = false;
-      }
-    });
-    return canFinish;
+  canFinish(stepCompletes) : boolean {
+    return this.getPages().length === stepCompletes.length;
+    // let canFinish = true;
+    // Object.keys(stepErrors).forEach(step => {
+    //   if (stepErrors[step]) {
+    //     canFinish = false;
+    //   }
+    // });
+    // return canFinish;
   }
 
   canGoBack() {
@@ -184,35 +185,65 @@ export default class Wizard extends React.Component<any, any> {
   }
 
   renderSteps(pages, stepErrors, stepCompletes) {
+    const customDot = (dot, {status, index}) => {
+      if(stepTooltips[index]) {
+        const innerContent:any[] = [];
+        stepTooltips[index].forEach((item) => {
+          innerContent.push(<div>{item}</div>)
+        });
+        const content = <div>{innerContent}</div>;
+        return (<Popover content={<span>{content}</span>}>
+          {dot}
+        </Popover>);
+      } else {
+        return <span>{dot}</span>;
+      }
+    };
     const stepsList = this.getSteps();
+    const stepTooltips:any[] = [];
     const lastPage = this.state.currentPageIndex === (pages.length - 1) ? true : false;
 
     if (stepsList.length > 0) {
       const currentStep = pages[this.state.currentPageIndex].stepPos;
       const steps = stepsList.map((step, index) => {
         let stepStatus = '';
+        const tooltipArray:any[] = [];
+        let stepTooltip:any = '';
         if(currentStep !== index) {
           stepStatus = 'wait';
         }
         const lastStep = index === (stepsList.length - 1) ? true : false;
         if (stepErrors[step]) {
           stepStatus = 'error';
+          stepErrors[step].forEach((item, errIndex) => {
+            if(errIndex > 2) {
+              return;
+            }
+            tooltipArray.push(item.tooltip);
+          });
+          stepTooltip = tooltipArray.join('</div><div>');
+          if(tooltipArray.length < stepErrors[step].length) {
+            tooltipArray.push('and '+(stepErrors[step].length - tooltipArray.length).toString()+' more errors...');
+          }
+          stepTooltips[index] = tooltipArray;
         } else if (lastPage && lastStep) {
           // if we are on the last page and there is no error, then we can set the finished status
           stepStatus = 'finish';
-        // } else if (stepCompletes[step]){
-        //   console.log('yay!');
+        } else if (stepCompletes[step]){
+          stepStatus = 'finish';
         }
         const navToStep = () => {
+          // console.log('getPages()[currentPageIndex]',this.getPages()[this.state.currentPageIndex].component);
+          // this.getPages()[this.state.currentPageIndex].component.beforeNext();
           this.setState({currentPageIndex: index});
         };
-        // console.log('step', step, index, 'stepStatus:', stepStatus);
+        console.log('step', step, index, 'stepStatus:', stepStatus, 'tooltip:', stepTooltip);
         return (
-          <Step key={step} title={step} status={stepStatus} onClick={navToStep}/>
+          <Step key={step} title={step} status={stepStatus} tooltip={stepTooltip} onClick={navToStep}/>
         );
       });
       return (
-        <Steps size="small" current={currentStep}>
+        <Steps size="small" current={currentStep} progressDot = {customDot}>
           {steps}
         </Steps>
       );
@@ -225,14 +256,14 @@ export default class Wizard extends React.Component<any, any> {
     const pages = this.getPages();
     const stepErrors = this.getStepErrors();
     const stepCompletes = this.getStepCompletes();
-    const canFinish = this.canFinish(stepErrors);
+    const canFinish = this.canFinish(stepCompletes);
 
     return(
       <div>
         <div className="title">
-          <div>
+          <h1>
             {this.props.title}
-          </div>
+          </h1>
           {this.renderSteps(pages, stepErrors, stepCompletes)}
         </div>
         <hr />

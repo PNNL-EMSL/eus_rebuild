@@ -1,6 +1,10 @@
 import React from 'react';
 import WizardPage from 'components/shared/components/wizard/WizardPage';
+import AntDesignSelect from 'components/shared/components/AntDesignSelect';
+import FundingSources from 'components/portal/pages/proposals/FundingSources.json';
+import {Input, Radio} from 'antd';
 
+const RadioGroup = Radio.Group;
 
 export default class FundingForm extends WizardPage {
   static defaultProps = {
@@ -10,39 +14,76 @@ export default class FundingForm extends WizardPage {
 
   constructor(props) {
     super(props);
+    this.state = this.props.fundingData;
+    props.wizardInstance.beforeNext = this.beforeNext;
+
+    this.handleFundingChange = this.handleFundingChange.bind(this);
+    this.handleFundingOther = this.handleFundingOther.bind(this);
+    this.handleWorkPackageChange = this.handleWorkPackageChange.bind(this);
+  }
+
+  componentWillUnmount() {
+    this.beforeNext();
   }
 
   validatePage = (data) => {
-    let valid = false;
-    // Do the validation logic
-    valid = true;
-    return valid;
+    const errors = this.props.Validator.doValidate(data, 'fundingForm');
+    const existingErrors = this.props.proposalErrors;
+    existingErrors.fundingErrors = errors;
+    this.props.updateErrors(existingErrors);
+
+    this.props.updateComplete(errors.length === 0);
   };
 
   beforeNext = () => {
-    // push the data to a place? unsure what will be needed here
+    console.log('new state', this.props, this.state);
+    this.validatePage(this.state);
+    this.props.updateData('fundingData', this.state);
   };
 
-  renderForm() {
-    const data = this.props.data;
-    return (
-      <div>
-        <FundingForm data={data}/>
-      </div>
-    )
+  handleFundingChange(fundingSources) {
+    this.setState({fundingSources});
+  }
+  handleFundingOther(e) {
+    const fundingOther = e.target.value;
+    this.setState({fundingOther});
+  }
+  handleWorkPackageChange(e) {
+    const fundingWorkPackage = e.target.value;
+    this.setState({fundingWorkPackage});
   }
 
-  getStepName() {
-    return 'Funding';
-  };
-
   render() {
-    console.log('funding');
+    console.log('fundingState:', this.state);
+    const data = this.state;
+    // NOTES: BER asks "Are you the PI on the BER grant funding this work?"
+    //        Other asks to specify
     return(
       <div>
-        <div>Typeahead for funding sources, need to be able to display multiple selections.</div>
-        <div>Use http://ericgio.github.io/react-bootstrap-typeahead/ (https://github.com/ericgio/react-bootstrap-typeahead) for typeahead</div>
-        <div>If Other is one of those selected above ^, need to have an input to capture the other.</div>
+        <AntDesignSelect
+          label='Primary Research Area'
+          placeholder="Select primary research area..."
+          multiple={true}
+          optionList={FundingSources.FundingSources}
+          value={data.fundingSources}
+          otherValue={data.fundingOther}
+          handleChange={this.handleFundingChange}
+          handleInput={this.handleFundingOther}
+          required={true}
+        />
+        {data.fundingSources.includes('doe_ber') ? (
+          <div>
+            <label>Are you the PI on the BER grant funding this work?</label>
+            <RadioGroup>
+              <Radio value={1}>Yes</Radio>
+              <Radio value={0}>No</Radio>
+            </RadioGroup>
+          </div>
+        ):(<div />)}
+        <div>
+          <label>Work Package #</label>
+          <Input defaultValue={data.fundingWorkPackage} onChange={this.handleWorkPackageChange}/>
+        </div>
       </div>
     );
   }

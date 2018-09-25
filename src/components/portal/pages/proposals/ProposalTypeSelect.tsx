@@ -25,7 +25,7 @@ export default class ProposalTypeSelect extends Component<any, any> {
 
     this.state = {
       displayGeneral: props.value === "general",
-      displayPayQuestion: props.pay === 0,
+      displayPayQuestion: props.pay,
       displayPartner: props.value === "partner"
     };
     this.handleProposalTypeChange = this.handleProposalTypeChange.bind(this);
@@ -47,11 +47,18 @@ export default class ProposalTypeSelect extends Component<any, any> {
   }
 
   handleNoPay(e) {
-    this.setState({displayPayQuestion: e.target.value === 0});
+    this.setState({displayPayQuestion: e.target.value});
     this.props.handleProposalPayChange(e.target.value);
+  }
+  
+  handleRestricted(e) {
+    this.props.handleProposalRestrictedChange(e.target.value);
   }
 
   handleReason(e) {
+    if(e.target.value === 'rapid') {
+      // display reminder to provide justification for requesting RAPID access in proposed research file
+    }
     this.props.handleProposalReasonChange(e.target.value);
   }
 
@@ -85,18 +92,28 @@ export default class ProposalTypeSelect extends Component<any, any> {
     content.push(
       <div className={questionGrouping}>
         <label>Are you planning to pay for any technical support needed?</label>
-        <RadioGroup value={this.props.pay} className={radioGroupStyling} onChange={this.handleNoPay}>
+        <RadioGroup defaultValue={this.props.pay} className={radioGroupStyling} onChange={this.handleNoPay}>
           <Radio value={1}>Yes</Radio>
           <Radio value={0}>No</Radio>
         </RadioGroup>
       </div>
     );
-    if(this.state.displayPayQuestion) {
+    if(this.state.displayPayQuestion === 1) {
+      content.push(
+        <div className={questionGrouping}>
+          <label>Is this business sensitive or restricted from public dissemination?</label>
+          <RadioGroup defaultValue={this.props.restricted} className={radioGroupStyling} onChange={this.handleRestricted}>
+            <Radio value={1}>Yes</Radio>
+            <Radio value={0}>No</Radio>
+          </RadioGroup>
+        </div>
+      )
+    } else if(this.state.displayPayQuestion === 0) {
       content.push(
         <div className={questionGrouping}>
           <label>Please indicate any special circumstances by selecting one of the options below:</label>
           <div>
-            <RadioGroup value={this.props.reason} className={radioGroupStyling} onChange={this.handleReason}>
+            <RadioGroup defaultValue={this.props.reason} className={radioGroupStyling} onChange={this.handleReason}>
               <Radio className={verticalRadio} value="N/A">Not applicable (will be held until the September panel review to compete for technical support)</Radio>
               <Radio className={verticalRadio} value="rapid">Research related to urgent deadlines/deliverables or small proof-of-principle request</Radio>
               <Radio className={verticalRadio} value="non_emsl">Requesting resources that are owned or co-owned by non-EMSL programs</Radio>
@@ -114,7 +131,7 @@ export default class ProposalTypeSelect extends Component<any, any> {
     return(
       <div className={questionGrouping}>
         <label style={{verticalAlign: "top"}}>Please select the Science Theme that best fits your proposed research.</label>
-        <RadioGroup value={this.props.theme} className={radioGroupStyling} onChange={this.handleTheme}>
+        <RadioGroup defaultValue={this.props.theme} className={radioGroupStyling} onChange={this.handleTheme}>
           <Radio className={verticalRadio} value="bioSciences">Biological Sciences</Radio>
           <Radio className={verticalRadio} value="enviroSciences">Environmental Sciences</Radio>
           <Radio className={verticalRadio} value="other">Other</Radio>

@@ -4,10 +4,10 @@ import AntDesignSelect from 'components/shared/components/AntDesignSelect';
 import ProposalTypeSelect from 'components/portal/pages/proposals/ProposalTypeSelect';
 import ResearchAreas from 'components/portal/pages/proposals/ResearchAreas.json';
 import ProposalTypes from 'components/portal/pages/proposals/ProposalTypes.json';
-import ProposalValidator from 'components/shared/components/validator/ProposalValidator';
-import {DatePicker, Input} from 'antd';
+import {DatePicker, Input, Radio} from 'antd';
 
 const TextArea = Input.TextArea;
+const RadioGroup = Radio.Group;
 
 export default class DetailsForm extends WizardPage {
   static defaultProps = {
@@ -22,10 +22,20 @@ export default class DetailsForm extends WizardPage {
     props.wizardInstance.beforeNext = this.beforeNext;
     this.handleAreaChange = this.handleAreaChange.bind(this);
     this.handleAreaOther = this.handleAreaOther.bind(this);
+    this.handleTitleChange = this.handleTitleChange.bind(this);
+    this.handleAbstractChange = this.handleAbstractChange.bind(this);
     this.handleProposalPayChange = this.handleProposalPayChange.bind(this);
     this.handleProposalTypeChange = this.handleProposalTypeChange.bind(this);
     this.handleProposalThemeChange = this.handleProposalThemeChange.bind(this);
     this.handleProposalReasonChange = this.handleProposalReasonChange.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleNsfChange = this.handleNsfChange.bind(this);
+    this.handleEmslChange = this.handleEmslChange.bind(this);
+    this.handlePocChange = this.handlePocChange.bind(this);
+  }
+
+  componentWillUnmount() {
+    this.beforeNext();
   }
 
   validatePage = (data) => {
@@ -39,19 +49,20 @@ export default class DetailsForm extends WizardPage {
     // }
     // // Do the validation logic
     //
-    const Validator = new ProposalValidator();
-    const errors = Validator.doValidate(data);
-    console.log('ERRORS IN DETAILS FORM', errors.length);
+    
+    const errors = this.props.Validator.doValidate(data, 'detailsForm');
+    const existingErrors = this.props.proposalErrors;
+    existingErrors.detailsErrors = errors;
+    this.props.updateErrors(existingErrors);
 
-    // valid = true;
-    return true;
+    this.props.updateComplete(errors.length === 0);
   };
 
   beforeNext = () => {
     // push the data to a place? unsure what will be needed here
-    console.log(this.props);
+    console.log('new state', this.props, this.state);
     this.validatePage(this.state);
-    this.props.updateDetailsData(this.state);
+    this.props.updateData('detailsData', this.state);
   };
   
   handleAreaChange(researchArea) {
@@ -62,22 +73,54 @@ export default class DetailsForm extends WizardPage {
     this.setState({researchAreaOther});
   }
 
+  handleTitleChange(e) {
+    const title = e.target.value;
+    this.setState({title});
+  }
+
+  handleAbstractChange(e) {
+    const abstract = e.target.value;
+    this.setState({abstract});
+  }
+
   handleProposalTypeChange(proposalType) {
-    this.setState({proposalType})
+    this.setState({proposalType});
   }
 
   handleProposalPayChange(proposalPay) {
-    this.setState({proposalPay})
+    this.setState({proposalPay});
+  }
+
+  handleProposalRestrictedChange(proposalRestricted) {
+    this.setState({proposalRestricted});
   }
 
   handleProposalThemeChange(proposalTheme) {
-    this.setState({proposalTheme})
+    this.setState({proposalTheme});
   }
 
   handleProposalReasonChange(proposalReason) {
-    this.setState({proposalReason})
+    this.setState({proposalReason});
   }
 
+  handleDateChange(startDate) {
+    console.log(startDate);
+    this.setState({startDate});
+  }
+
+  handleNsfChange(e) {
+    const nsfRequest = e.target.value;
+    this.setState({nsfRequest});
+  }
+
+  handleEmslChange(e) {
+    const emslStaff = e.target.value;
+    this.setState({emslStaff});
+  }
+
+  handlePocChange(labPOC) {
+    this.setState({labPOC});
+  }
 
   renderForm() {
     const data = this.props.data;
@@ -91,7 +134,6 @@ export default class DetailsForm extends WizardPage {
 
   render() {
     const data = this.state;
-    console.log('new state!', this.state);
     const dateFormat = 'MMMM DD, YYYY';
     return(
       <div>
@@ -100,17 +142,18 @@ export default class DetailsForm extends WizardPage {
           placeholder="Select primary research area..."
           optionList={ResearchAreas.ResearchAreas}
           value={data.researchArea}
+          otherValue={data.researchOther}
           handleChange={this.handleAreaChange}
           handleInput={this.handleAreaOther}
           required={true}
         />
         <div>
           <label>Title</label>
-          <TextArea value={data.title} autosize />
+          <TextArea defaultValue={data.title} onChange={this.handleTitleChange} autosize />
         </div>
         <div>
           <label>Abstract (approx 500 words)</label>
-          <TextArea value={data.abstract} autosize />
+          <TextArea defaultValue={data.abstract} onChange={this.handleAbstractChange} autosize />
         </div>
         <div>
           <label>Proposed Research (pdf doc)</label>
@@ -124,7 +167,9 @@ export default class DetailsForm extends WizardPage {
           pay={data.proposalPay}
           theme={data.proposalTheme}
           reason={data.proposalReason}
+          restricted={data.proposalRestricted}
           handleProposalTypeChange={this.handleProposalTypeChange}
+          handleProposalRestrictedChange={this.handleProposalRestrictedChange}
           handleProposalPayChange={this.handleProposalPayChange}
           handleProposalThemeChange={this.handleProposalThemeChange}
           handleProposalReasonChange={this.handleProposalReasonChange}
@@ -132,12 +177,27 @@ export default class DetailsForm extends WizardPage {
         />
         <div>
           <label>Preferred Start Date</label>
-          <DatePicker defaultValue={data.startDate} format={dateFormat}/>
+          <DatePicker defaultValue={data.startDate} format={dateFormat} onChange={this.handleDateChange}/>
         </div>
         <hr />
-        <div>Proposal associated with NSFSFR? (checkbox)</div>
-        <div>Will you need assistance of emsl staff? (checkbox)</div>
-        <div>Lab POC</div>
+        <div>
+          <label>Is this proposal associated with a National Science Foundation Supplemental Funding Request?</label>
+          <RadioGroup defaultValue={data.nsfRequest} onChange={this.handleNsfChange}>
+            <Radio value={1}>Yes</Radio>
+            <Radio value={0}>No</Radio>
+          </RadioGroup>
+        </div>
+        <div>
+          <label>Will you desire the assistance of EMSL Staff in obtaining and interpreting results?</label>
+          <RadioGroup defaultValue={data.emslStaff} onChange={this.handleEmslChange}>
+            <Radio value={1}>Yes</Radio>
+            <Radio value={0}>No</Radio>
+          </RadioGroup>
+        </div>
+        <div>
+          <label>Laboratory Staff Contact</label>
+          <Input defaultValue={data.labPOC} onChange={this.handlePocChange}/>
+        </div>
       </div>
     )
   }

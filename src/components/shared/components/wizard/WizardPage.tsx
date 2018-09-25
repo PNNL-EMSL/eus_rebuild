@@ -45,7 +45,6 @@ export default class WizardPage extends React.Component<any, any> {
     onChange: PropTypes.func       // handler when any data is changed on the page;  it passes the new data and validation state
   };
 
-
   /**
    * Child classes should override
    * @returns {*}

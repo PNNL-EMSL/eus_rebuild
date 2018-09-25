@@ -2,16 +2,26 @@ import React from 'react';
 import PageBase from 'components/shared/pages/PageBase';
 import ProposalLoad from 'components/portal/pages/proposals/Load';
 import ProposalNew from 'components/portal/pages/proposals/New';
+import { Button } from 'antd';
 
 export default class ProposalHome extends PageBase {
+  constructor(props) {
+    super (props);
+
+    this.navigateToNew = this.navigateToNew.bind(this);
+  }
+
+  navigateToNew() {
+    this.props.history.push('/Portal/proposals/new');
+  }
 
   renderGetStarted() {
     return (
       <div>
         <h1><strong>Get Started</strong></h1>
         <p>Click the "Create New Proposal" button to the right to start filling out a new proposal.</p>
+        <Button type="primary" onClick={this.navigateToNew}>Create New Proposal</Button>
 
-        // Make as pop-up and double check that page is up-to-date
         <p>Note: Submission of a proposal implies your agreement to the <a href="https://www.emsl.pnl.gov/using-emsl/terms.shtml">Terms and Conditions for Using EMSL</a></p>
       </div>
     );
@@ -33,8 +43,7 @@ export default class ProposalHome extends PageBase {
   renderNewProposal() {
     return (
       <div>
-        Creating new Proposal
-        <ProposalNew />
+        <ProposalNew {...this.props} />
       </div>
     )
   }
@@ -43,7 +52,7 @@ export default class ProposalHome extends PageBase {
     return (
       <div>
         Loading proposal {id}
-        <ProposalLoad id={id}/>
+        <ProposalLoad id={id} {...this.props} />
       </div>
     )
   }

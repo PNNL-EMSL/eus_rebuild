@@ -5,15 +5,21 @@ const Option = Select.Option;
 const OptGroup = Select.OptGroup;
 
 export default class AntDesignSelect extends Component<any, any> {
+
+  static defaultProps = {
+    multiple: false
+  };
+
   constructor(props) {
     super(props);
 
-    this.state = { displayOther: props.value === "other" };
+    this.state = { displayOther: ((!props.multiple && props.value === "other") || (props.multiple && props.value.includes("other"))) };
     this.handleChange = this.handleChange.bind(this);
+    console.log('reconstructed');
   }
 
   handleChange(value) {
-    if(value === 'other') {
+    if((!this.props.multiple && value === "other") || (this.props.multiple && value.includes("other"))) {
       this.setState({displayOther: true});
     } else {
       this.setState({displayOther: false});
@@ -45,6 +51,7 @@ export default class AntDesignSelect extends Component<any, any> {
   render() {
     const options = this.renderOptions();
     const displayOther = this.state.displayOther;
+    console.log('rerendered');
     return(
       <div>
         <label>{this.props.label}</label>
@@ -52,6 +59,7 @@ export default class AntDesignSelect extends Component<any, any> {
           style={{width: "75%", float: "right"}}
           placeholder = {this.props.placeholder}
           onChange={this.handleChange}
+          mode={this.props.multiple ? 'multiple' : 'default'}
           defaultValue={this.props.value}
         >
           {options}
@@ -61,6 +69,7 @@ export default class AntDesignSelect extends Component<any, any> {
             style={{width: "50%", float: "right", margin:"0 25%"}}
             placeholder="Please Specify..."
             onChange={this.props.handleInput}
+            defaultValue={this.props.otherValue}
           />
         ) : (<div />)}
       </div>
