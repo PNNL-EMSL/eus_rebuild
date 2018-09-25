@@ -20,6 +20,7 @@ import PortalHome from 'components/portal/pages/PortalHome';
 import AdminHome from 'components/admin/pages/AdminHome';
 import MessageSettings from 'components/admin/pages/MessageSettings';
 import AccessError from 'components/shared/pages/AccessError';
+import InvalidPage from 'components/shared/pages/InvalidPage';
 import UserAdmin from 'components/admin/pages/UserAdmin';
 import NavMenu from 'components/shared/components/NavMenu';
 
@@ -296,6 +297,7 @@ class App extends React.Component<any, any> {
             {portalRoutes}
             {adminRoutes}
             <Route exact path="/accessError" component={AccessError} />
+            <Route component={InvalidPage} />
           </Switch>
         </div>
         <div className={footer}>

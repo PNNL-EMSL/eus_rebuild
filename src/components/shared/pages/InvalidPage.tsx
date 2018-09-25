@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
-export default class AccessError extends Component<any, any> {
-
+export default class InvalidPage extends Component<any, any> {
   constructor(props) {
     super(props);
 
@@ -13,16 +12,17 @@ export default class AccessError extends Component<any, any> {
   }
 
   render() {
-    return (
+    console.log(this.props);
+    return(
       <div>
         <h1>
           <strong>
-            ACCESS DENIED
+            INVALID PAGE
           </strong>
         </h1>
-        <br/>
+        <br />
         <p>
-          You do not have sufficient permissions to access the requested resource. <br />
+          {this.props.location.pathname} is not a valid page. <br />
           Please click <a onClick={this.returnHandler}>here</a> to return to the Portal Homepage
         </p>
       </div>
