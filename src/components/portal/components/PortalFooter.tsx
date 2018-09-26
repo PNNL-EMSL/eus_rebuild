@@ -16,17 +16,28 @@ const footer: string = css`
 const footerRow: string=css`
   display: inline-flex;
 `
+const footerText: string=css`
+  text-indent: 5em;
+  color: #F4AA00;
+  font-weight: bold;
+`;
+
+const footerContactText: string=css`
+  text-indent: 5em;
+  color: #F4AA00;
+  font-style: italic;
+`;
 
 export default class PortalFooter extends FooterBase {
   renderContent() {
     return (
       <div className={footer}>
         <div className={footerRow}>
-          <div>Contact Us</div>
-          <div>Terms & Conditions</div>
-          <div>Privacy</div>
-          <div>Frequently Asked Questions</div>
-          <div>emsl@pnnl.gov | 509.371.6003</div>
+          <div className={footerText}>Contact Us</div>
+          <div className={footerText}>Terms & Conditions</div>
+          <div className={footerText}>Privacy</div>
+          <div className={footerText}>Frequently Asked Questions</div>
+          <div className={footerContactText}>emsl@pnnl.gov | 509.371.6003</div>
         </div>
         
         <div className={footerRow}>
