@@ -26,27 +26,35 @@ const footer: string = css`
   display: inline-block;
   flex: 0 0 auto;
   flex-direction: row;
-  background-color: #53682B;
   align-items: center;
   max-width: 1078px;
   width: 100%
 `;
 
-const footerRow: string=css`
+const footerTopRow: string=css`
+  display: inline-flex;
+  background-color: #53682B;
+  width: 100%
+`
+
+const footerBottomRow: string=css`
   display: inline-flex;
   background-color: white;
+  width: 100%
 `
+
 const footerText: string=css`
   text-indent: 5em;
   color: #F4AA00;
   font-weight: bold;
-  background-color: #53682B;
 `;
 
 const footerContactText: string=css`
   margin-left: 80px;
   color: #F4AA00;
   font-style: italic;
+  background-color: #53682B;
+
 `;
 
 // const bottomRowIcons: string = css`
@@ -71,7 +79,7 @@ const connectWithEMSL: string=css`
 
 const SocialMediaLogos = styled('img') `
   height: 20px;
-  margin-inline-end: 5px;
+  padding-right: 10px;
 `;
 
 const OrcidBadge = styled('img')`  
@@ -84,7 +92,7 @@ const OrcidBadge = styled('img')`
 
 const OrcidMember = styled('img')`
   height: 44px;
-  margin-inline-start: 15px;
+  padding-left: 60px
 
 `;
 
@@ -96,14 +104,13 @@ const EmslLogo = styled('img')`
 
 const PnnlLogo = styled('img')`
   height: 35px;
-  margin-inline-start: 10px;
+  padding-left: 20px
 
 `;
 
 const DoeLogo = styled('img')`
   height: 35px;
-  margin-inline-start: 10px;
-
+  padding-left: 20px
 `;
 
 // const orcidIcon: string=css`
@@ -114,7 +121,7 @@ export default class PortalFooter extends FooterBase {
   renderContent() {
     return (
       <div className={footer}>
-        <div className={footerRow}>
+        <div className={footerTopRow}>
           <div className={footerText}>Contact Us</div>
           <div className={footerText}>Terms & Conditions</div>
           <div className={footerText}>Privacy</div>
@@ -122,7 +129,7 @@ export default class PortalFooter extends FooterBase {
           <div className={footerContactText}>emsl@pnnl.gov | 509.371.6003</div>
         </div>
         
-        <div className={footerRow}>
+        <div className={footerBottomRow}>
           <EmslLogo src={emsl} alt="EMSL Logo"/>
           <PnnlLogo src={pnnl} alt="PNNL Logo" />
           <DoeLogo src={doe} alt="DOE Logo" />
@@ -167,9 +174,6 @@ export default class PortalFooter extends FooterBase {
             <OrcidBadge src={orcidBadgeCollect} alt="Orcid Collect"/>
           </a>
         </div>
-        <p>
-          Footer should be taken from the existing eusi.emsl.pnl.gov/Portal/ styles
-        </p>
       </div>
     );
   }
