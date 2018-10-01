@@ -51,7 +51,9 @@ class NewProposalWizard extends Wizard {
         emslStaff: undefined,
         labPOC: ''
       },
-      participantsData: {},
+      participantsData: {
+        participants: [],
+      },
       fundingData: {
         fundingSources: [],
         fundingOther: '',
