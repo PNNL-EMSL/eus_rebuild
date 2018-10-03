@@ -22,7 +22,9 @@ import youTube from 'images/youtube_grey.png'
 
 
 const footer: string = css`
-  padding: 5px 20px 5px 10px;
+  padding-top: 5px
+  padding-right: 20px
+  padding-bottom: 5px
   display: inline-block;
   flex: 0 0 auto;
   flex-direction: row;

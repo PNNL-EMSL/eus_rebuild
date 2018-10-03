@@ -40,7 +40,7 @@ const dividers: string = css`
 const Polygon = styled('img')`
 position: absolute;
 top: 0px;
-left: 12%;
+left: 240px;
 height: 91px;
 width: 530px;
 `;
