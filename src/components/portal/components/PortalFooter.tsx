@@ -30,7 +30,9 @@ const footer: string = css`
   flex-direction: row;
   align-items: center;
   max-width: 1078px;
-  width: 100%
+  width: 100%;
+  position: absolute;
+  top: calc(100% - 65px)
 `;
 
 const footerTopRow: string=css`
@@ -69,7 +71,7 @@ const footerContactText: string=css`
 // `;
 
 const connectWithEMSL: string=css`
-  margin-left: 125px;
+  margin-left: 50px;
   margin-inline-end: 15px;
   color: #616265;
   font-weight: bold;
@@ -99,13 +101,13 @@ const OrcidMember = styled('img')`
 `;
 
 const EmslLogo = styled('img')`
-  height: 25px;
-  margin-inline-start: 10px;
+  height: 35px;
+  margin-left: 70px;
   ;
 `;
 
 const PnnlLogo = styled('img')`
-  height: 35px;
+  height: 55px;
   padding-left: 20px
 
 `;
