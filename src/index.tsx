@@ -100,6 +100,7 @@ const users = [
     orcid: "12345",
     orcidPermissions: "Y",
     profession: "Professional",
+    professionOther: "",
     roleLevel: 999,
     __typename: 'User',
   },
@@ -112,6 +113,7 @@ const users = [
     orcid: "12346",
     orcidPermissions: "N",
     profession: "Professional",
+    professionOther: "",
     roleLevel: 999,
     __typename: 'User',
   },
@@ -124,6 +126,7 @@ const users = [
     orcid: "",
     orcidPermissions: "",
     profession: "",
+    professionOther: "",
     roleLevel: 1,
     __typename: 'User',
   },
@@ -136,16 +139,11 @@ const users = [
     orcid: "",
     orcidPermissions: "",
     profession: "",
+    professionOther: "",
     roleLevel: 10,
     __typename: 'User',
   }
 ];
-
-const adminUser = {
-  userName: 'admin',
-  roleLevel: 999,
-  __typename: 'CurrentUser'
-}
 
 // This defines default values and resolvers for any local client variables that are not passed through
 // to the server.
@@ -155,7 +153,7 @@ const clientState = {
     CarouselInfos: carouselInfos,
     Users: users,
     navStyle: 'tiles',
-    CurrentUser: [adminUser],
+    CurrentUser: [users[1]],
   },
   resolvers: {
     Mutation: {

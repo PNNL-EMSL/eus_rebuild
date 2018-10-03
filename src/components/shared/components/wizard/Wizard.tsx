@@ -188,8 +188,8 @@ export default class Wizard extends React.Component<any, any> {
     const customDot = (dot, {status, index}) => {
       if(stepTooltips[index]) {
         const innerContent:any[] = [];
-        stepTooltips[index].forEach((item) => {
-          innerContent.push(<div>{item}</div>)
+        stepTooltips[index].forEach((item, itemIndex) => {
+          innerContent.push(<div key={itemIndex}>{item}</div>)
         });
         const content = <div>{innerContent}</div>;
         return (<Popover content={<span>{content}</span>}>

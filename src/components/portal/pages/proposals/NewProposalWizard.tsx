@@ -14,7 +14,32 @@ class NewProposalWizard extends Wizard {
     visible: true,
     title: "Proposal Creation Wizard",
     okLabel: 'Save',
-    proposalErrors: {}
+    proposalErrors: {},
+    detailsData: {
+      researchArea: undefined,
+      researchAreaOther: '',
+      title: '',
+      abstract: '',
+      file: undefined,
+      proposalType: undefined,
+      proposalPay: undefined,
+      proposalTheme: undefined,
+      proposalReason: undefined,
+      proposalRestricted: undefined,
+      startDate: '',
+      nsfRequest: undefined,
+      emslStaff: undefined,
+      labPOC: ''
+    },
+    participantsData: {
+      participants: []
+    },
+    fundingData: {
+      fundingSources: [],
+      fundingOther: '',
+      fundingWorkPackage: '',
+    },
+    resourcesData: {},
   };
 
   static PROP_INFO = 'info';
@@ -35,31 +60,10 @@ class NewProposalWizard extends Wizard {
     super(props);
     this.state = {
       currentPageIndex: 0,  // the index of the page currently being shown
-      detailsData: {
-        researchArea: undefined,
-        researchAreaOther: '',
-        title: '',
-        abstract: '',
-        file: undefined,
-        proposalType: undefined,
-        proposalPay: undefined,
-        proposalTheme: undefined,
-        proposalReason: undefined,
-        proposalRestricted: undefined,
-        startDate: '',
-        nsfRequest: undefined,
-        emslStaff: undefined,
-        labPOC: ''
-      },
-      participantsData: {
-        participants: [],
-      },
-      fundingData: {
-        fundingSources: [],
-        fundingOther: '',
-        fundingWorkPackage: '',
-      },
-      resourcesData: {},
+      detailsData: this.props.detailsData,
+      participantsData: this.props.participantsData,
+      fundingData: this.props.fundingData,
+      resourcesData: this.props.resourcesData,
       proposalErrors: {
         detailsErrors:[],
         participantsErrors:[],

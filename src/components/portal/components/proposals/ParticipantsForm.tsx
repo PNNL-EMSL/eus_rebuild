@@ -2,8 +2,12 @@ import React from 'react';
 import WizardPage from 'components/shared/components/wizard/WizardPage';
 import ParticipantsSearchForm from 'components/portal/components/proposals/ParticipantsSearchForm';
 import ParticipantRow from 'components/portal/components/proposals/ParticipantRow';
-import ReactDataGrid from 'react-data-grid';
 import {Button, Modal} from 'antd';
+import {css} from 'emotion';
+
+const participantTable: string = css`
+  min-width: 958px;
+`;
 
 export default class ParticipantsForm extends WizardPage {
   static defaultProps = {
@@ -24,6 +28,7 @@ export default class ParticipantsForm extends WizardPage {
     this.addParticipant = this.addParticipant.bind(this);
     this.removeParticipant = this.removeParticipant.bind(this);
     this.editParticipant = this.editParticipant.bind(this);
+    this.updateProposalRoles = this.updateProposalRoles.bind(this);
   }
 
   componentWillUnmount() {
@@ -39,57 +44,7 @@ export default class ParticipantsForm extends WizardPage {
 
   beforeNext = () => {
     // push the data to a place? unsure what will be needed here
-    this.props.updateData('participantsData', this.state.participants);
-  };
-
-  renderForm() {
-    const data = this.props.data;
-    return (
-      <div>
-        <ParticipantsForm data={data}/>
-      </div>
-    )
-  }
-
-  getStepName() {
-    return 'Participants';
-  };
-  
-  getColumns() {
-    return [
-      {
-        key: 'name',
-        name: 'Name',
-        width: 50,
-        editable: true,
-        resizable: true,
-      },
-      {
-        key: 'institution',
-        name: 'Institution',
-        width: 500,
-        editable: true,
-        resizable: true,
-      },
-      {
-        key: 'orcid',
-        name: 'ORCid',
-        width: 50,
-        editable: true,
-        resizable: true,
-      },
-      {
-        key: 'role',
-        name: 'Role',
-        width: 50,
-        editable: true,
-        resizable: true,
-      },
-    ]
-  }
-  
-  rowGetter = (i) => {
-    return this.state.participants[i];
+    this.props.updateData('participantsData', {participants: this.state.participants});
   };
 
   showModal() {
@@ -104,12 +59,13 @@ export default class ParticipantsForm extends WizardPage {
     // Add the participant to the participants data list
     const participant = {
       name: user.name,
-      profession: user.proession,
+      profession: user.profession,
+      professionOther: user.professionOther,
       email: user.email,
       orcid: user.orcid,
       orcidPermissions: user.orcidPermissions,
       institution: user.institution,
-      proposalRole: ''
+      proposalRoles: []
     };
     this.state.participants.push(participant);
     this.hideModal();
@@ -117,10 +73,14 @@ export default class ParticipantsForm extends WizardPage {
 
   removeParticipant(user) {
     // Add the participant to the participants data list
-    console.log('remove', user);
-    const participants = this.state.participants;
-    participants.splice(participants.findIndex((participant) => (participant.name === user.name)), 1);
-    this.setState({participants});
+    const newParticipants = this.state.participants;
+    console.log(newParticipants, user, newParticipants.findIndex((participant) => (participant.name === user.name)));
+    newParticipants.splice(newParticipants.findIndex((participant) => (participant.name === user.name)), 1);
+    // If the user is the PI, make the first user the PI.
+    if(user.proposalRoles.includes('Principal Investigator')) {
+      newParticipants[0].proposalRoles = ['Principal Investigator'];
+    }
+    this.setState({participants: newParticipants});
   }
 
   editParticipant(user) {
@@ -128,18 +88,33 @@ export default class ParticipantsForm extends WizardPage {
     console.log('edit', user);
   }
 
+  updateProposalRoles(user) {
+    const limited = ['Principal Investigator', 'Co-Investigator'];
+    const participants = this.state.participants;
+    limited.forEach((item) => {
+      if(user.proposalRoles.includes(item)) {
+        participants.forEach((participant) => {
+          if(participant.name !== user.name && participant.proposalRoles.includes(item)) {
+            participant.proposalRoles.splice(participant.proposalRoles.indexOf(item), 1);
+          }
+        });
+      }
+    });
+    this.setState({participants});
+  }
+
   renderUsers() {
     const content:JSX.Element[] = [];
     this.state.participants.forEach((participant) => {
       content.push(
-        <div>
-          <ParticipantRow
-            edittable={true}
-            removable={true}
-            user={participant}
-            removeHandler={this.removeParticipant}
-          />
-        </div>
+        <ParticipantRow
+          key={participant.name}
+          edittable={true}
+          removable={this.state.participants.length > 1}
+          user={participant}
+          updateProposalRoles={this.updateProposalRoles}
+          removeHandler={this.removeParticipant}
+        />
       )
     });
     return content;
@@ -147,7 +122,8 @@ export default class ParticipantsForm extends WizardPage {
 
   render() {
 
-    const content = this.renderUsers();
+    let content:JSX.Element[] = [];
+    content = this.renderUsers();
     return (
       <div>
         <Modal
@@ -166,21 +142,22 @@ export default class ParticipantsForm extends WizardPage {
         <div className="buttonBar">
           <Button onClick={this.showModal}>Add Participant</Button>
         </div>
-        {content}
-        <ReactDataGrid
-          enableCellSelect={true}
-          columns={this.getColumns()}
-          rowGetter={this.rowGetter}
-          rowsCount={this.state.participants.length}
-          minHeight={500}
-          rowHeight={50}
-        />
-        <div>
-          Header Row: name, institution, ORCID iD, Role
-        </div>
-        <div>
-          Participants Row: Item.Name, item.institution, item.orcid, item.role, modal link for edit, icon link for delete
-        </div>
+        {content.length !== 0 && (
+          <table className={participantTable}>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Institution</th>
+                <th>ORCID iD</th>
+                <th>Proposal Roles</th>
+                <th />
+              </tr>
+            </thead>
+            <tbody>
+              {content}
+            </tbody>
+          </table>
+        )}
       </div>
     )
   }

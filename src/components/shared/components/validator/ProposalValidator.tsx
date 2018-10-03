@@ -4,7 +4,8 @@ export default class ProposalValidator {
 
   constructor() {
     this.functionList = {
-      detailsForm: [{ func: this.validateResearchArea, field: undefined, tooltip: 'Research Area must be defined' },
+      detailsForm: [
+        { func: this.validateResearchArea, field: undefined, tooltip: 'Research Area must be defined' },
         { func: this.validateNotEmptyOrUndefined, field: 'title', tooltip: 'All proposals must have a title' },
         { func: this.validateNotEmptyOrUndefined, field: 'abstract', tooltip: 'All proposals must have an abstract' },
         { func: this.validateNotEmptyOrUndefined, field: 'startDate', tooltip: 'All proposals must have a preferred start date' },
@@ -16,7 +17,12 @@ export default class ProposalValidator {
         { func: this.validateProposalRestricted, field: undefined, tooltip: 'You must select if this is business sensitive research or restricted from public dissemination'},
         { func: this.validateProposalReason, field: undefined, tooltip: 'You must select a reason why you will not be paying for necessary technical support'},
       ],
-      fundingForm: [{ func: this.validateFundingSource, field: undefined, tooltip: 'You must specify at least one funding source'},
+      participantsForm:[
+        { func: this.validateNotEmptyOrUndefined, field: 'participants', tooltip: 'A proposal must have at least one participant'},
+        
+      ],
+      fundingForm: [
+        { func: this.validateFundingSource, field: undefined, tooltip: 'You must specify at least one funding source'},
         { func: this.validateNotEmptyOrUndefined, field: 'fundingWorkPackage', tooltip: 'You must specify a Work Package for the proposal'}
       ]
       

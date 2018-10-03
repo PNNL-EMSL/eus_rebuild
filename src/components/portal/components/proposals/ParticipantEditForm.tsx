@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 // import { Query } from 'react-apollo';
 import AntDesignSelect from 'components/shared/components/AntDesignSelect';
 import ProfessionTypes from 'components/portal/pages/proposals/ProfessionTypes.json'
-import { Button, Input } from 'antd';
+import { Button, Input, Checkbox } from 'antd';
 
 export default class ParticipantEditForm extends Component<any, any> {
   static GET_USERS = gql`
@@ -23,6 +23,9 @@ export default class ParticipantEditForm extends Component<any, any> {
     super(props);
     
     this.updateUser = this.updateUser.bind(this);
+    this.handleProfessionChange = this.handleProfessionChange.bind(this);
+    this.handleProfessionOther = this.handleProfessionOther.bind(this);
+    this.handleRoleChange = this.handleRoleChange.bind(this);
   }
 
   updateUser() {
@@ -31,11 +34,21 @@ export default class ParticipantEditForm extends Component<any, any> {
   }
 
   handleProfessionChange(e) {
-    console.log(e);
+    this.props.professionHandler(e);
   }
 
   handleProfessionOther(e) {
-    console.log(e);
+    this.props.professionOther(e.target.value);
+  }
+  
+  handleEmailChange(e) {
+    this.props.emailHandler(e.target.value);
+  }
+
+  handleRoleChange(e) {
+    console.log(e.target);
+    this.props.roleHandler(e.target.value, e.target.checked);
+
   }
 
   linkToOrcid() {
@@ -86,8 +99,30 @@ export default class ParticipantEditForm extends Component<any, any> {
           {this.props.participant.institution}
         </div>
         <div>
-          <label>Proposal Role</label>
-          Proposal Role: {this.props.participant.proposalRole}
+          <label>Proposal Roles</label>
+          <div>
+            <label>Principal Investigator</label>
+            <Checkbox
+              checked={this.props.participant.proposalRoles.includes('Principal Investigator')}
+              disabled={false}
+              value="Principal Investigator"
+              onChange={this.handleRoleChange}
+            />
+            <label>Co-Investigator</label>
+            <Checkbox
+              checked={this.props.participant.proposalRoles.includes('Co-Investigator')}
+              disabled={false}
+              value="Co-Investigator"
+              onChange={this.handleRoleChange}
+            />
+            <label>Survey Respondent</label>
+            <Checkbox
+              checked={this.props.participant.proposalRoles.includes('Survey Respondent')}
+              disabled={this.props.participant.proposalRoles.includes('Principal Investigator')}
+              value="Survey Respondent"
+              onChange={this.handleRoleChange}
+            />
+          </div>
         </div>
         <div>
           <Button onClick={this.props.cancelHandler}>Cancel</Button>

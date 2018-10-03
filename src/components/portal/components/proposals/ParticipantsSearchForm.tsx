@@ -12,7 +12,8 @@ export default class ParticipantsSearchForm extends Component<any, any> {
         institution,
         orcid,
         orcidPermissions,
-        profession
+        profession,
+        professionOther
       }
     }
   `;
@@ -31,7 +32,6 @@ export default class ParticipantsSearchForm extends Component<any, any> {
     const selectedUsers = this.props.participants;
     return(
       <div>
-        Users which are addable...
         <Query query={ParticipantsSearchForm.GET_USERS} >
           {({loading, error, data}) => {
             if(loading) {
@@ -49,20 +49,30 @@ export default class ParticipantsSearchForm extends Component<any, any> {
             } else {
               const users = data.Users;
               const content:JSX.Element[] = [];
-              users.forEach((user) => {
+              users.forEach((user, index) => {
                 if(selectedUsers.findIndex((selectedUser) => {
                     return selectedUser.name === user.name;
                   }) !== -1) {
                   // Do nothing
                 } else {
-                  content.push(<ParticipantRow user={user} addable={true} addHandler={this.addParticipant}/>)
+                  content.push(<ParticipantRow key={index} user={user} addable={true} addHandler={this.addParticipant}/>)
                 }
               });
               console.log(content.length);
               return (
-                <div>
-                  {content}
-                </div>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Institution</th>
+                      <th>ORCID iD</th>
+                      <th />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {content}
+                  </tbody>
+                </table>
               )
             }
           }}
