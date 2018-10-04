@@ -39,6 +39,7 @@ export default class TileContainer extends Component<any, any> {
               height={item.height}
               width={item.width}
               background={item.background}
+              count={item.count}
               {...this.props}
             />
           </Col>
@@ -56,6 +57,7 @@ export default class TileContainer extends Component<any, any> {
               height={item.height}
               width={item.width}
               background={item.background}
+              count={item.count}
               {...this.props}
             />
           </Col>
