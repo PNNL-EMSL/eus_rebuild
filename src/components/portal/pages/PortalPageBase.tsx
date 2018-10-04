@@ -2,11 +2,10 @@ import React from 'react';
 import { css } from 'emotion';
 import PortalHeader from 'components/portal/components/PortalHeader';
 import PortalFooter from 'components/portal/components/PortalFooter';
-import PortalNav from 'components/portal/components/PortalNav';
 import PageBase from 'components/shared/pages/PageBase';
 
 const contentStyle: string = css`
-  margin: 5px 20px 15px 100px;
+  margin: 20px 20px 15px 40px;
   max-width: 1024px;
 `;
 
@@ -18,7 +17,6 @@ export default abstract class PortalPageBase extends PageBase {
     return (
       <div>
         <PortalHeader {...this.props} logoutHandler={this.logoutHandler} />
-        <PortalNav {...this.props} pathname={this.props.location.pathname} direction="horizontal"/>
         <div className={contentStyle} >
           {content}
         </div>

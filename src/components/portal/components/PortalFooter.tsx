@@ -29,7 +29,7 @@ const footer: string = css`
   flex: 0 0 auto;
   flex-direction: row;
   align-items: center;
-  max-width: 1078px;
+  max-width: 1280px;
   width: 100%;
   position: absolute;
   top: calc(100% - 65px);

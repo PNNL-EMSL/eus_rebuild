@@ -10,7 +10,7 @@ const header: string = css`
   flex-direction: row;
   background-color: #53682B;
   align-items: center;
-  max-width: 1078px;
+  max-width: 1280px;
   border-bottom: white solid 2px;
 `;
 
