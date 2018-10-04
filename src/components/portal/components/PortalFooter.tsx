@@ -32,7 +32,8 @@ const footer: string = css`
   max-width: 1078px;
   width: 100%;
   position: absolute;
-  top: calc(100% - 65px)
+  top: calc(100% - 65px);
+  border-top: white solid 2px
 `;
 
 const footerTopRow: string=css`
@@ -133,10 +134,20 @@ export default class PortalFooter extends FooterBase {
           <div className={footerContactText}>emsl@pnnl.gov | 509.371.6003</div>
         </div>
         
-        <div className={footerBottomRow}>
-          <EmslLogo src={emsl} alt="EMSL Logo"/>
-          <PnnlLogo src={pnnl} alt="PNNL Logo" />
-          <DoeLogo src={doe} alt="DOE Logo" />
+        <div className={footerBottomRow}>          
+          <a href="https://www.emsl.pnl.gov/emslweb/"> 
+            <EmslLogo src={emsl} alt="EMSL" />
+          </a>
+          
+          <a href="http://www.pnnl.gov/"> 
+            <PnnlLogo src={pnnl} alt="PNNL" />
+          </a>
+
+          <a href="https://www.energy.gov/"> 
+            <DoeLogo src={doe} alt="DOE" />
+          </a>
+
+
           <div className={connectWithEMSL}>Connect with EMSL</div>
           <a href="https://www.facebook.com/emsl.pnl.gov"> 
             <SocialMediaLogos src={facebook} alt="Facebook" />
