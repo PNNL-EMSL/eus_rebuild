@@ -5,10 +5,14 @@ import { Query } from 'react-apollo';
 
 const header: string = css`
   padding: 5px 20px 5px 10px;
+  margin-top: -20px;
   display: flex;
   flex: 0 0 auto;
   flex-direction: row;
   background-color: #53682B;
+  position: fixed;
+  width: 1280px;
+  z-index: 10;
   align-items: center;
   max-width: 1280px;
   border-bottom: white solid 2px;

@@ -47,7 +47,6 @@ const app: string = css`
   display: flex;
   flex: 1;
   flex-direction: column;
-  height: 100%;
   background-color: rgb(97, 98, 101);
 `;
 

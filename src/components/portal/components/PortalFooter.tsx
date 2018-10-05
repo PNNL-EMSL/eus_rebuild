@@ -31,7 +31,7 @@ const footer: string = css`
   align-items: center;
   max-width: 1280px;
   width: 100%;
-  position: absolute;
+  position: fixed;
   top: calc(100% - 65px);
   border-top: white solid 2px
 `;
