@@ -233,11 +233,8 @@ export default class Wizard extends React.Component<any, any> {
           stepStatus = 'finish';
         }
         const navToStep = () => {
-          // console.log('getPages()[currentPageIndex]',this.getPages()[this.state.currentPageIndex].component);
-          // this.getPages()[this.state.currentPageIndex].component.beforeNext();
           this.setState({currentPageIndex: index});
         };
-        console.log('step', step, index, 'stepStatus:', stepStatus, 'tooltip:', stepTooltip);
         return (
           <Step key={step} title={step} status={stepStatus} tooltip={stepTooltip} onClick={navToStep}/>
         );

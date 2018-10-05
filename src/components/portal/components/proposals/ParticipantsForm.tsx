@@ -36,14 +36,17 @@ export default class ParticipantsForm extends WizardPage {
   }
 
   validatePage = (data) => {
-    let valid = false;
-    // Do the validation logic
-    valid = true;
-    return valid;
+    const errors = this.props.Validator.doValidate(data, 'participantsForm');
+    const existingErrors = this.props.proposalErrors;
+    existingErrors.participantsErrors = errors;
+    this.props.updateErrors(existingErrors);
+
+    this.props.updateComplete(errors.length === 0);
   };
 
   beforeNext = () => {
     // push the data to a place? unsure what will be needed here
+    this.validatePage(this.state.participants);
     this.props.updateData('participantsData', {participants: this.state.participants});
   };
 

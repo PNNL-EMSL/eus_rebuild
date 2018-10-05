@@ -64,12 +64,7 @@ class NewProposalWizard extends Wizard {
       participantsData: this.props.participantsData,
       fundingData: this.props.fundingData,
       resourcesData: this.props.resourcesData,
-      proposalErrors: {
-        detailsErrors:[],
-        participantsErrors:[],
-        fundingErrors:[],
-        resourcesData:[]
-      },
+      proposalErrors: {},
       completeSteps: {},
     };
     this.updateData = this.updateData.bind(this);
@@ -132,7 +127,6 @@ class NewProposalWizard extends Wizard {
 
   hasStepError(stepName) {
     let hasError = false;
-    // console.log(this);
     console.log(this);
     const errors = this.state.proposalErrors;
     console.log('errors', errors);
@@ -154,8 +148,22 @@ class NewProposalWizard extends Wizard {
   
   hasStepComplete(stepName) {
     console.log('completeSteps', stepName, this.state.completeSteps);
-    return this.state.completeSteps[stepName];
-    // let isComplete = false;
+    const errors = this.state.proposalErrors;
+    let isComplete = false;
+    if(stepName === NewProposalWizard.STEP_INFO) {
+      if (errors.detailsErrors && errors.detailsErrors.length === 0 ) {
+        isComplete = true;
+      }
+    } else if (stepName === NewProposalWizard.STEP_PARTICIPANTS) {
+      if( errors.participantsErrors && errors.participantsErrors.length === 0 ) {
+        isComplete = true;
+      }
+    } else if (stepName === NewProposalWizard.STEP_FUNDING) {
+      if (errors.fundingErrors && errors.fundingErrors.length === 0) {
+        isComplete = true;
+      }
+    }
+    return isComplete;
     //
     // const completes = this.state.proposalCompletes;
     // return true;

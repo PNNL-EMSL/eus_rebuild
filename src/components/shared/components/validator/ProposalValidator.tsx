@@ -19,7 +19,9 @@ export default class ProposalValidator {
       ],
       participantsForm:[
         { func: this.validateNotEmptyOrUndefined, field: 'participants', tooltip: 'A proposal must have at least one participant'},
-        
+        { func: this.validateUsersORCID, field: undefined, tooltip: 'PIs and Co-PIs must have an ORCID iD linked to their account'},
+        { func: this.validateUsersProfession, field: undefined, tooltip: 'All participants must have a profession selected'},
+        { func: this.validateUsersInstitutions, field: undefined, tooltip: 'All participants must select their parent institution.'}
       ],
       fundingForm: [
         { func: this.validateFundingSource, field: undefined, tooltip: 'You must specify at least one funding source'},
@@ -29,6 +31,20 @@ export default class ProposalValidator {
     };
     
   }
+
+  validateUsersORCID(data, tooltip) {
+    // stuff
+  }
+
+  validateUsersProfession(data, tooltip) {
+    // stuff 2
+  }
+
+  validateUsersInstitutions(data, tooltip) {
+    // stuff 3
+  }
+
+  
 
   validateNotEmptyOrUndefined(data, field: string|undefined,  tooltip) {
     if(data === '' || data === undefined) {

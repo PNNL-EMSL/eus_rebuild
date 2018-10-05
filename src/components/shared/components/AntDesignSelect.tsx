@@ -53,7 +53,7 @@ export default class AntDesignSelect extends Component<any, any> {
     const displayOther = this.state.displayOther;
     console.log('rerendered');
     return(
-      <div>
+      <div style={{height: "35px"}}>
         <label>{this.props.label}</label>
         <Select
           style={{width: "75%", float: "right"}}

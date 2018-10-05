@@ -5,9 +5,23 @@ import ProposalTypeSelect from 'components/portal/pages/proposals/ProposalTypeSe
 import ResearchAreas from 'components/portal/pages/proposals/ResearchAreas.json';
 import ProposalTypes from 'components/portal/pages/proposals/ProposalTypes.json';
 import {DatePicker, Input, Radio} from 'antd';
+import {css} from 'emotion';
 
 const TextArea = Input.TextArea;
 const RadioGroup = Radio.Group;
+
+const inputLabel:string = css`
+  width: 25%;
+`;
+
+const inputArea:string = css`
+  width: 75%;
+  float: right;
+`;
+
+const inputDiv:string = css`
+  min-height: 40px;
+`
 
 export default class DetailsForm extends WizardPage {
   static defaultProps = {
@@ -39,17 +53,6 @@ export default class DetailsForm extends WizardPage {
   }
 
   validatePage = (data) => {
-    // let valid = false;
-    // if(
-    //   (this.state.researchArea === undefined) ||
-    //   (this.state.researchArea === 'other' && this.state.researchAreaOther === '')
-    // ) {
-    //   // Research area not defined
-    //   valid = false;
-    // }
-    // // Do the validation logic
-    //
-    
     const errors = this.props.Validator.doValidate(data, 'detailsForm');
     const existingErrors = this.props.proposalErrors;
     existingErrors.detailsErrors = errors;
@@ -137,66 +140,70 @@ export default class DetailsForm extends WizardPage {
     const dateFormat = 'MMMM DD, YYYY';
     return(
       <div>
-        <AntDesignSelect
-          label='Primary Research Area'
-          placeholder="Select primary research area..."
-          optionList={ResearchAreas.ResearchAreas}
-          value={data.researchArea}
-          otherValue={data.researchOther}
-          handleChange={this.handleAreaChange}
-          handleInput={this.handleAreaOther}
-          required={true}
-        />
-        <div>
-          <label>Title</label>
-          <TextArea defaultValue={data.title} onChange={this.handleTitleChange} autosize />
+        <div className={inputDiv}>
+          <AntDesignSelect
+            label='Primary Research Area'
+            placeholder="Select primary research area..."
+            optionList={ResearchAreas.ResearchAreas}
+            value={data.researchArea}
+            otherValue={data.researchOther}
+            handleChange={this.handleAreaChange}
+            handleInput={this.handleAreaOther}
+            required={true}
+          />
         </div>
-        <div>
-          <label>Abstract (approx 500 words)</label>
-          <TextArea defaultValue={data.abstract} onChange={this.handleAbstractChange} autosize />
+        <div className={inputDiv}>
+          <label className={inputLabel}>Title</label>
+          <TextArea className={inputArea} defaultValue={data.title} onChange={this.handleTitleChange} autosize />
         </div>
-        <div>
-          <label>Proposed Research (pdf doc)</label>
+        <div className={inputDiv}>
+          <label className={inputLabel}>Abstract (approx 500 words)</label>
+          <TextArea className={inputArea} defaultValue={data.abstract} onChange={this.handleAbstractChange} autosize />
         </div>
-        <hr />
-        <ProposalTypeSelect
-          label='Proposal Type'
-          placeholder="Select proposal type..."
-          optionList={ProposalTypes.ProposalTypes}
-          value={data.proposalType}
-          pay={data.proposalPay}
-          theme={data.proposalTheme}
-          reason={data.proposalReason}
-          restricted={data.proposalRestricted}
-          handleProposalTypeChange={this.handleProposalTypeChange}
-          handleProposalRestrictedChange={this.handleProposalRestrictedChange}
-          handleProposalPayChange={this.handleProposalPayChange}
-          handleProposalThemeChange={this.handleProposalThemeChange}
-          handleProposalReasonChange={this.handleProposalReasonChange}
-          required={true}
-        />
-        <div>
-          <label>Preferred Start Date</label>
-          <DatePicker defaultValue={data.startDate} format={dateFormat} onChange={this.handleDateChange}/>
+        <div className={inputDiv}>
+          <label className={inputLabel}>Proposed Research (pdf doc)</label>
         </div>
         <hr />
-        <div>
-          <label>Is this proposal associated with a National Science Foundation Supplemental Funding Request?</label>
-          <RadioGroup defaultValue={data.nsfRequest} onChange={this.handleNsfChange}>
+        <div className={inputDiv}>
+          <ProposalTypeSelect
+            label='Proposal Type '
+            placeholder="Select proposal type..."
+            optionList={ProposalTypes.ProposalTypes}
+            value={data.proposalType}
+            pay={data.proposalPay}
+            theme={data.proposalTheme}
+            reason={data.proposalReason}
+            restricted={data.proposalRestricted}
+            handleProposalTypeChange={this.handleProposalTypeChange}
+            handleProposalRestrictedChange={this.handleProposalRestrictedChange}
+            handleProposalPayChange={this.handleProposalPayChange}
+            handleProposalThemeChange={this.handleProposalThemeChange}
+            handleProposalReasonChange={this.handleProposalReasonChange}
+            required={true}
+          />
+        </div>
+        <div className={inputDiv}>
+          <label className={inputLabel}>Preferred Start Date</label>
+          <DatePicker className={inputArea} defaultValue={data.startDate} format={dateFormat} onChange={this.handleDateChange}/>
+        </div>
+        <hr />
+        <div className={inputDiv}>
+          <label style={{width: "50%"}}>Is this proposal associated with a National Science Foundation Supplemental Funding Request?</label>
+          <RadioGroup style={{width: "50%", float:"right"}} defaultValue={data.nsfRequest} onChange={this.handleNsfChange}>
             <Radio value={1}>Yes</Radio>
             <Radio value={0}>No</Radio>
           </RadioGroup>
         </div>
-        <div>
-          <label>Will you desire the assistance of EMSL Staff in obtaining and interpreting results?</label>
-          <RadioGroup defaultValue={data.emslStaff} onChange={this.handleEmslChange}>
+        <div className={inputDiv}>
+          <label style={{width: "50%"}}>Will you desire the assistance of EMSL Staff in obtaining and interpreting results?</label>
+          <RadioGroup style={{width: "50%", float:"right"}} defaultValue={data.emslStaff} onChange={this.handleEmslChange}>
             <Radio value={1}>Yes</Radio>
             <Radio value={0}>No</Radio>
           </RadioGroup>
         </div>
-        <div>
-          <label>Laboratory Staff Contact</label>
-          <Input defaultValue={data.labPOC} onChange={this.handlePocChange}/>
+        <div className={inputDiv}>
+          <label className={inputLabel}>Laboratory Staff Contact</label>
+          <Input className={inputArea} defaultValue={data.labPOC} onChange={this.handlePocChange}/>
         </div>
       </div>
     )
