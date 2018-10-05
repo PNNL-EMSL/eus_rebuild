@@ -33,7 +33,7 @@ const tilesDiv:string = css`
 
 const announcementDiv = css`
   display: inline-block;
-  width: 87%;
+  width: 85%;
   float: right;
 `;
 
@@ -162,7 +162,7 @@ export default class UserHome extends PortalPageBase {
     const content = this.renderTile();
     return (
       <div>
-      <QuickLinks />
+      <QuickLinks logoutHandler={this.logoutHandler}/>
         <div className={announcementDiv}>
           
         <Query query={this.GET_MARQUEE_INFORMATION}>

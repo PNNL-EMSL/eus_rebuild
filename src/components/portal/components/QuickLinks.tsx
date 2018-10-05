@@ -3,7 +3,7 @@ import {css} from 'emotion';
 import {Link} from 'react-router-dom';
 
 
-const quickLinks: string = css`
+const quickLinksMenu: string = css`
   width: 13%;
   display: inline-table;
   color: #F4AA00;
@@ -11,25 +11,32 @@ const quickLinks: string = css`
   padding-right: 5px
   `;
 
+const quickLink: string = css`
+    color: #FFF;
+`;
+
+
+
 export default  class QuickLinks extends Component<any, any> {
 
     constructor(props) {
         super(props);
     }
     
+
     render() {
         return (
 
-            <div className={quickLinks}>
+            <div className={quickLinksMenu}>
                 QUICK LINKS <hr />
-                <Link to="/Portal/userInfo" style={{ color: '#FFF' }}>My Profile</Link> <hr />
-                <Link to="/Portal/proposals" style={{ color: '#FFF' }}>Submit a Proposal</Link> <hr />
-                <Link to="/Portal/scheduleExperiments" style={{ color: '#FFF' }}>Schedule an Experiment</Link> <hr />
-                <Link to="/Portal/submitSample" style={{ color: '#FFF' }}>Submit a Sample</Link> <hr />
-                <Link to="/Portal/scheduleExperiments" style={{ color: '#FFF' }}>Search my Data</Link> <hr />
-                <Link to="/Portal/publications" style={{ color: '#FFF' }}>Publications</Link> <hr />
-                <Link to="/Portal/provideFeedback" style={{ color: '#FFF' }}>Provide Feeback</Link> <hr />
-                <a href="#" style={{ color: '#FFF' }} onClick={this.props.logoutHandler} >Sign Out</ a>    
+                <Link to="/Portal/userInfo" className={quickLink}>My Profile</Link> <hr />
+                <Link to="/Portal/proposals" className={quickLink}>Submit a Proposal</Link> <hr />
+                <Link to="/Portal/scheduleExperiments" className={quickLink}>Schedule an Experiment</Link> <hr />
+                <Link to="/Portal/submitSample" className={quickLink}>Submit a Sample</Link> <hr />
+                <Link to="/Portal/scheduleExperiments" className={quickLink}>Search my Data</Link> <hr />
+                <Link to="/Portal/publications" className={quickLink}>Publications</Link> <hr />
+                <Link to="/Portal/provideFeedback" className={quickLink}>Provide Feeback</Link> <hr />
+                <a href="#" className={quickLink} onClick={this.props.logoutHandler}>Sign out</a>   
             </div>
 
         );

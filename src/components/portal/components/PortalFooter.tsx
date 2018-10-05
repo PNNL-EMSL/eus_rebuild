@@ -54,12 +54,17 @@ const footerText: string=css`
   font-weight: bold;
 `;
 
-const footerContactText: string=css`
+const footerEmail: string=css`
   margin-left: 80px;
   color: #F4AA00;
   font-style: italic;
   background-color: #53682B;
+`;
 
+const footerPhone: string=css`
+  color: #F4AA00;
+  font-style: italic;
+  background-color: #53682B;
 `;
 
 // const bottomRowIcons: string = css`
@@ -127,11 +132,23 @@ export default class PortalFooter extends FooterBase {
     return (
       <div className={footer}>
         <div className={footerTopRow}>
-          <div className={footerText}>Contact Us</div>
-          <div className={footerText}>Terms & Conditions</div>
-          <div className={footerText}>Privacy</div>
-          <div className={footerText}>Frequently Asked Questions</div>
-          <div className={footerContactText}>emsl@pnnl.gov | 509.371.6003</div>
+
+          <a href="https://www.emsl.pnl.gov/emslweb/contact-us">
+            <div className={footerText}>Contact Us</div>
+          </a>
+          <a href="https://www.emsl.pnl.gov/emslweb/terms-use-and-acknowledging-emsl">
+            <div className={footerText}>Terms & Conditions</div>
+          </a>
+          <a href="https://www.emsl.pnl.gov/emslweb/security-privacy" >
+            <div className={footerText}>Privacy</div>
+          </a>
+          <a href="https://www.emsl.pnl.gov/emslweb/about/faq">
+            <div className={footerText}>Frequently Asked Questions</div>
+          </a>
+          <a href="mailto:emsl@pnnl.gov">
+            <div className={footerEmail}>emsl@pnnl.gov | </div>
+          </a>
+          <div className={footerPhone}> 509.371.6003</div>
         </div>
         
         <div className={footerBottomRow}>          
