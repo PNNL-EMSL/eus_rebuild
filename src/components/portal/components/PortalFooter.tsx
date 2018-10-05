@@ -62,6 +62,7 @@ const footerEmail: string=css`
 `;
 
 const footerPhone: string=css`
+  margin-left: 3px;
   color: #F4AA00;
   font-style: italic;
   background-color: #53682B;
