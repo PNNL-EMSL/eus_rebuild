@@ -35,6 +35,7 @@ export default class CarouselSettingsContainer extends Component<any, any> {
         id,
         text,
         imgUrl,
+        webUrl,
         order,
         display,   
       }
@@ -100,8 +101,20 @@ export default class CarouselSettingsContainer extends Component<any, any> {
             editable: true
             // headerRenderer: <ImageFormatter value='https://www.google.com/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwiCu8r2yu3cAhWBL3wKHbUCC7oQjRx6BAgBEAU&url=https%3A%2F%2Fsocialnetworking.lovetoknow.com%2FAvatar_Galleries&psig=AOvVaw3loKFuYQOT6zv14M0_uzi3&ust=1534371909818288' />
           },
+
+          {
+            key: 'webUrl',
+            name: 'Web URL',
+            resizable: true,
+            editable: true,
+            events: {
+              onCommit: instance.textListener,
+              onKeyDown: instance.textListener
+            }
+          },
         ];
 
+        console.log('raw rows', this.props.settings);
         // this.rows = [{id: 'a', title: 'a', count: 10},{id: 'b', title: 'b', count: 11},{id: 'x', title: 'u', count: 19},];
         this.renderContent = this.renderContent.bind(this);
         this.updateCarouselSettings = this.updateCarouselSettings.bind(this);
@@ -193,7 +206,7 @@ export default class CarouselSettingsContainer extends Component<any, any> {
     };
 
     rowGetter = (i) => {
-      console.log('in rowGetter', i);
+      console.log('in rowGetter', i, this.rows[i]);
       return this.rows[i]; // this.rows[i];
     };
 

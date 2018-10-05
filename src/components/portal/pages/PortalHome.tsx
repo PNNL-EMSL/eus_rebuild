@@ -3,14 +3,17 @@ import {css} from 'emotion';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 import TileContainer from 'components/portal/components/PortalTileContainer';
-import PageBase from 'components/shared/pages/PageBase';
+import PortalPageBase from 'components/portal/pages/PortalPageBase';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import CarouselContainer from 'components/shared/components/CarouselContainer';
 import MarqueeContainer from 'components/shared/components/MarqueeContainer';
+import QuickLinks from 'components/portal/components/QuickLinks';
+import { Modal, Button } from 'antd';
+
 
 const orcid:string = css`
   border-color: #7c93b5;
-  background-color: #e7f0ff;
+  background-color: #719500;
   padding: 1em;
   border: 1px solid;
   margin-top: 1.5em;
@@ -19,27 +22,30 @@ const orcid:string = css`
 `;
 
 const newsDiv:string = css`
-  width: 45%;
-  display: inline-block;
+  width: 23%;
+  display: inline-flex;
 `;
 
 const tilesDiv:string = css`
-  display: flex;
-  width: 50%;
+  width: 620px;
   float: right;
 `;
 
 const announcementDiv = css`
   display: inline-block;
-  
+  width: 85%;
+  float: right;
 `;
 
 const carouselDiv:string = css`
-  width: 95%;
+  width: 80%;
+  margin-bottom: 100px;
+  float: right;
+  
 `;
 
 
-export default class UserHome extends PageBase {
+export default class UserHome extends PortalPageBase {
 
   GET_USER_ROLE = gql`
     {
@@ -67,18 +73,81 @@ export default class UserHome extends PageBase {
         id,
         text,
         imgUrl,
+        webUrl,
         order,
         display,
         
       }
     }
   `;
-
+  
   constructor(props) {
     super(props);
 
     this.renderTile = this.renderTile.bind(this);
   }
+
+
+  summary = () => {
+    Modal.info({
+      title: 'Summary Required',
+      content: (
+        <div>
+          <p>Summary Goes Here</p>
+        </div>
+      ),
+    });
+  }
+
+  orcidId = () => {
+    Modal.info({
+      title: 'ORCID ID',
+      content: (
+        <div>
+          <p>An ORCID iD is now required for all users and must be included for the PI and co-PI
+              in the proposal form in order to submit. You don't need your number. To link an
+              ORCID iD with your user account:
+          </p>
+
+          <ul>
+            <li>
+              Click on the User Info tab above.
+            </li>
+            <li>
+              Indicate whether or not you authorize EMSL to post non-proprietary user
+              research awards, as well as other professional service activities, to your ORCID
+              record by clicking on the "Yes" or "No" buttons.
+            </li>
+            <li>
+              You will be redirected to the ORCID login page. If you already have an ID,
+              sign in using your ORCID credentials. Otherwise, click "Register now" to
+              create an account.
+            </li>
+            <li>
+              After signing into ORCID, click "Authorize", which will redirect you back
+              to the Portal and add the ID to the User Info page.
+            </li>
+            <li>
+              To save your settings, be sure to click on "Save User Now" in the top
+              right-hand corner.
+            </li>
+          </ul>
+        </div>
+      ),
+    });
+  }
+
+  training = () => {
+    Modal.info({
+      title: 'Training Due',
+      content: (
+        <div>
+          <p>What Training is due goes here</p>
+        </div>
+      ),
+    });
+  }
+
 
   renderTile() {
     const query = this.GET_USER_ROLE;
@@ -90,10 +159,13 @@ export default class UserHome extends PageBase {
     );
   }
 
-  renderPage() {
+  renderContent () {
     const content = this.renderTile();
     return (
       <div>
+      <QuickLinks logoutHandler={this.logoutHandler}/>
+        <div className={announcementDiv}>
+          
         <Query query={this.GET_MARQUEE_INFORMATION}>
           {({loading, error, data}) => {
             if (loading) {
@@ -115,37 +187,14 @@ export default class UserHome extends PageBase {
             }
           }}
         </Query>
-        <div className={announcementDiv}>
           <div className={newsDiv}>
             <div className={orcid}>
-              <p>
-                An ORCID iD is now required for all users and must be included for the PI and co-PI
-                in the proposal form in order to submit. You don't need your number. To link an
-                ORCID iD with your user account:
-              </p>
-              <ul>
-                <li>
-                  Click on the User Info tab above.
-                </li>
-                <li>
-                  Indicate whether or not you authorize EMSL to post non-proprietary user
-                research awards, as well as other professional service activities, to your ORCID
-                record by clicking on the "Yes" or "No" buttons.
-                </li>
-                <li>
-                  You will be redirected to the ORCID login page. If you already have an ID,
-                sign in using your ORCID credentials. Otherwise, click "Register now" to
-                create an account.
-                </li>
-                <li>
-                  After signing into ORCID, click "Authorize", which will redirect you back
-                to the Portal and add the ID to the User Info page.
-                </li>
-                <li>
-                  To save your settings, be sure to click on "Save User Now" in the top
-                right-hand corner.
-                </li>
-              </ul>
+              <p style={{ color: '#FFF', textAlign: 'center'}}><b>Announcements</b></p>
+              <div>
+                <Button style={{ margin:3, background: '#e7f0ff', fontWeight: 'bold', textAlign: 'center'}} onClick={this.summary}>Summary Required</Button>
+                <Button style={{ margin:3, background: '#e7f0ff', fontWeight: 'bold', textAlign: 'center'}} onClick={this.orcidId}>Orcid® Info Needed</Button>
+                <Button style={{ margin:3, background: '#FFFFE7', fontWeight: 'bold', textAlign: 'center'}} onClick={this.training}>Training Due</Button>
+              </div>
             </div>
           </div>
           <div className={tilesDiv}>

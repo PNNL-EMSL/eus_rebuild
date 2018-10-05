@@ -3,7 +3,7 @@ import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 import {css} from 'emotion';
 
-import PageBase from 'components/shared/pages/PageBase';
+import AdminPageBase from 'components/admin/pages/AdminPageBase';
 import UserAdminItem from 'components/admin/components/UserAdminItem';
 
 const table: string = css`
@@ -30,7 +30,7 @@ const table: string = css`
   }
 `;
 
-export default class UserAdmin extends PageBase {
+export default class UserAdmin extends AdminPageBase {
 
   GET_USERS = gql`
     {
@@ -49,7 +49,8 @@ export default class UserAdmin extends PageBase {
     super(props);
   }
 
-  renderPage() {
+  renderContent() {
+    // TODO: Investigate using react-table for table stuff such as user admin
     return (
       <div>
         <h1>

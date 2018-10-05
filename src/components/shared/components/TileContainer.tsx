@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import NavigationTile from 'components/shared/components/NavigationTile';
 import { css } from 'emotion';
+import {Row, Col} from 'antd';
 
 const tileContainer: string = css`
   display: flex;
@@ -16,32 +17,76 @@ export default class TileContainer extends Component<any, any> {
   }
 
   render() {
-    const tiles = this.tileData;
+    const tiles = this.tileData.sort((a, b) => a.id - b.id);
     const content: JSX.Element[] = [];
     let rowContent: JSX.Element[] = [];
-    let previousSize = '';
+    let innerRowContent: JSX.Element[] = [];
+    let innerRow: JSX.Element[] = [];
     Object.keys(tiles).map((key) => {
       const item = tiles[key];
-      if(previousSize && item.size !== previousSize) {
-        content.push(<div><span>{rowContent}</span></div>);
-        rowContent = [];
-      }
       if(this.props.role >= item.visibleBy) {
+        if (item.startInnerRow || innerRowContent.length !== 0) {
+          // push tile to inner row array
+        innerRowContent.push(
+          <Col span={item.span}>
+            <NavigationTile
+              id={item.id}
+              key={item.id}
+              text={item.text}
+              innerText={item.innerText}
+              img={item.img}
+              path={item.path}
+              height={item.height}
+              width={item.width}
+              background={item.background}
+              count={item.count}
+              {...this.props}
+            />
+          </Col>
+        );
+        } else {
         rowContent.push(
-          <NavigationTile
-            id={item.id}
-            key={item.id}
-            text={item.text}
-            img={item.img}
-            path={item.path}
-            size={item.size}
-            {...this.props}
-          />
+          <Col span={item.span}>
+            <NavigationTile
+              id={item.id}
+              key={item.id}
+              text={item.text}
+              innerText={item.innerText}
+              img={item.img}
+              path={item.path}
+              height={item.height}
+              width={item.width}
+              background={item.background}
+              count={item.count}
+              {...this.props}
+            />
+          </Col>
         );
       }
-      previousSize = item.size;
+        if(item.endInnerRow) {
+          // push inner row content to row content
+          // clear inner row content
+          innerRow.push(<Row>{innerRowContent}</Row>);
+          innerRowContent = [];
+        }
+        if(item.endRow) {
+          if(innerRow.length !== 0) {
+            content.push(<Row><Col span={16}>{innerRow}</Col>{rowContent}</Row>);
+            innerRow = [];
+          } else {
+            content.push(<Row>{rowContent}</Row>);
+          }
+          rowContent = [];
+        }
+      }
     });
-    content.push(<div><span>{rowContent}</span></div>);
+    if(innerRow.length !== 0) {
+      console.log('innerRow', innerRow, 'rowContent', rowContent);
+      content.push(<Row><Col span={16}>{innerRow}</Col>{rowContent}</Row>);
+      innerRow = [];
+    } else {
+      content.push(<Row>{rowContent}</Row>);
+    }
     console.log('tile content', content);
     return (
       <div className={tileContainer}>

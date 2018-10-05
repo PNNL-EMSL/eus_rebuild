@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PortalHeader from 'components/portal/components/PortalHeader';
 
 export default class AccessError extends Component<any, any> {
 
@@ -9,12 +10,13 @@ export default class AccessError extends Component<any, any> {
   }
 
   returnHandler() {
-    this.props.history.push('/');
+    this.props.history.push('/Portal');
   }
 
   render() {
     return (
       <div>
+        <PortalHeader />
         <h1>
           <strong>
             ACCESS DENIED

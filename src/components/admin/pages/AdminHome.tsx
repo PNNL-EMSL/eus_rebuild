@@ -1,17 +1,17 @@
 import React from 'react';
 import AdminTileContainer from 'components/admin/components/AdminTileContainer';
-import PageBase from 'components/shared/pages/PageBase';
+import AdminPageBase from 'components/admin/pages/AdminPageBase';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
-export default class AdminHome extends PageBase {
+export default class AdminHome extends AdminPageBase {
 
   constructor(props) {
     super(props);
 
-    this.renderPage = this.renderPage.bind(this);
+    this.renderContent = this.renderContent.bind(this);
   }
 
-  renderPage() {
+  renderContent() {
     const query = this.GET_USER_ROLE;
     const role = this.props.client.readQuery({query}).CurrentUser[0].roleLevel;
     return (

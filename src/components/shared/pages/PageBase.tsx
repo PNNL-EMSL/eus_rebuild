@@ -36,6 +36,11 @@ export default abstract class PageBase extends Component<any, any> {
     this.passesPageRestriction = this.passesPageRestriction.bind(this);
     this.userHasAccess = this.userHasAccess.bind(this);
 
+    
+    this.logoutHandler = this.logoutHandler.bind(this);
+    this.navTypeHandler = this.navTypeHandler.bind(this);
+
+    this.renderPage = this.renderPage.bind(this);
   }
 
 
@@ -82,6 +87,16 @@ export default abstract class PageBase extends Component<any, any> {
    */
   doLogin() {
     this.setState({userLoggedIn: true});
+  }
+
+  logoutHandler() {
+    console.log('logout handler called');
+    this.props.client.writeData({data: {CurrentUser: []}});
+    this.setState({userLoggedIn: false});
+  }
+
+  navTypeHandler(styleTo) {
+    this.props.client.writeData({ data: { navCollapsed: styleTo }});
   }
 
   /**

@@ -1,5 +1,5 @@
 import React from 'react';
-import PageBase from 'components/shared/pages/PageBase';
+import AdminPageBase from 'components/admin/pages/AdminPageBase';
 import CarouselContainer from 'components/shared/components/CarouselContainer';
 import MarqueeContainer from 'components/shared/components/MarqueeContainer';
 import CarouselSettingsContainer from 'components/admin/components/CarouselSettingsContainer';
@@ -18,15 +18,19 @@ const colors = [
 
 const marqueeEntry: string = css`
   padding: 10px;
-  border-bottom: solid darkgrey;
   border-top: solid darkgrey;
 `;
 
-const carousel: string = css`
-  width: 30%;
+// const carousel: string = css`
+//   width: 30%;
+// `;
+const carouselDiv:string = css`
+  width: 80%;
+  float: right;
+  
 `;
 
-export default class MessageSettings extends PageBase {
+export default class MessageSettings extends AdminPageBase {
 
   GET_MESSAGE_INFORMATION = gql`
     {
@@ -41,6 +45,7 @@ export default class MessageSettings extends PageBase {
         id,
         text,
         imgUrl,
+        webUrl,
         order,
         display,
         
@@ -88,7 +93,7 @@ export default class MessageSettings extends PageBase {
     this.props.client.writeData({data});
   }
 
-  renderPage() {
+  renderContent() {
     return (
       <div>
         <Query query={this.GET_MESSAGE_INFORMATION} >
@@ -143,10 +148,12 @@ export default class MessageSettings extends PageBase {
                     </tr>
                     </tbody>
                   </table>
-                  <br/>
+                  <hr />
                   <div>
                     <CarouselSettingsContainer settings={carouselData} {...this.props}/>
-                    <CarouselContainer settings={carouselData} className={carousel}/>
+                    <div className={carouselDiv} >
+                      <CarouselContainer settings={carouselData} className={carouselDiv}/>
+                    </div>
                   </div>
                   <br/>
                 </div>

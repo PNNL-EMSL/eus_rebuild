@@ -1,9 +1,9 @@
 // import { Menu } from 'antd';
 import { css, injectGlobal } from 'emotion';
-import styled from 'react-emotion'
+// import styled from 'react-emotion';
 import * as React from 'react';
 import { withRouter, Switch, Route } from 'react-router-dom';
-import { Query } from 'react-apollo';
+// import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import ExternalStyleSheets from 'components/shared/components//ExternalStyleSheets';
@@ -16,15 +16,17 @@ import UserInfo from 'components/portal/pages/UserInfo';
 import Training from 'components/portal/pages/Training';
 import ScheduleExperiments from 'components/portal/pages/ScheduleExperiments';
 import GetData from 'components/portal/pages/GetData';
+import SubmitSample from 'components/portal/pages/SubmitSample';
+import ProvideFeedback from 'components/portal/pages/ProvideFeedback';
 import PortalHome from 'components/portal/pages/PortalHome';
 import AdminHome from 'components/admin/pages/AdminHome';
 import MessageSettings from 'components/admin/pages/MessageSettings';
 import AccessError from 'components/shared/pages/AccessError';
 import InvalidPage from 'components/shared/pages/InvalidPage';
 import UserAdmin from 'components/admin/pages/UserAdmin';
-import NavMenu from 'components/shared/components/NavMenu';
+// import NavMenu from 'components/shared/components/NavMenu';
 
-import logo from 'images/emsl_logo_notag.jpg';
+// import logo from 'images/emsl_logo_notag.jpg';
 
 // Define global styles
 injectGlobal`
@@ -48,53 +50,53 @@ const app: string = css`
   display: flex;
   flex: 1;
   flex-direction: column;
-  height: 100%;
+  background-color: rgb(97, 98, 101);
 `;
 
-const header: string = css`
-  padding: 5px 20px 5px 10px;
-  display: flex;
-  flex: 0 0 auto;
-  flex-direction: row;
-  background-color: white;
-  align-items: center;
-  max-width: 1078px;
-`;
-const footer: string = css`
-  padding: 5px 20px 5px 10px;
-  display: flex;
-  flex: 0 0 auto;
-  flex-direction: row;
-  background-color: white;
-  align-items: center;
-  max-width: 1078px;
-`;
-const titleContainer: string = css`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  margin-left: 10px;
-  margin-top: -15px;
-`;
-const title: string = css`
-  font-weight: 800;
-  font-size: 28px;
-  text-shadow: 2px 2px 8px #aaa;
-`;
-const content: string = css`
-  margin: 5px 20px 15px 100px;
-  max-width: 958px;
-`;
-
-const Logo = styled('img')`
-  height: 80px;
-`;
-
-const logout: string = css`
-  text-align: right;
-  float: right;
-  width: 72%;
-`;
+// const header: string = css`
+//   padding: 5px 20px 5px 10px;
+//   display: flex;
+//   flex: 0 0 auto;
+//   flex-direction: row;
+//   background-color: white;
+//   align-items: center;
+//   max-width: 1078px;
+// `;
+// const footer: string = css`
+//   padding: 5px 20px 5px 10px;
+//   display: flex;
+//   flex: 0 0 auto;
+//   flex-direction: row;
+//   background-color: white;
+//   align-items: center;
+//   max-width: 1078px;
+// `;
+// const titleContainer: string = css`
+//   display: flex;
+//   flex: 1;
+//   flex-direction: column;
+//   margin-left: 10px;
+//   margin-top: -15px;
+// `;
+// const title: string = css`
+//   font-weight: 800;
+//   font-size: 28px;
+//   text-shadow: 2px 2px 8px #aaa;
+// `;
+// const content: string = css`
+//   margin: 5px 20px 15px 100px;
+//   max-width: 958px;
+// `;
+//
+// const Logo = styled('img')`
+//   height: 80px;
+// `;
+//
+// const logout: string = css`
+//   text-align: right;
+//   float: right;
+//   width: 72%;
+// `;
 
 /**
  * The App component creates the main layout for the application,
@@ -117,7 +119,7 @@ class App extends React.Component<any, any> {
         userName,
         roleLevel
       }
-      navStyle @client
+      navCollapsed @client
     }
   `;
 
@@ -149,6 +151,8 @@ class App extends React.Component<any, any> {
     this.renderTraining = this.renderTraining.bind(this);
     this.renderExperiments = this.renderExperiments.bind(this);
     this.renderGetData = this.renderGetData.bind(this);
+    this.renderSubmitSample = this.renderSubmitSample.bind(this);
+    this.renderProvideFeedback = this.renderProvideFeedback.bind(this);
     this.renderMessageSettings = this.renderMessageSettings.bind(this);
     this.renderUserAdmin = this.renderUserAdmin.bind(this);
 
@@ -163,7 +167,7 @@ class App extends React.Component<any, any> {
   }
 
   navTypeHandler(styleTo) {
-    this.props.client.writeData({ data: { navStyle: styleTo }});
+    this.props.client.writeData({ data: { navCollapsed: styleTo }});
   }
 
   /*************************
@@ -219,6 +223,14 @@ class App extends React.Component<any, any> {
     return (<GetData {...this.props} restricted={true}/>)
   }
   
+  renderSubmitSample() {
+    return (<SubmitSample {...this.props} restricted={true}/>)
+  }
+
+  renderProvideFeedback() {
+    return (<ProvideFeedback {...this.props} restricted={true}/>)
+  }
+
   renderMessageSettings() {
     return (<MessageSettings {...this.props} restricted={true}/>);
   }
@@ -238,7 +250,9 @@ class App extends React.Component<any, any> {
       (<Route exact path="/Portal/userInfo" component={this.renderUserInfo} />),
       (<Route exact path="/Portal/training" component={this.renderTraining} />),
       (<Route exact path="/Portal/scheduleExperiments" component={this.renderExperiments} />),
-      (<Route exact path="/Portal/getData" component={this.renderGetData} />)
+      (<Route exact path="/Portal/getData" component={this.renderGetData} />),
+      (<Route exact path="/Portal/SubmitSample" component={this.renderSubmitSample} />),
+      (<Route exact path="/Portal/ProvideFeedback" component={this.renderProvideFeedback} />)
     ];
   }
 
@@ -258,53 +272,12 @@ class App extends React.Component<any, any> {
     return (
       <div className={app}>
         <ExternalStyleSheets />
-        <Query query={this.GET_HEADER_INFORMATION}>
-          {({loading, error, data}) => {
-            if(loading) {
-              return <p>Loading...</p>;
-            } else if(error) {
-              return <p>Error...</p>;
-            } else {
-              return (
-                <div className={header}>
-                  <div className={titleContainer}>
-                  <span>
-                     <Logo src={logo} alt="logo"/>
-                    <div className={title}>EMSL User Portal</div>
-                    {
-                      data.CurrentUser.length !== 0 ? (
-                        <div className={logout}>
-                          <div>Welcome {data.CurrentUser[0].userName}</div>
-                          <div onClick={this.logoutHandler}>Sign out</div>
-                        </div>
-                      ) : (<div />)
-                    }
-                  </span>
-                    <NavMenu
-                      navMenuType={data.navStyle}
-                      pathname={this.props.location.pathname}
-                      navChangeHandler={this.navTypeHandler}
-                      {...this.props}
-                    />
-                  </div>
-                </div>
-              );
-            }
-          }}
-        </Query>
-        <div className={content}>
-          <Switch>
-            {portalRoutes}
-            {adminRoutes}
-            <Route exact path="/accessError" component={AccessError} />
-            <Route component={InvalidPage} />
-          </Switch>
-        </div>
-        <div className={footer}>
-          <p>
-            Footer should be taken from the existing eusi.emsl.pnl.gov/Portal/ styles
-          </p>
-        </div>
+        <Switch>
+          {portalRoutes}
+          {adminRoutes}
+          <Route exact path="/accessError" component={AccessError} />
+          <Route component={InvalidPage} />
+        </Switch>
       </div>
     );
   }

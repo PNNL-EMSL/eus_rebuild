@@ -1,8 +1,8 @@
 import React from 'react';
-import PageBase from 'components/shared/pages/PageBase';
+import PortalPageBase from 'components/portal/pages/PortalPageBase';
 
-export default class ScheduleExperiments extends PageBase {
-  renderPage() {
+export default class ScheduleExperiments extends PortalPageBase {
+  renderContent() {
         return (
             <div> TODO: Add Schedule Experiments Contents</div>
         );
