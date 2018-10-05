@@ -33,7 +33,6 @@ export default abstract class HeaderBase extends Component<any, any> {
         userName,
         roleLevel
       }
-      navCollapsed @client
     }
   `;
 
