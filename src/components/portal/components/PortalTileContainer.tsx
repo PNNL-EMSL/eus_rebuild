@@ -1,8 +1,9 @@
 import TileContainer from 'components/shared/components/TileContainer';
+import {colorLightGrey, colorYellow, colorRed} from 'styles/base';
 
-const normal = '#C9C9CB';
-const upcoming = '#FFD700';
-const urgent = '#FF0000';
+const normal = colorLightGrey;
+const upcoming = colorYellow;
+const urgent = colorRed;
 
 export default class PortalTileContainer extends TileContainer {
 

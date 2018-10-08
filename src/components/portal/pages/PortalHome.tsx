@@ -10,7 +10,6 @@ import MarqueeContainer from 'components/shared/components/MarqueeContainer';
 import QuickLinks from 'components/portal/components/QuickLinks';
 import { Modal, Button } from 'antd';
 
-
 const orcid:string = css`
   border-color: #7c93b5;
   background-color: #719500;

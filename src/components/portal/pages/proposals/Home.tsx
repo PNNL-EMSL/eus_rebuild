@@ -4,6 +4,8 @@ import ProposalLoad from 'components/portal/pages/proposals/Load';
 import ProposalNew from 'components/portal/pages/proposals/New';
 import { Button } from 'antd';
 
+import {portalContentStyle} from 'styles/base';
+
 export default class ProposalHome extends PortalPageBase {
   constructor(props) {
     super (props);
@@ -67,20 +69,25 @@ export default class ProposalHome extends PortalPageBase {
 
   renderContent() {
     const numProposals = 0;
-    console.log('this.props', this.props);
+    const content:JSX.Element[] = [];
     if(this.props.id) {
-      return this.renderLoadProposal(this.props.id);
-    }
-    if(this.props.type === 'new') {
-      return this.renderNewProposal();
+      content.push(this.renderLoadProposal(this.props.id));
+    } else if(this.props.type === 'new') {
+      content.push(this.renderNewProposal());
     } else if(this.props.type !== undefined) {
-      return this.renderUndefinedType(this.props.type);
-    }
-    if(numProposals > 0) {
-      return this.renderExisting();
+      content.push(this.renderUndefinedType(this.props.type));
     } else {
-      return this.renderGetStarted();
+      if (numProposals > 0) {
+        content.push(this.renderExisting());
+      } else {
+        content.push(this.renderGetStarted());
+      }
     }
+    return (
+      <div className={portalContentStyle}>
+        {content}
+      </div>
+    )
 
   }
     

@@ -12,11 +12,14 @@ export const colorBlack = ' #0D1B2A';
 export const colorRed = '#BE5959';
 export const colorDarkGreenSubMenu = '#1e4647';
 
+export const colorLightGrey = '#C9C9CB';
 export const colorDarkGrey = '#616265';
 export const colorWhite = '#FFFFFF';
 export const colorLightOrange = '#F2A928';
+export const colorYellow = '#FFD700';
 export const colorLightGreen = '#719500';
 export const colorDarkGreen = '#53682B';
+
 
 export const footerFont = css`
   
@@ -59,6 +62,20 @@ export const footerIconStyle: string = css`
   padding-bottom: 5px;
   text-align: center;
 `;
+
+export const portalContentStyle: string = css`
+  border: white 2px solid;
+  padding: 20px;
+  padding-top: 0px;
+  background-color: ${colorLightGrey};
+`;
+
+export const contentStyle: string = css`
+  margin: 20px 20px 150px 20px;
+  max-width: 1024px;
+  top: 100px;
+  position: relative;
+`
 
 // const header: string = css`
 //   padding: 5px 20px 5px 10px;
