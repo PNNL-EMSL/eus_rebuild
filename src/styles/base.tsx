@@ -41,6 +41,7 @@ export const footerStyle: string = css`
   flex-direction: row;
   align-items: center;
   width: 100%;
+  min-width: 1024px;
   position: fixed;
   bottom: 0px;
   border-top: ${colorWhite} solid 2px
@@ -56,7 +57,8 @@ export const footerTextStyle: string = css`
 export const footerIconStyle: string = css`
   width: 33%;
   padding-bottom: 5px;
-`
+  text-align: center;
+`;
 
 // const header: string = css`
 //   padding: 5px 20px 5px 10px;

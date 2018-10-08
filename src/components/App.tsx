@@ -52,7 +52,7 @@ const app: string = css`
   flex: 1;
   flex-direction: column;
   background-color: ${colorDarkGrey};
-  height: 100%;
+  min-height: 100%;
 `;
 
 /**

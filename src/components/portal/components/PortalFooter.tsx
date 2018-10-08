@@ -50,6 +50,7 @@ const connectWithEMSL: string=css`
   color: #616265;
   font-weight: bold;
   padding-top: 10px;
+  text-align: center;
 `;
 
 // const socialMediaIcons: string=css`
@@ -62,7 +63,7 @@ const SocialMediaLogos = styled('img') `
 `;
 
 const OrcidBadge = styled('img')`  
-  height: 30px;
+  height: 40px;
   padding-left: 5px;
   margin: 0;
   vertical-align: middle;
@@ -71,13 +72,10 @@ const OrcidBadge = styled('img')`
 
 const OrcidMember = styled('img')`
   height: 44px;
-  padding-left: 60px
-
 `;
 
 const EmslLogo = styled('img')`
   height: 35px;
-  margin-left: 70px;
   ;
 `;
 
