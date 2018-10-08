@@ -5,7 +5,7 @@ import HeaderBase from 'components/shared/components/HeaderBase';
 import { Link } from 'react-router-dom';
 import logo from 'images/logo_white.png';
 import polygon from 'images/portal_icon_no_text.png';
-import {colorDarkGreen, colorWhite, colorLightOrange} from 'styles/base';
+import {colorDarkGreen, colorWhite, colorLightOrange, Logo} from 'styles/base';
 
 // const title: string = css`
 //   font-weight: 800;
@@ -14,17 +14,13 @@ import {colorDarkGreen, colorWhite, colorLightOrange} from 'styles/base';
 //   width: auto;
 // `;
 
-const Logo = styled('img')`
-  height: 80px;
-`;
-
 // const loginHeader: string = css`
 //   display: flex;
 // `;
 
 const logout: string = css`
   position: absolute;
-  left: 775px;
+  right: 10px;
   margin-top: 25px;
 `;
 
@@ -41,9 +37,9 @@ const dividers: string = css`
 const Polygon = styled('img')`
 position: absolute;
 top: 0px;
-left: 240px;
+left: 25%;
 height: 91px;
-width: 530px;
+width: 50%;
 `;
 
 const headerSpan: string = css`
@@ -52,10 +48,10 @@ const headerSpan: string = css`
 
 const headerText: string = css`
   font-size: 39px;
-  width: 500px;
+  min-width: 272px;
   z-index: 3;
   position: absolute;
-  left: 357px;
+  left: calc(50% - 136px);
   top: 20px;
   color: ${colorDarkGreen};
 `;

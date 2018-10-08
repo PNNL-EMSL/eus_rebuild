@@ -13,6 +13,7 @@ const header: string = css`
   background-color: ${colorDarkGreen};
   position: fixed;
   width: 100%;
+  min-width: 900px;
   z-index: 10;
   align-items: center;
   max-width: 100%;

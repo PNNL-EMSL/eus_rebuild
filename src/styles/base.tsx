@@ -1,4 +1,5 @@
 import { css } from 'emotion';
+import styled from 'react-emotion';
 
 /**
  * This file defined based styles and style variables
@@ -69,9 +70,9 @@ export const flexRow = css`
 //   max-width: 958px;
 // `;
 //
-// const Logo = styled('img')`
-//   height: 80px;
-// `;
+export const Logo = styled('img')`
+  height: 80px;
+`;
 //
 // const logout: string = css`
 //   text-align: right;
