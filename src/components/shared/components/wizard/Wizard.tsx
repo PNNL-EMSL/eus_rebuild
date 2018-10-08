@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import { Steps, Popover } from 'antd';
+import {Steps, Popover} from 'antd';
 
 // import { cx, css } from 'emotion';
 
@@ -185,20 +185,6 @@ export default class Wizard extends React.Component<any, any> {
   }
 
   renderSteps(pages, stepErrors, stepCompletes) {
-    const customDot = (dot, {status, index}) => {
-      if(stepTooltips[index]) {
-        const innerContent:any[] = [];
-        stepTooltips[index].forEach((item, itemIndex) => {
-          innerContent.push(<div key={itemIndex}>{item}</div>)
-        });
-        const content = <div>{innerContent}</div>;
-        return (<Popover content={<span>{content}</span>}>
-          {dot}
-        </Popover>);
-      } else {
-        return <span>{dot}</span>;
-      }
-    };
     const stepsList = this.getSteps();
     const stepTooltips:any[] = [];
     const lastPage = this.state.currentPageIndex === (pages.length - 1) ? true : false;
@@ -227,7 +213,6 @@ export default class Wizard extends React.Component<any, any> {
           }
           stepTooltips[index] = tooltipArray;
         } else if (lastPage && lastStep) {
-          // if we are on the last page and there is no error, then we can set the finished status
           stepStatus = 'finish';
         } else if (stepCompletes[step]){
           stepStatus = 'finish';
@@ -235,12 +220,23 @@ export default class Wizard extends React.Component<any, any> {
         const navToStep = () => {
           this.setState({currentPageIndex: index});
         };
-        return (
-          <Step key={step} title={step} status={stepStatus} tooltip={stepTooltip} onClick={navToStep}/>
-        );
+        if(stepTooltips[index]) {
+          const innerContent:any[] = [];
+          stepTooltips[index].forEach((item, itemIndex) => {
+            innerContent.push(<div key={itemIndex}>{item}</div>)
+          });
+          const content = <div>{innerContent}</div>;
+          return (
+            <Step key={step} title={<Popover content={content}>{step}</Popover>} status={stepStatus} tooltip={stepTooltip} onClick={navToStep}/>
+          );
+        } else {
+          return (
+            <Step key={step} title={step} status={stepStatus} tooltip={stepTooltip} onClick={navToStep} />
+          );
+        }
       });
       return (
-        <Steps size="small" current={currentStep} progressDot = {customDot}>
+        <Steps size="small" current={currentStep}>
           {steps}
         </Steps>
       );
