@@ -35,6 +35,29 @@ export const flexRow = css`
   align-items: center;
  `;
 
+export const footerStyle: string = css`
+  display: inline-block;
+  flex: 0 0 auto;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  position: fixed;
+  bottom: 0px;
+  border-top: ${colorWhite} solid 2px
+`;
+
+export const footerTextStyle: string = css`
+  color: ${colorLightOrange};
+  font-weight: bold;
+  text-align: center;
+  width: 20%
+`;
+
+export const footerIconStyle: string = css`
+  width: 33%;
+  padding-bottom: 5px;
+`
+
 // const header: string = css`
 //   padding: 5px 20px 5px 10px;
 //   display: flex;

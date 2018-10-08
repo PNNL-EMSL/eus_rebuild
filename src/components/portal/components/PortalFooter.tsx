@@ -1,6 +1,6 @@
 import React from 'react';
 import { css } from 'emotion';
-import {colorDarkGreen, colorWhite} from 'styles/base';
+import {colorDarkGreen, colorWhite, colorLightOrange, footerStyle, footerTextStyle, footerIconStyle} from 'styles/base';
 
 import styled from 'react-emotion';
 import FooterBase from 'components/shared/components/FooterBase';
@@ -19,50 +19,21 @@ import linkedIn from 'images/linkedin_grey.png';
 import twitter from 'images/twitter_grey.png';
 import youTube from 'images/youtube_grey.png'
 
-const footer: string = css`
-  padding-top: 5px
-  padding-right: 20px
-  padding-bottom: 5px
-  display: inline-block;
-  flex: 0 0 auto;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  position: fixed;
-  top: calc(100% - 65px);
-  border-top: white solid 2px
-`;
+
 
 const footerTopRow: string=css`
   display: inline-flex;
   background-color: ${colorDarkGreen};
-  width: 100%
+  width: 100%;
+  padding: 7px;
 `;
 
 const footerBottomRow: string=css`
   display: inline-flex;
   background-color: ${colorWhite};
-  width: 100%
-`;
-
-const footerText: string=css`
-  text-indent: 5em;
-  color: #F4AA00;
-  font-weight: bold;
-`;
-
-const footerEmail: string=css`
-  margin-left: 80px;
-  color: #F4AA00;
-  font-style: italic;
-  background-color: #53682B;
-`;
-
-const footerPhone: string=css`
-  margin-left: 3px;
-  color: #F4AA00;
-  font-style: italic;
-  background-color: #53682B;
+  width: 100%;
+  bottom: 0px;
+  padding-top: 7px;
 `;
 
 // const bottomRowIcons: string = css`
@@ -75,10 +46,10 @@ const footerPhone: string=css`
 // `;
 
 const connectWithEMSL: string=css`
-  margin-left: 50px;
-  margin-inline-end: 15px;
+  width: 33%;
   color: #616265;
   font-weight: bold;
+  padding-top: 10px;
 `;
 
 // const socialMediaIcons: string=css`
@@ -128,75 +99,84 @@ const DoeLogo = styled('img')`
 export default class PortalFooter extends FooterBase {
   renderContent() {
     return (
-      <div className={footer}>
+      <div className={footerStyle}>
         <div className={footerTopRow}>
 
-          <a href="https://www.emsl.pnl.gov/emslweb/contact-us">
-            <div className={footerText}>Contact Us</div>
+          <a className={footerTextStyle} href="https://www.emsl.pnl.gov/emslweb/contact-us">
+            Contact Us
           </a>
-          <a href="https://www.emsl.pnl.gov/emslweb/terms-use-and-acknowledging-emsl">
-            <div className={footerText}>Terms & Conditions</div>
+          <a className={footerTextStyle} href="https://www.emsl.pnl.gov/emslweb/terms-use-and-acknowledging-emsl">
+            Terms & Conditions
           </a>
-          <a href="https://www.emsl.pnl.gov/emslweb/security-privacy" >
-            <div className={footerText}>Privacy</div>
+          <a className={footerTextStyle} href="https://www.emsl.pnl.gov/emslweb/security-privacy" >
+            Privacy
           </a>
-          <a href="https://www.emsl.pnl.gov/emslweb/about/faq">
-            <div className={footerText}>Frequently Asked Questions</div>
+          <a className={footerTextStyle} href="https://www.emsl.pnl.gov/emslweb/about/faq">
+            Frequently Asked Questions
           </a>
-          <a href="mailto:emsl@pnnl.gov">
-            <div className={footerEmail}>emsl@pnnl.gov | </div>
-          </a>
-          <div className={footerPhone}> 509.371.6003</div>
+          <div className={footerTextStyle} style={{fontStyle: 'italic'}}>
+            <a style={{fontStyle: 'italic', color: colorLightOrange}} href="mailto:emsl@pnnl.gov">
+              emsl@pnnl.gov
+            </a>
+             &nbsp;| 509.371.6003
+          </div>
         </div>
         
         <div className={footerBottomRow}>          
-          <a href="https://www.emsl.pnl.gov/emslweb/"> 
-            <EmslLogo src={emsl} alt="EMSL" />
-          </a>
-          
-          <a href="http://www.pnnl.gov/"> 
-            <PnnlLogo src={pnnl} alt="PNNL" />
-          </a>
+          <div className={footerIconStyle} >
+            <a href="https://www.emsl.pnl.gov/emslweb/">
+              <EmslLogo src={emsl} alt="EMSL" />
+            </a>
 
-          <a href="https://www.energy.gov/"> 
-            <DoeLogo src={doe} alt="DOE" />
-          </a>
+            <a href="http://www.pnnl.gov/">
+              <PnnlLogo src={pnnl} alt="PNNL" />
+            </a>
+
+            <a href="https://www.energy.gov/">
+              <DoeLogo src={doe} alt="DOE" />
+            </a>
+          </div>
 
 
-          <div className={connectWithEMSL}>Connect with EMSL</div>
-          <a href="https://www.facebook.com/emsl.pnl.gov"> 
-            <SocialMediaLogos src={facebook} alt="Facebook" />
-          </a>
+          <div className={connectWithEMSL}>
+            Connect with EMSL
+            <a href="https://www.facebook.com/emsl.pnl.gov">
+              <SocialMediaLogos src={facebook} alt="Facebook" />
+            </a>
 
-          <a href="https://twitter.com/EMSLscience">
-            <SocialMediaLogos src={twitter} alt="Twitter" />
-          </a>
-          
-          <a href="https://plus.google.com/u/0/101061052038396007628">
-            <SocialMediaLogos src={googlePlus} alt="Google Plus" />
-          </a>
+            <a href="https://twitter.com/EMSLscience">
+              <SocialMediaLogos src={twitter} alt="Twitter" />
+            </a>
 
-          <a href="https://www.linkedin.com/company/environmental-molecular-sciences-laboratory-emsl-">        
-            <SocialMediaLogos src={linkedIn} alt="LinkedIn" />
-          </a>
+            <a href="https://plus.google.com/u/0/101061052038396007628">
+              <SocialMediaLogos src={googlePlus} alt="Google Plus" />
+            </a>
 
-          <a href="http://www.youtube.com/user/EMSLatPNNL">
-            <SocialMediaLogos src={youTube} alt="YouTube" />
-          </a>
+            <a href="https://www.linkedin.com/company/environmental-molecular-sciences-laboratory-emsl-">
+              <SocialMediaLogos src={linkedIn} alt="LinkedIn" />
+            </a>
 
-          <a href="http://www.flickr.com/photos/emsl/">
-            <SocialMediaLogos src={flickr} alt="Flickr" />
-          </a>
-          <OrcidMember src={orcidMember} alt ="Orcid Member" />
-          <a href="https://members.orcid.org/cc-research-organizations">
-           <OrcidBadge src={orcidBadgeDisplay} alt="Orcid Display"/>
-          </a>
-          <a href="https://members.orcid.org/cc-research-organizations">
-           <OrcidBadge src={orcidBadgeAuth} alt="Orcid Auth"/>
-          </a>
-          <a href="https://members.orcid.org/cc-research-organizations">
-            <OrcidBadge src={orcidBadgeCollect} alt="Orcid Collect"/>
-          </a>
+            <a href="http://www.youtube.com/user/EMSLatPNNL">
+              <SocialMediaLogos src={youTube} alt="YouTube" />
+            </a>
+
+            <a href="http://www.flickr.com/photos/emsl/">
+              <SocialMediaLogos src={flickr} alt="Flickr" />
+            </a>
+          </div>
+
+          <div className={footerIconStyle}>
+            <OrcidMember src={orcidMember} alt ="Orcid Member" />
+            <a href="https://members.orcid.org/cc-research-organizations">
+             <OrcidBadge src={orcidBadgeDisplay} alt="Orcid Display"/>
+            </a>
+            <a href="https://members.orcid.org/cc-research-organizations">
+             <OrcidBadge src={orcidBadgeAuth} alt="Orcid Auth"/>
+            </a>
+            <a href="https://members.orcid.org/cc-research-organizations">
+              <OrcidBadge src={orcidBadgeCollect} alt="Orcid Collect"/>
+            </a>
+          </div>
         </div>
       </div>
     );
