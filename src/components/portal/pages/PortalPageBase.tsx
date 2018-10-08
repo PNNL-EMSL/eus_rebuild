@@ -9,6 +9,7 @@ const contentStyle: string = css`
   max-width: 1024px;
   padding-top: 110px;
   margin-bottom: 200px;
+  height: 100%;
 `;
 
 export default abstract class PortalPageBase extends PageBase {

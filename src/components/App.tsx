@@ -51,6 +51,7 @@ const app: string = css`
   flex: 1;
   flex-direction: column;
   background-color: rgb(97, 98, 101);
+  height: 100%;
 `;
 
 // const header: string = css`

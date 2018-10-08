@@ -1,10 +1,10 @@
 import React from 'react';
-import PageBase from 'components/shared/pages/PageBase';
+import PortalPageBase from 'components/portal/pages/PortalPageBase';
 import ProposalLoad from 'components/portal/pages/proposals/Load';
 import ProposalNew from 'components/portal/pages/proposals/New';
 import { Button } from 'antd';
 
-export default class ProposalHome extends PageBase {
+export default class ProposalHome extends PortalPageBase {
   constructor(props) {
     super (props);
 
@@ -65,7 +65,7 @@ export default class ProposalHome extends PageBase {
     )
   }
 
-  renderPage() {
+  renderContent() {
     const numProposals = 0;
     console.log('this.props', this.props);
     if(this.props.id) {
