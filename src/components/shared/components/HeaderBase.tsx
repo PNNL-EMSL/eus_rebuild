@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { css } from 'emotion';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import {colorDarkGreen, colorWhite} from 'styles/base';
 
 const header: string = css`
   padding: 5px 20px 5px 10px;
@@ -9,13 +10,13 @@ const header: string = css`
   display: flex;
   flex: 0 0 auto;
   flex-direction: row;
-  background-color: #53682B;
+  background-color: ${colorDarkGreen};
   position: fixed;
-  width: 1280px;
+  width: 100%;
   z-index: 10;
   align-items: center;
-  max-width: 1280px;
-  border-bottom: white solid 2px;
+  max-width: 100%;
+  border-bottom: ${colorWhite} solid 2px;
 `;
 
 const titleContainer: string = css`

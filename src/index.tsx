@@ -159,7 +159,7 @@ const clientState = {
     CarouselInfos: carouselInfos,
     Users: users,
     navStyle: 'tiles',
-    CurrentUser: [users[1]],
+    CurrentUser: [],
   },
   resolvers: {
     Mutation: {

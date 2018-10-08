@@ -1,5 +1,7 @@
 import React from 'react';
 import { css } from 'emotion';
+import {colorDarkGreen, colorWhite} from 'styles/base';
+
 import styled from 'react-emotion';
 import FooterBase from 'components/shared/components/FooterBase';
 import orcidMember from 'images/ORCID_Member.png';
@@ -17,10 +19,6 @@ import linkedIn from 'images/linkedin_grey.png';
 import twitter from 'images/twitter_grey.png';
 import youTube from 'images/youtube_grey.png'
 
-
-
-
-
 const footer: string = css`
   padding-top: 5px
   padding-right: 20px
@@ -29,7 +27,6 @@ const footer: string = css`
   flex: 0 0 auto;
   flex-direction: row;
   align-items: center;
-  max-width: 1280px;
   width: 100%;
   position: fixed;
   top: calc(100% - 65px);
@@ -38,15 +35,15 @@ const footer: string = css`
 
 const footerTopRow: string=css`
   display: inline-flex;
-  background-color: #53682B;
+  background-color: ${colorDarkGreen};
   width: 100%
-`
+`;
 
 const footerBottomRow: string=css`
   display: inline-flex;
-  background-color: white;
+  background-color: ${colorWhite};
   width: 100%
-`
+`;
 
 const footerText: string=css`
   text-indent: 5em;
@@ -190,12 +187,6 @@ export default class PortalFooter extends FooterBase {
           <a href="http://www.flickr.com/photos/emsl/">
             <SocialMediaLogos src={flickr} alt="Flickr" />
           </a>
-
-          {/* <div className={socialMediaIcons}>Facebook</div>
-          <div className={socialMediaIcons}>Twitter</div>
-          <div className={socialMediaIcons}>Instagram</div>
-          <div className={socialMediaIcons}>LinkedIn</div>
-          <div className={socialMediaIcons}>YouTube</div> */}
           <OrcidMember src={orcidMember} alt ="Orcid Member" />
           <a href="https://members.orcid.org/cc-research-organizations">
            <OrcidBadge src={orcidBadgeDisplay} alt="Orcid Display"/>

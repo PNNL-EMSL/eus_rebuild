@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import { css } from 'emotion';
+import {colorLightOrange, colorLightGreen, colorWhite, colorRed} from 'styles/base';
 import gql from 'graphql-tag';
 import PortalHeader from 'components/portal/components/PortalHeader';
 
 const container: string = css`
     border-style: solid;
     padding: 10px;
-    background-color: rgba(215,118,0,0.5);
+    background-color: ${colorLightOrange};
 `;
 
 const submitButton: string = css`
-  background-color: rgba(114, 148, 26, 1);
-  color: #FFFFFF
+  background-color: ${colorLightGreen};
+  color: ${colorWhite};
 `;
 
 const noteText: string = css`
@@ -22,6 +23,7 @@ const noteText: string = css`
 
 const loginContainer: string = css`
   width: 800px;
+  padding-top: 90px;
   margin: 2em auto;
   float: left;
 `;
@@ -32,7 +34,7 @@ const contentStyle: string = css`
 `;
 
 const warning: string = css`
-  color: red;
+  color: ${colorRed};
 `;
 
 export default class Login extends Component<any, any> {

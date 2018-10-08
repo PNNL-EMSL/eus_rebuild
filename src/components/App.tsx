@@ -7,6 +7,7 @@ import { withRouter, Switch, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import ExternalStyleSheets from 'components/shared/components//ExternalStyleSheets';
+import {colorDarkGrey} from 'styles/base';
 
 import ProposalHome from 'components/portal/pages/proposals/Home';
 // import ProposalNew from 'components/portal/pages/proposals/Home';
@@ -50,54 +51,9 @@ const app: string = css`
   display: flex;
   flex: 1;
   flex-direction: column;
-  background-color: rgb(97, 98, 101);
+  background-color: ${colorDarkGrey};
   height: 100%;
 `;
-
-// const header: string = css`
-//   padding: 5px 20px 5px 10px;
-//   display: flex;
-//   flex: 0 0 auto;
-//   flex-direction: row;
-//   background-color: white;
-//   align-items: center;
-//   max-width: 1078px;
-// `;
-// const footer: string = css`
-//   padding: 5px 20px 5px 10px;
-//   display: flex;
-//   flex: 0 0 auto;
-//   flex-direction: row;
-//   background-color: white;
-//   align-items: center;
-//   max-width: 1078px;
-// `;
-// const titleContainer: string = css`
-//   display: flex;
-//   flex: 1;
-//   flex-direction: column;
-//   margin-left: 10px;
-//   margin-top: -15px;
-// `;
-// const title: string = css`
-//   font-weight: 800;
-//   font-size: 28px;
-//   text-shadow: 2px 2px 8px #aaa;
-// `;
-// const content: string = css`
-//   margin: 5px 20px 15px 100px;
-//   max-width: 958px;
-// `;
-//
-// const Logo = styled('img')`
-//   height: 80px;
-// `;
-//
-// const logout: string = css`
-//   text-align: right;
-//   float: right;
-//   width: 72%;
-// `;
 
 /**
  * The App component creates the main layout for the application,

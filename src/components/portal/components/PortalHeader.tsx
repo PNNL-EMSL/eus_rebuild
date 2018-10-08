@@ -4,7 +4,8 @@ import styled from 'react-emotion';
 import HeaderBase from 'components/shared/components/HeaderBase';
 import { Link } from 'react-router-dom';
 import logo from 'images/logo_white.png';
-import polygon from 'images/portal_icon_no_text.png'
+import polygon from 'images/portal_icon_no_text.png';
+import {colorDarkGreen, colorWhite, colorLightOrange} from 'styles/base';
 
 // const title: string = css`
 //   font-weight: 800;
@@ -28,11 +29,11 @@ const logout: string = css`
 `;
 
 const headerLinks: string = css`
-  color: #F4AA00;
+  color: ${colorLightOrange};
 `;
 
 const dividers: string = css`
-  color: #F4AA00;
+  color: ${colorLightOrange};
   margin: 10px;
   display: inline;
 `;
@@ -56,13 +57,13 @@ const headerText: string = css`
   position: absolute;
   left: 357px;
   top: 20px;
-  color: #53682B;
+  color: ${colorDarkGreen};
 `;
 
 const userText: string = css`
   font-size: 20px;
   text-align: center;
-  color: white;
+  color: ${colorWhite};
   font-style: italic;
 `;
 // const PolyText: string = css`
