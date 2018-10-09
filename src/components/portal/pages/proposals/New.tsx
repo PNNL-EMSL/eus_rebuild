@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import NewProposalWizard from 'components/portal/pages/proposals/NewProposalWizard';
+import NewProposalWizard from 'components/portal/components/proposals//NewProposalWizard';
 import gql from 'graphql-tag';
 
 export default class ProposalNew extends Component<any, any> {

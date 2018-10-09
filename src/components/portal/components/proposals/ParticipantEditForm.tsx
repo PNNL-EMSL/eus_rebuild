@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import gql from 'graphql-tag';
-// import { Query } from 'react-apollo';
 import AntDesignSelect from 'components/shared/components/AntDesignSelect';
-import ProfessionTypes from 'components/portal/pages/proposals/ProfessionTypes.json'
+import ProfessionTypes from 'components/portal/components/proposals/ProfessionTypes.json'
 import { Button, Input, Checkbox } from 'antd';
 
 export default class ParticipantEditForm extends Component<any, any> {

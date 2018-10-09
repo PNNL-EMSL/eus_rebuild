@@ -1,9 +1,9 @@
 import React from 'react';
 import WizardPage from 'components/shared/components/wizard/WizardPage';
 import AntDesignSelect from 'components/shared/components/AntDesignSelect';
-import ProposalTypeSelect from 'components/portal/pages/proposals/ProposalTypeSelect';
-import ResearchAreas from 'components/portal/pages/proposals/ResearchAreas.json';
-import ProposalTypes from 'components/portal/pages/proposals/ProposalTypes.json';
+import ProposalTypeSelect from 'components/portal/components/proposals/ProposalTypeSelect';
+import ResearchAreas from 'components/portal/components/proposals/ResearchAreas.json';
+import ProposalTypes from 'components/portal/components/proposals/ProposalTypes.json';
 import {DatePicker, Input, Radio} from 'antd';
 import {css} from 'emotion';
 

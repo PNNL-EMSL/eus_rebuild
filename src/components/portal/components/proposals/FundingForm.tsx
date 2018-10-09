@@ -1,7 +1,7 @@
 import React from 'react';
 import WizardPage from 'components/shared/components/wizard/WizardPage';
 import AntDesignSelect from 'components/shared/components/AntDesignSelect';
-import FundingSources from 'components/portal/pages/proposals/FundingSources.json';
+import FundingSources from 'components/portal/components/proposals/FundingSources.json';
 import {Input, Radio} from 'antd';
 
 const RadioGroup = Radio.Group;
