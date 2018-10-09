@@ -1,18 +1,18 @@
 import React, {Component} from 'react'; 
 import {css} from 'emotion';
 import {Link} from 'react-router-dom';
-
+import {colorWhite, colorLightOrange} from 'styles/base';
 
 const quickLinksMenu: string = css`
   width: 13%;
   display: inline-table;
-  color: #F4AA00;
+  color: ${colorLightOrange};
   vertical-align: top;
   padding-right: 5px
   `;
 
 const quickLink: string = css`
-    color: #FFF;
+    color: ${colorWhite};
 `;
 
 
@@ -26,7 +26,6 @@ export default  class QuickLinks extends Component<any, any> {
 
     render() {
         return (
-
             <div className={quickLinksMenu}>
                 QUICK LINKS <hr />
                 <Link to="/Portal/userInfo" className={quickLink}>My Profile</Link> <hr />

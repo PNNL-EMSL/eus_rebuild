@@ -7,12 +7,10 @@ import styled from 'react-emotion';
  */
 
 export const colorBlack = ' #0D1B2A';
-// export const colorDarkGreen = '#255859';
-// export const colorLightGreen = '#87babe';
 export const colorRed = '#BE5959';
 export const colorDarkGreenSubMenu = '#1e4647';
 
-export const colorLightGrey = '#C9C9CB';
+export const colorLightGrey = '#E1E1E3';
 export const colorDarkGrey = '#616265';
 export const colorWhite = '#FFFFFF';
 export const colorLightOrange = '#F2A928';
@@ -20,10 +18,6 @@ export const colorYellow = '#FFD700';
 export const colorLightGreen = '#719500';
 export const colorDarkGreen = '#53682B';
 
-
-export const footerFont = css`
-  
-`;
 
 export const headerFont = css`
   font-weight: 700;
@@ -75,7 +69,7 @@ export const contentStyle: string = css`
   max-width: 1024px;
   top: 100px;
   position: relative;
-`
+`;
 
 // const header: string = css`
 //   padding: 5px 20px 5px 10px;

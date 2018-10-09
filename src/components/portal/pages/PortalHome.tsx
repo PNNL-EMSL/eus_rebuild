@@ -9,12 +9,12 @@ import CarouselContainer from 'components/shared/components/CarouselContainer';
 import MarqueeContainer from 'components/shared/components/MarqueeContainer';
 import QuickLinks from 'components/portal/components/QuickLinks';
 import { Modal, Button } from 'antd';
+import {colorLightGreen, colorBlack, colorYellow, colorLightGrey} from 'styles/base';
 
 const orcid:string = css`
-  border-color: #7c93b5;
-  background-color: #719500;
+  background-color: ${colorLightGreen};
   padding: 1em;
-  border: 1px solid;
+  border: ${colorBlack} 1px solid;
   margin-top: 1.5em;
   min-height: 3em;
   float: left;
@@ -176,7 +176,6 @@ export default class UserHome extends PortalPageBase {
                 </div>
               )
             } else {
-              console.log('marquee data', data);
               const marqueeData = data.MarqueeInfos[0];
               return (
                 <div>
@@ -190,9 +189,9 @@ export default class UserHome extends PortalPageBase {
             <div className={orcid}>
               <p style={{ color: '#FFF', textAlign: 'center'}}><b>Announcements</b></p>
               <div>
-                <Button style={{ margin:3, background: '#e7f0ff', fontWeight: 'bold', textAlign: 'center'}} onClick={this.summary}>Summary Required</Button>
-                <Button style={{ margin:3, background: '#e7f0ff', fontWeight: 'bold', textAlign: 'center'}} onClick={this.orcidId}>Orcid® Info Needed</Button>
-                <Button style={{ margin:3, background: '#FFFFE7', fontWeight: 'bold', textAlign: 'center'}} onClick={this.training}>Training Due</Button>
+                <Button style={{ margin:3, background: colorLightGrey, fontWeight: 'bold', textAlign: 'center'}} onClick={this.summary}>Summary Required</Button>
+                <Button style={{ margin:3, background: colorLightGrey, fontWeight: 'bold', textAlign: 'center'}} onClick={this.orcidId}>Orcid® Info Needed</Button>
+                <Button style={{ margin:3, background: colorYellow, fontWeight: 'bold', textAlign: 'center'}} onClick={this.training}>Training Due</Button>
               </div>
             </div>
           </div>
