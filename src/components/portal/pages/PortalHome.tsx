@@ -9,10 +9,11 @@ import CarouselContainer from 'components/shared/components/CarouselContainer';
 import MarqueeContainer from 'components/shared/components/MarqueeContainer';
 import QuickLinks from 'components/portal/components/QuickLinks';
 import { Modal, Button } from 'antd';
-import {colorLightGreen, colorBlack, colorYellow, colorLightGrey} from 'styles/base';
+import {colorLightGreen, colorBlack, colorYellow, colorLightGrey, colorWhite} from 'styles/base';
 
 const orcid:string = css`
   background-color: ${colorLightGreen};
+  color: ${colorWhite};
   padding: 1em;
   border: ${colorBlack} 1px solid;
   margin-top: 1.5em;
@@ -96,7 +97,7 @@ export default class UserHome extends PortalPageBase {
         </div>
       ),
     });
-  }
+  };
 
   orcidId = () => {
     Modal.info({
@@ -134,7 +135,7 @@ export default class UserHome extends PortalPageBase {
         </div>
       ),
     });
-  }
+  };
 
   training = () => {
     Modal.info({
@@ -145,7 +146,7 @@ export default class UserHome extends PortalPageBase {
         </div>
       ),
     });
-  }
+  };
 
 
   renderTile() {
@@ -156,7 +157,7 @@ export default class UserHome extends PortalPageBase {
         <TileContainer role={role} {...this.props}/>
       </div>
     );
-  }
+  };
 
   renderContent () {
     const content = this.renderTile();
@@ -164,7 +165,7 @@ export default class UserHome extends PortalPageBase {
       <div>
       <QuickLinks logoutHandler={this.logoutHandler}/>
         <div className={announcementDiv}>
-          
+
         <Query query={this.GET_MARQUEE_INFORMATION}>
           {({loading, error, data}) => {
             if (loading) {
@@ -187,7 +188,7 @@ export default class UserHome extends PortalPageBase {
         </Query>
           <div className={newsDiv}>
             <div className={orcid}>
-              <p style={{ color: '#FFF', textAlign: 'center'}}><b>Announcements</b></p>
+              <p style={{ textAlign: 'center'}}><b>Announcements</b></p>
               <div>
                 <Button style={{ margin:3, background: colorLightGrey, fontWeight: 'bold', textAlign: 'center'}} onClick={this.summary}>Summary Required</Button>
                 <Button style={{ margin:3, background: colorLightGrey, fontWeight: 'bold', textAlign: 'center'}} onClick={this.orcidId}>Orcid® Info Needed</Button>
@@ -207,7 +208,7 @@ export default class UserHome extends PortalPageBase {
               } else if (error) {
                 return (
                   <div>
-                    Error encountered retrieving Nofication and News Data. We apologize for the inconvenience.
+                    Error encountered retrieving Notification and News Data. We apologize for the inconvenience.
                   </div>
                 )
               } else {
