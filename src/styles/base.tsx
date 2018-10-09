@@ -71,6 +71,31 @@ export const contentStyle: string = css`
   position: relative;
 `;
 
+export const headerStyle: string = css`
+  padding: 5px 20px 5px 10px;
+  margin-top: -20px;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: row;
+  background-color: ${colorDarkGreen};
+  position: fixed;
+  width: 100%;
+  min-width: 900px;
+  z-index: 10;
+  align-items: center;
+  max-width: 100%;
+  border-bottom: ${colorWhite} solid 2px;
+`;
+
+export const fontAwesomeContainerStyle: string = css`
+  text-align: center;
+  border-style: solid;
+  margin: 5px;
+  padding-top: 5px;
+  display: inline-grid;
+  min-height: 100px
+`;
+
 // const header: string = css`
 //   padding: 5px 20px 5px 10px;
 //   display: flex;

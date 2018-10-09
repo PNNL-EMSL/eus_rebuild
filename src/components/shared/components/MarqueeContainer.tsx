@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-// import Marquee from 'react-smooth-marquee';
 import Marquee from 'react-marquee';
 import {css} from 'emotion';
 import 'styles/index.scss';

@@ -6,8 +6,6 @@ import TileContainer from '../components/TileContainer';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import CarouselContainer from '../components/CarouselContainer';
 import MarqueeContainer from '../components/MarqueeContainer';
-// import ProposalsContainer from 'components/core/ProposalsContainer';
-
 
 const orcid:string = css`
   border-color: #7c93b5;
@@ -18,13 +16,6 @@ const orcid:string = css`
   min-height: 3em;
   float: left;
 `;
-
-// const proposalContent:string = css`
-//   width: 48%;
-//   float: right;
-//   padding: 4em 1em 1em;
-//   margin-top: 30px;
-// `;
 
 const newsDiv:string = css`
   width: 45%;

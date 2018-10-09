@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { cx, css } from 'emotion';
-// import { colorLightGrey, colorVeryLightGrey, colorLightOrange } from 'styles/base';
 
 // Component styles
 const page = css`
