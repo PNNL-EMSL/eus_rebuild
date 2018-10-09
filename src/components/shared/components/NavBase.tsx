@@ -10,7 +10,6 @@ export default abstract class NavBase extends Component<any, any> {
       CurrentUser @client {
         roleLevel
       }
-      navCollapsed @client
     }
   `;
   
@@ -68,6 +67,7 @@ export default abstract class NavBase extends Component<any, any> {
               return <p>Error!</p>
             }
             else {
+              console.log('header', data);
               const content = this.renderItems(data);
               return (
                 <div>
