@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {Select, Radio} from 'antd';
+import {Select, Radio, Form} from 'antd';
 import { css } from 'emotion';
 
+const FormItem = Form.Item;
 const Option = Select.Option;
 const OptGroup = Select.OptGroup;
 const RadioGroup = Radio.Group;
@@ -12,12 +13,25 @@ const verticalRadio = css`
 `;
 
 const radioGroupStyling = css`
-  margin: 0 25px;
+  margin: 0px 25px;
 `;
 
-const questionGrouping = css`
-  margin: 15px;
-`;
+const formItemLayout = {
+  labelCol: {
+    sm: { span: 6 },
+  },
+  wrapperCol: {
+    sm: { span: 18 },
+  },
+};
+const radioItemLayout = {
+  labelCol: {
+    sm: { span: 12 },
+  },
+  wrapperCol: {
+    sm: { span: 12 },
+  },
+};
 
 export default class ProposalTypeSelect extends Component<any, any> {
   constructor(props) {
@@ -31,6 +45,7 @@ export default class ProposalTypeSelect extends Component<any, any> {
     this.handleProposalTypeChange = this.handleProposalTypeChange.bind(this);
     this.renderGeneralQuestions = this.renderGeneralQuestions.bind(this);
     this.handleNoPay = this.handleNoPay.bind(this);
+    this.handleRestricted = this.handleRestricted.bind(this);
     this.handleReason = this.handleReason.bind(this);
     this.handleTheme = this.handleTheme.bind(this);
   }
@@ -90,36 +105,31 @@ export default class ProposalTypeSelect extends Component<any, any> {
   renderGeneralQuestions() {
     const content:JSX.Element[] = [];
     content.push(
-      <div className={questionGrouping}>
-        <label>Are you planning to pay for any technical support needed?</label>
+      <FormItem {...radioItemLayout} className={'two-rows-label'} label="Are you planning to pay for any technical support needed?" required={true} >
         <RadioGroup defaultValue={this.props.pay} className={radioGroupStyling} onChange={this.handleNoPay}>
           <Radio value={1}>Yes</Radio>
           <Radio value={0}>No</Radio>
         </RadioGroup>
-      </div>
+      </FormItem>
     );
     if(this.state.displayPayQuestion === 1) {
       content.push(
-        <div className={questionGrouping}>
-          <label>Is this business sensitive or restricted from public dissemination?</label>
+        <FormItem {...radioItemLayout} className={'two-rows-label'} label="Is this business sensitive or restricted from public dissemination?" required={true} >
           <RadioGroup defaultValue={this.props.restricted} className={radioGroupStyling} onChange={this.handleRestricted}>
             <Radio value={1}>Yes</Radio>
             <Radio value={0}>No</Radio>
           </RadioGroup>
-        </div>
+        </FormItem>
       )
     } else if(this.state.displayPayQuestion === 0) {
       content.push(
-        <div className={questionGrouping}>
-          <label>Please indicate any special circumstances by selecting one of the options below:</label>
-          <div>
-            <RadioGroup defaultValue={this.props.reason} className={radioGroupStyling} onChange={this.handleReason}>
-              <Radio className={verticalRadio} value="N/A">Not applicable (will be held until the September panel review to compete for technical support)</Radio>
-              <Radio className={verticalRadio} value="rapid">Research related to urgent deadlines/deliverables or small proof-of-principle request</Radio>
-              <Radio className={verticalRadio} value="non_emsl">Requesting resources that are owned or co-owned by non-EMSL programs</Radio>
-            </RadioGroup>
-          </div>
-        </div>
+        <FormItem {...radioItemLayout} className={'two-rows-label'} label="Please indicate any special circumstances by selecting one of the options below:" required={true} >
+          <RadioGroup defaultValue={this.props.reason} className={radioGroupStyling} onChange={this.handleReason}>
+            <Radio className={verticalRadio} value="N/A">Not applicable (will be held until the September panel review to compete for technical support)</Radio>
+            <Radio className={verticalRadio} value="rapid">Research related to urgent deadlines/deliverables or small proof-of-principle request</Radio>
+            <Radio className={verticalRadio} value="non_emsl">Requesting resources that are owned or co-owned by non-EMSL programs</Radio>
+          </RadioGroup>
+        </FormItem>
       )
     }
     content.push(this.renderPartnerQuestions());
@@ -127,16 +137,14 @@ export default class ProposalTypeSelect extends Component<any, any> {
   }
 
   renderPartnerQuestions() {
-    console.log('displaying partner questions');
     return(
-      <div className={questionGrouping}>
-        <label style={{verticalAlign: "top"}}>Please select the Science Theme that best fits your proposed research.</label>
+      <FormItem {...radioItemLayout} className={'two-rows-label'} label="Please select the Science Theme that best fits your proposed research." required={true} >
         <RadioGroup defaultValue={this.props.theme} className={radioGroupStyling} onChange={this.handleTheme}>
           <Radio className={verticalRadio} value="bioSciences">Biological Sciences</Radio>
           <Radio className={verticalRadio} value="enviroSciences">Environmental Sciences</Radio>
           <Radio className={verticalRadio} value="other">Other</Radio>
         </RadioGroup>
-      </div>
+      </FormItem>
     )
   }
 
@@ -154,10 +162,8 @@ export default class ProposalTypeSelect extends Component<any, any> {
     const options = this.renderOptions();
     const followOnQuestions = this.renderFollowOn();
     return(
-      <div>
-        <label>{this.props.label}</label>
+      <FormItem {...formItemLayout} label={this.props.label} required={true}>
         <Select
-          style={{width: "75%", float: "right"}}
           placeholder = {this.props.placeholder}
           onChange={this.handleProposalTypeChange}
           defaultValue={this.props.value}
@@ -165,7 +171,7 @@ export default class ProposalTypeSelect extends Component<any, any> {
           {options}
         </Select>
         {followOnQuestions}
-      </div>
+      </FormItem>
     )
   }
 

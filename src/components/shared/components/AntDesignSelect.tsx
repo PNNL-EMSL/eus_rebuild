@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {Select, Input} from 'antd';
+import {Select, Input, Form} from 'antd';
 
+const FormItem = Form.Item;
 const Option = Select.Option;
 const OptGroup = Select.OptGroup;
 
@@ -15,7 +16,6 @@ export default class AntDesignSelect extends Component<any, any> {
 
     this.state = { displayOther: ((!props.multiple && props.value === "other") || (props.multiple && props.value.includes("other"))) };
     this.handleChange = this.handleChange.bind(this);
-    console.log('reconstructed');
   }
 
   handleChange(value) {
@@ -49,14 +49,19 @@ export default class AntDesignSelect extends Component<any, any> {
   }
 
   render() {
+    const formItemLayout = {
+      labelCol: {
+        sm: { span: 6 },
+      },
+      wrapperCol: {
+        sm: { span: 18 },
+      },
+    };
     const options = this.renderOptions();
     const displayOther = this.state.displayOther;
-    console.log('rerendered');
     return(
-      <div style={{height: "35px"}}>
-        <label>{this.props.label}</label>
+      <FormItem {...formItemLayout} label={this.props.label} required={true} >
         <Select
-          style={{width: "75%", float: "right"}}
           placeholder = {this.props.placeholder}
           onChange={this.handleChange}
           mode={this.props.multiple ? 'multiple' : 'default'}
@@ -64,15 +69,14 @@ export default class AntDesignSelect extends Component<any, any> {
         >
           {options}
         </Select>
-        {displayOther === true ? (
+        {displayOther === true && (
           <Input
-            style={{width: "50%", float: "right", margin:"0 25%"}}
             placeholder="Please Specify..."
             onChange={this.props.handleInput}
             defaultValue={this.props.otherValue}
           />
-        ) : (<div />)}
-      </div>
+        )}
+      </FormItem>
     )
   }
 
