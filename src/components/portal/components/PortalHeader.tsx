@@ -7,17 +7,6 @@ import logo from 'images/logo_white.png';
 import polygon from 'images/portal_icon_no_text.png';
 import {colorDarkGreen, colorWhite, colorLightOrange, Logo} from 'styles/base';
 
-// const title: string = css`
-//   font-weight: 800;
-//   font-size: 28px;
-//   text-shadow: 2px 2px 8px #aaa;
-//   width: auto;
-// `;
-
-// const loginHeader: string = css`
-//   display: flex;
-// `;
-
 const logout: string = css`
   position: absolute;
   right: 10px;
@@ -35,11 +24,11 @@ const dividers: string = css`
 `;
 
 const Polygon = styled('img')`
-position: absolute;
-top: 0px;
-left: 25%;
-height: 91px;
-width: 50%;
+  position: absolute;
+  top: 0px;
+  left: 25%;
+  height: 91px;
+  width: 50%;
 `;
 
 const headerSpan: string = css`
@@ -62,26 +51,14 @@ const userText: string = css`
   color: ${colorWhite};
   font-style: italic;
 `;
-// const PolyText: string = css`
-//   position: absolute;
-//   top: 50%;
-//   left: 50%;
-//   transform: translate( -50%, -50% );
-//   text-align: center;
-//   color: white;
-//   font-weight: bold;
-// `;
 
 export default class PortalHeader extends HeaderBase {
   constructor(props) {
     super(props);
-    
-
   }
   
 
   renderContent(data) {
-    console.log('renderContent', this.props);
     return (
       <div>
         <span className={headerSpan}>

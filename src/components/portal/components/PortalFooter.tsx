@@ -36,15 +36,6 @@ const footerBottomRow: string=css`
   padding-top: 7px;
 `;
 
-// const bottomRowIcons: string = css`
-//   margin-right: 5px;
-// `;
-
-// const EmslIcon: string=css`
-//   margin-left: 65px;
-//   margin-right: 5px;
-// `;
-
 const connectWithEMSL: string=css`
   width: 33%;
   color: #616265;
@@ -52,10 +43,6 @@ const connectWithEMSL: string=css`
   padding-top: 10px;
   text-align: center;
 `;
-
-// const socialMediaIcons: string=css`
-//   margin-inline-end: 15px;
-// `;
 
 const SocialMediaLogos = styled('img') `
   height: 20px;
@@ -65,9 +52,7 @@ const SocialMediaLogos = styled('img') `
 const OrcidBadge = styled('img')`  
   height: 40px;
   padding-left: 5px;
-  margin: 0;
   vertical-align: middle;
-  border: 0;
 `;
 
 const OrcidMember = styled('img')`
@@ -89,10 +74,6 @@ const DoeLogo = styled('img')`
   height: 35px;
   padding-left: 20px
 `;
-
-// const orcidIcon: string=css`
-//   margin-inline-start: 30px;
-// `;
 
 export default class PortalFooter extends FooterBase {
   renderContent() {
