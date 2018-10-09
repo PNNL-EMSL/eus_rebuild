@@ -38,7 +38,7 @@ const announcementDiv = css`
 
 const carouselDiv:string = css`
   width: 80%;
-  margin-bottom: 100px;
+  margin-bottom: 140px;
   float: right;
   
 `;

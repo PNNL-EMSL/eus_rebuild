@@ -4,6 +4,11 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Slider from 'react-slick';
 import "../../../../node_modules/slick-carousel/slick/slick.css"; 
 import "../../../../node_modules/slick-carousel/slick/slick-theme.css";
+import {css} from 'emotion';
+
+const center: string=css`
+  text-align: center;
+`;
 
 export default class CarouselContainer extends Component<any, any> {
     constructor(props) {
@@ -19,14 +24,15 @@ export default class CarouselContainer extends Component<any, any> {
       });
 
       const settings = {
-          dots: true,
-          infinite: true,
-          slidesToShow: 3,
-          slidesToScroll: 1,
-          autoplay: true,
-          autoplaySpeed: 2000,
-          speed: 500,
-          pauseOnHover: true
+        dots: true,
+        infinite: true,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 2000,
+        speed: 500,
+        pauseOnHover: true,
+        className: center
       }
 
         return (
