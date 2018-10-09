@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {css} from 'emotion';
+import {colorWhite, colorLightOrange} from 'styles/base';
 
 const legend: string = css`
-  color: white;
+  color: ${colorWhite};
   text-align: center;
 `;
   
@@ -20,7 +21,7 @@ export default class CarouselItem extends Component<any, any> {
           <img src={this.props.src} style={{display: 'block', margin: 'auto'}} width={90} height={60}/>
           <p className={legend}>
             {this.props.text}
-            <div><a style={{ color: '#D77600' }}>Read more...</a></div>
+            <div><a style={{ color: colorLightOrange }}>Read more...</a></div>
           </p>
         </a>
       </div>
