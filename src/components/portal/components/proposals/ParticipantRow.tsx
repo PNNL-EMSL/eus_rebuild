@@ -143,6 +143,7 @@ export default class ParticipantRow extends Component<any, any> {
           visible={this.state.showEditModal}
           onCancel={this.closeEdit}
           footer={null}
+          width="50%"
         >
           <ParticipantEditForm
             participant={user}

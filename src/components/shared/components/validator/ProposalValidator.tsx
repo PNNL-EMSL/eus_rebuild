@@ -17,7 +17,7 @@ export default class ProposalValidator {
         { func: this.validateProposalReason, field: undefined, tooltip: 'You must select a reason why you will not be paying for necessary technical support'},
       ],
       participantsForm:[
-        { func: this.validateNotEmptyOrUndefined, field: 'participants', tooltip: 'A proposal must have at least one participant'},
+        { func: this.validateNotEmptyOrUndefined, field: undefined, tooltip: 'A proposal must have at least one participant'},
         { func: this.validateUsersORCID, field: undefined, tooltip: 'must have an ORCID iD linked to their account'},
         { func: this.validateUsersProfession, field: undefined, tooltip: 'All participants must have a profession selected'},
         { func: this.validateUsersInstitutions, field: undefined, tooltip: 'All participants must select their parent institution.'}
@@ -26,34 +26,45 @@ export default class ProposalValidator {
         { func: this.validateFundingSource, field: undefined, tooltip: 'You must specify at least one funding source'},
         { func: this.validateNotEmptyOrUndefined, field: 'fundingWorkPackage', tooltip: 'You must specify a Work Package for the proposal'}
       ]
-      
     };
-    
+    this.validateUsersORCID = this.validateUsersORCID.bind(this);
+    this.validateUsersProfession = this.validateUsersProfession.bind(this);
+    this.validateUsersInstitutions = this.validateUsersInstitutions.bind(this);
   }
 
-  validateUsersORCID(data, tooltip) {
+  validateUserField(users, field) {
     const invalidUsers:string[] = [];
-    data.forEach((item) => {
-      if(item.orcid === '') {
-        invalidUsers.push(item.name);
+    users.forEach((user) => {
+      if(user[field] === '') {
+        invalidUsers.push(user.name);
       }
     });
-    const last = invalidUsers.pop();
-    const users = invalidUsers.join(', ') + ' and ' + last;
-    const toReturn = invalidUsers.length === 0 ? undefined : {field: "participants", tooltip: [users, tooltip].join(' ')};
+    return invalidUsers;
+  }
+
+  _createReturnText(userArray, tooltip) {
+    const last = userArray.pop();
+    const users = userArray.join(', ') + ' and ' + last;
+    return [users, tooltip].join(' ');
+  }
+
+  validateUsersORCID(data, tooltip, instance) {
+    const invalidUsers = instance.validateUserField(data, 'orcid');
+    const toReturn = invalidUsers.length === 0 ? undefined : {field: "participants", tooltip: instance._createReturnText(invalidUsers, tooltip)};
     return toReturn;
-    // stuff
   }
 
-  validateUsersProfession(data, tooltip) {
-    // stuff 2
+  validateUsersProfession(data, tooltip, instance) {
+    const invalidUsers = instance.validateUserField(data, 'profession');
+    const toReturn = invalidUsers.length === 0 ? undefined : {field: "participants", tooltip: instance._createReturnText(invalidUsers, tooltip)};
+    return toReturn;
   }
 
-  validateUsersInstitutions(data, tooltip) {
-    // stuff 3
+  validateUsersInstitutions(data, tooltip, instance) {
+    const invalidUsers = instance.validateUserField(data, 'institution');
+    const toReturn = invalidUsers.length === 0 ? undefined : {field: "participants", tooltip: instance._createReturnText(invalidUsers, tooltip)};
+    return toReturn;
   }
-
-  
 
   validateNotEmptyOrUndefined(data, field: string|undefined,  tooltip) {
     if(data === '' || data === undefined) {
@@ -106,12 +117,13 @@ export default class ProposalValidator {
 
   doValidate(data, form) {
     const errors:object[] = [];
+    const instance = this;
     this.functionList[form].forEach((item) => {
       let error = {};
       if(item.field !== undefined) {
-        error = item.func(data[item.field], item.field, item.tooltip);
+        error = item.func(data[item.field], item.field, item.tooltip, instance);
       } else {
-        error = item.func(data, item.tooltip)
+        error = item.func(data, item.tooltip, instance)
       }
       if(error) {
         errors.push(error);
