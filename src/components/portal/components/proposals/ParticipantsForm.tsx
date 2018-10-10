@@ -3,11 +3,11 @@ import WizardPage from 'components/shared/components/wizard/WizardPage';
 import ParticipantsSearchForm from 'components/portal/components/proposals/ParticipantsSearchForm';
 import ParticipantRow from 'components/portal/components/proposals/ParticipantRow';
 import {Button, Modal} from 'antd';
-import {css} from 'emotion';
+// import {css} from 'emotion';
 
-const participantTable: string = css`
-  min-width: 958px;
-`;
+// const participantTable: string = css`
+//   min-width: 958px;
+// `;
 
 export default class ParticipantsForm extends WizardPage {
   static defaultProps = {
@@ -37,6 +37,7 @@ export default class ParticipantsForm extends WizardPage {
 
   validatePage = (data) => {
     const errors = this.props.Validator.doValidate(data, 'participantsForm');
+    console.log('participantsErrors', errors);
     const existingErrors = this.props.proposalErrors;
     existingErrors.participantsErrors = errors;
     this.props.updateErrors(existingErrors);
@@ -146,7 +147,7 @@ export default class ParticipantsForm extends WizardPage {
           <Button onClick={this.showModal}>Add Participant</Button>
         </div>
         {content.length !== 0 && (
-          <table className={participantTable}>
+          <table className="table table-striped table-bordered">
             <thead>
               <tr>
                 <th>Name</th>

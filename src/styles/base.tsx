@@ -58,10 +58,10 @@ export const footerIconStyle: string = css`
 `;
 
 export const portalContentStyle: string = css`
-  border: white 2px solid;
+  border: ${colorLightGrey} 2px solid;
   padding: 20px;
   padding-top: 0px;
-  background-color: ${colorLightGrey};
+  background-color: ${colorWhite};
 `;
 
 export const contentStyle: string = css`

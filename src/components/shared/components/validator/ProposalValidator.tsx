@@ -18,7 +18,7 @@ export default class ProposalValidator {
       ],
       participantsForm:[
         { func: this.validateNotEmptyOrUndefined, field: 'participants', tooltip: 'A proposal must have at least one participant'},
-        { func: this.validateUsersORCID, field: undefined, tooltip: 'PIs and Co-PIs must have an ORCID iD linked to their account'},
+        { func: this.validateUsersORCID, field: undefined, tooltip: 'must have an ORCID iD linked to their account'},
         { func: this.validateUsersProfession, field: undefined, tooltip: 'All participants must have a profession selected'},
         { func: this.validateUsersInstitutions, field: undefined, tooltip: 'All participants must select their parent institution.'}
       ],
@@ -32,6 +32,16 @@ export default class ProposalValidator {
   }
 
   validateUsersORCID(data, tooltip) {
+    const invalidUsers:string[] = [];
+    data.forEach((item) => {
+      if(item.orcid === '') {
+        invalidUsers.push(item.name);
+      }
+    });
+    const last = invalidUsers.pop();
+    const users = invalidUsers.join(', ') + ' and ' + last;
+    const toReturn = invalidUsers.length === 0 ? undefined : {field: "participants", tooltip: [users, tooltip].join(' ')};
+    return toReturn;
     // stuff
   }
 

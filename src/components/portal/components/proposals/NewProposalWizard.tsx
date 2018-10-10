@@ -132,8 +132,8 @@ class NewProposalWizard extends Wizard {
         hasError = errors.detailsErrors;
       }
     } else if (stepName === NewProposalWizard.STEP_PARTICIPANTS) {
-      if( errors.no_participant || errors.no_principal ) {
-        hasError = true;
+      if( errors.participantsErrors && errors.participantsErrors.length > 0 ) {
+        hasError = errors.participantsErrors;
       }
     } else if (stepName === NewProposalWizard.STEP_FUNDING) {
       if (errors.fundingErrors && errors.fundingErrors.length > 0) {
