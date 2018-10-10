@@ -2,8 +2,9 @@ import React from 'react';
 import WizardPage from 'components/shared/components/wizard/WizardPage';
 import AntDesignSelect from 'components/shared/components/AntDesignSelect';
 import FundingSources from 'components/portal/components/proposals/FundingSources.json';
-import {Input, Radio} from 'antd';
+import {Input, Radio, Form} from 'antd';
 
+const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 
 export default class FundingForm extends WizardPage {
@@ -54,14 +55,19 @@ export default class FundingForm extends WizardPage {
   }
 
   render() {
-    console.log('fundingState:', this.state);
+    const formItemLayout = {
+      labelCol: {
+        sm: { span: 6 },
+      },
+      wrapperCol: {
+        sm: { span: 18 },
+      },
+    };
     const data = this.state;
-    // NOTES: BER asks "Are you the PI on the BER grant funding this work?"
-    //        Other asks to specify
     return(
-      <div>
+      <Form>
         <AntDesignSelect
-          label='Primary Research Area'
+          label='Funding Sources'
           placeholder="Select primary research area..."
           multiple={true}
           optionList={FundingSources.FundingSources}
@@ -71,20 +77,18 @@ export default class FundingForm extends WizardPage {
           handleInput={this.handleFundingOther}
           required={true}
         />
-        {data.fundingSources.includes('doe_ber') ? (
-          <div>
-            <label>Are you the PI on the BER grant funding this work?</label>
+        {data.fundingSources.includes('doe_ber') && (
+          <FormItem {...formItemLayout} className={'two-rows-label'} label="Are you the PI on the BER grant funding this work?" required={true}>
             <RadioGroup>
               <Radio value={1}>Yes</Radio>
               <Radio value={0}>No</Radio>
             </RadioGroup>
-          </div>
-        ):(<div />)}
-        <div>
-          <label>Work Package #</label>
+          </FormItem>
+        )}
+        <FormItem {...formItemLayout} label="Work Package #" required={true}>
           <Input defaultValue={data.fundingWorkPackage} onChange={this.handleWorkPackageChange}/>
-        </div>
-      </div>
+        </FormItem>
+      </Form>
     );
   }
 }
