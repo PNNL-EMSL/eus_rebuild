@@ -3,6 +3,7 @@ import DetailsForm from 'components/portal/components/proposals/DetailsForm';
 import FundingForm from 'components/portal/components/proposals/FundingForm';
 import ParticipantsForm from 'components/portal/components/proposals/ParticipantsForm';
 import ResourcesForm from 'components/portal/components/proposals/ResourcesForm';
+import MaterialsForm from 'components/portal/components/proposals/MaterialsForm';
 import ProposalSummary from 'components/portal/components/proposals/ProposalSummary';
 import ProposalValidator from 'components/shared/components/validator/ProposalValidator';
 
@@ -36,20 +37,24 @@ class NewProposalWizard extends Wizard {
       fundingOther: '',
       fundingWorkPackage: '',
     },
-    resourcesData: {},
+    resourcesData: {
+      resources: []
+    },
   };
 
   static PROP_INFO = 'info';
   static PROP_PARTICIPANTS = 'participants';
   static PROP_FUNDING = 'funding';
   static PROP_RESOURCES = 'resources';
+  static PROP_MATERIALS = 'materials';
   static PROP_SUMMARY = 'summary';
 
-  static STEP_INFO = 'Proposal Details';
+  static STEP_INFO = 'Details';
   static STEP_PARTICIPANTS = 'Participants';
   static STEP_FUNDING = 'Funding';
-  static STEP_RESOURCES = 'Proposal Resources';
-  static STEP_SUMMARY = 'Proposal Summary';
+  static STEP_RESOURCES = 'Resources';
+  static STEP_MATERIALS = 'Materials';
+  static STEP_SUMMARY = 'Summary';
   
   static VALIDATOR = new ProposalValidator();
 
@@ -89,6 +94,7 @@ class NewProposalWizard extends Wizard {
       NewProposalWizard.STEP_PARTICIPANTS,
       NewProposalWizard.STEP_FUNDING,
       NewProposalWizard.STEP_RESOURCES,
+      NewProposalWizard.STEP_MATERIALS,
       NewProposalWizard.STEP_SUMMARY,
     ];
 
@@ -101,7 +107,8 @@ class NewProposalWizard extends Wizard {
       { component: ParticipantsForm, id: NewProposalWizard.PROP_PARTICIPANTS, stepPos: 1},
       { component: FundingForm, id: NewProposalWizard.PROP_FUNDING, stepPos: 2},
       { component: ResourcesForm, id: NewProposalWizard.PROP_RESOURCES, stepPos: 3},
-      { component: ProposalSummary, id: NewProposalWizard.PROP_SUMMARY, stepPos: 4},
+      { component: MaterialsForm, id: NewProposalWizard.PROP_MATERIALS, stepPos: 4},
+      { component: ProposalSummary, id: NewProposalWizard.PROP_SUMMARY, stepPos: 5},
     ];
 
     return pages;

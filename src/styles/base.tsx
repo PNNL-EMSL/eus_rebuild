@@ -11,6 +11,7 @@ export const colorRed = '#BE5959';
 export const colorDarkGreenSubMenu = '#1e4647';
 
 export const colorLightGrey = '#E1E1E3';
+export const colorDisabled = '#AAAAAA';
 export const colorDarkGrey = '#616265';
 export const colorWhite = '#FFFFFF';
 export const colorLightOrange = '#F2A928';

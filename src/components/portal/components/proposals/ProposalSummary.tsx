@@ -16,9 +16,16 @@ export default class ProposalSummary extends WizardPage {
   render() {
     return (
       <div>
+        <h3>Proposal Details</h3>
         <DetailsForm {...this.props}/>
+        <hr />
+        <h3>Proposal Participants</h3>
         <ParticipantsForm {...this.props}/>
+        <hr />
+        <h3>Proposal Funding</h3>
         <FundingForm {...this.props}/>
+        <hr />
+        <h3>Proposal Resources</h3>
         <ResourcesForm {...this.props}/>
       </div>
     )

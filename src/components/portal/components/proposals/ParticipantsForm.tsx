@@ -125,9 +125,7 @@ export default class ParticipantsForm extends WizardPage {
   }
 
   render() {
-
-    let content:JSX.Element[] = [];
-    content = this.renderUsers();
+    const content:JSX.Element[] = this.renderUsers();
     return (
       <div>
         <Modal
