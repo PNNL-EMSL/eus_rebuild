@@ -17,9 +17,9 @@ export default class ProposalResourceRow extends Component<any, any>{
     const item = this.props.item;
     return (
       <tr key={item.name}>
-        <td>{item.name}</td>
-        <td><input defaultValue={item.usage}/>hours</td>
-        <td><i className="fas fa-times-circle fa-2x" style={{color: colorRed}} onClick={this.removeHandler}/></td>
+        <td><div style={{margin: '5px'}}>{item.name}</div></td>
+        <td style={{width: '270px'}}><input style={{margin:'5px'}} defaultValue={item.usage}/>hours</td>
+        <td style={{width: '50px'}}><i className="fas fa-minus-circle fa-2x" style={{color: colorRed, margin: '5px'}} onClick={this.removeHandler}/></td>
       </tr>
     )
   }

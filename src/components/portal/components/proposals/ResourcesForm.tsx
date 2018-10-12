@@ -30,11 +30,12 @@ export default class ResourcesForm extends WizardPage {
 
   constructor(props) {
     super(props);
+    const initialResources = Resources.Resources.sort((x, y) => (x.localeCompare(y)));
 
     this.state = {
       resources: this.props.resourcesData.resources,
-      filteredList: Resources.Resources,
-      fullList: Resources.Resources
+      filteredList: initialResources,
+      fullList: initialResources
     };
 
     this.renderList = this.renderList.bind(this);
@@ -121,7 +122,7 @@ export default class ResourcesForm extends WizardPage {
   renderResources() {
     return (
       <tbody>
-      {this.state.resources.map((item) => {
+      {this.state.resources.sort((x, y) => (x.name - y.name)).map((item) => {
         return (
           <ProposalResourceRow key={item.name} item={item} removeHandler={this.removeFromResources}/>
         )
@@ -136,14 +137,14 @@ export default class ResourcesForm extends WizardPage {
       <div>
         {this.renderList()}
         {this.state.resources.length > 0 && (
-          <table className="table table-striped table-bordered">
+          <table className="table table-striped table-bordered" style={{textAlign: 'center'}}>
             <thead>
             <tr>
               <th colSpan={3} style={{fontSize: "24px", textAlign:"center"}}>Selected Resources</th>
             </tr>
             <tr>
-              <th>Resource Name</th>
-              <th>Usage (hours)</th>
+              <th style={{textAlign: 'center'}}>Resource Name</th>
+              <th style={{textAlign: 'center'}}>Usage</th>
               <th />
             </tr>
             </thead>
