@@ -3,7 +3,7 @@ import PortalPageBase from 'components/portal/pages/PortalPageBase';
 import {portalContentStyle} from 'styles/base'
 import PropTypes from 'prop-types';
 // import { cx, css } from 'emotion';
-import { Form, Input, Tabs} from 'antd';
+import { Form, Input, Tabs, Radio} from 'antd';
 import AntDesignSelect from 'components/shared/components/AntDesignSelect';
 import ProfessionTypes from 'components/portal/components/proposals/ProfessionTypes.json'
 import Prefixes from 'components/portal/pages/prefixes.json'
@@ -12,6 +12,8 @@ import gql from 'graphql-tag'
 
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
+const RadioGroup = Radio.Group;
+
 
 
 // const Option = Select.Option;
@@ -81,22 +83,11 @@ static propTypes = {
           this.handleEmailChange = this.handleEmailChange.bind(this);
           this.handleInstitutionChange = this.handleInstitutionChange.bind(this);
           this.handleOrcidChange = this.handleOrcidChange.bind(this);
-          this.handleOrcidPermissionsChange = this.handleOrcidPermissionsChange.bind(this);
           this.handleProfessionChange = this.handleProfessionChange.bind(this);
           this.handleProfessionOther = this.handleProfessionOther.bind(this);
           this.handlePrefixChange = this.handlePrefixChange.bind(this);
           this.handlePrefixOther = this.handlePrefixOther.bind(this);
     }
-
-
-    
-    //   email: 'admin@test.com',
-    //   name: "Super Admin",
-    //   institution: "Admin institution",
-    //   orcid: "12345",
-    //   orcidPermissions: "Y",
-    //   profession: "Professional",
-    //   professionOther: "",
 
 
     // handleSuffixChange() {
@@ -175,43 +166,20 @@ static propTypes = {
         this.setState({user});
     }
 
-    handleOrcidPermissionsChange(e) {
+    onOrcidPermissionRadioChange = (e) => {
+        console.log('radio checked', e.target.value);
         const user = this.state.user;
-        user.orcidPermissions = e.target.value;
-        this.setState({user});
-    }
-
-
-    // submitChanges(e) {
-    //     e.preventDefault();
-    //     // commit changes through gql query
-    //     // check if current user is the one getting updated
-    //     // if so, we need to update the current user role also
-    //     let user = this.props.client.readQuery({query: this.GET_USER_INFO}).CurrentUser[0]
-    //     const updating = user.filter((item) => (item.user === this.state.user))[0];
-    //     user = user.filter((item) => (item.user !== this.state.user));
-    //     updating.email = this.state.email;
-    //     updating.profession = this.state.profession;
-    //     updating.professionOther = this.state.professionOther;
-    //     updating.instituion = this.state.instituion;
-    //     updating.orcid = this.state.orcid;
-    //     updating.orcidPermissions = this.state.orcidPermissions;
-    //     // updating.roleLevel = Number(this.state.role);
-    //     user.push(updating);
-    //     const data = {Users: user};
-    //     console.log(data, user);
-    //     this.props.client.writeData({data});
-    //   }
-
-
-    //   email: 'admin@test.com',
-    //   name: "Super Admin",
-    //   institution: "Admin institution",
-    //   orcid: "12345",
-    //   orcidPermissions: "Y",
-    //   profession: "Professional",
-    //   professionOther: "",
-
+        if (e.target.value === 1) {
+            user.orcidPermissions = "Y";
+        }
+        else {
+            user.orcidPermissions = "N"; 
+        }
+        this.setState({
+          radioValue: e.target.value,
+          user,
+        });
+      }
 
 
     callback(key) {
@@ -264,7 +232,10 @@ static propTypes = {
                     To save these settings, be sure to click on the Save User Now link before leaving this page.</p>
                 </FormItem>  
                 <FormItem className={'two-rows-label'} {...formItemLayout} required={true} label="Do you authorize EMSL to post to your ORCID record?">
-                    Radio Buttons here. Needs to be implemented
+                    <RadioGroup onChange={this.onOrcidPermissionRadioChange} value={this.state.radioValue}>
+                        <Radio value={1}>Yes</Radio>
+                        <Radio value={2}>No</Radio>
+                    </RadioGroup>
                 </FormItem>
                 <FormItem {...formItemLayout} required={true} label="Primary Citizenship">
                     Needs to be implemented
