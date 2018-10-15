@@ -2,7 +2,8 @@ import React from 'react';
 import WizardPage from 'components/shared/components/wizard/WizardPage';
 import AntDesignSelect from 'components/shared/components/AntDesignSelect';
 import FundingSources from 'components/portal/components/proposals/FundingSources.json';
-import {Input, Radio, Form} from 'antd';
+import ProposalFundingRow from 'components/portal/components/proposals/ProposalFundingRow';
+import {Radio, Form} from 'antd';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -13,14 +14,24 @@ export default class FundingForm extends WizardPage {
     description: "Provide some basic information about your funding sources"
   };
 
+  static FUNDING_SOURCES = FundingSources.FundingSources;
+
   constructor(props) {
     super(props);
-    this.state = this.props.fundingData;
+    this.state = {
+      fundingList: this.props.fundingData.fundingList,
+      fundingOther: this.props.fundingData.fundingOther,
+      fundingSources: this.props.fundingData.fundingSources,
+    };
+
     props.wizardInstance.beforeNext = this.beforeNext;
 
     this.handleFundingChange = this.handleFundingChange.bind(this);
     this.handleFundingOther = this.handleFundingOther.bind(this);
     this.handleWorkPackageChange = this.handleWorkPackageChange.bind(this);
+    this.renderFunding = this.renderFunding.bind(this);
+    this.updateGrantNum = this.updateGrantNum.bind(this);
+    
   }
 
   componentWillUnmount() {
@@ -42,8 +53,32 @@ export default class FundingForm extends WizardPage {
     this.props.updateData('fundingData', this.state);
   };
 
-  handleFundingChange(fundingSources) {
-    this.setState({fundingSources});
+  handleFundingChange(fundingList) {
+    const originalFundingSources = this.state.fundingSources;
+    let fundingSources:any[] = [];
+    const fundings = FundingForm.FUNDING_SOURCES;
+    if(fundingList.length < this.state.fundingList.length) {
+      // remove funding
+      console.log('removing from sources');
+      originalFundingSources.forEach((item) => {
+        if(fundingList.includes(item.name)) {
+          fundingSources.push(item);
+        }
+      })
+    } else {
+      console.log('adding to sources');
+      fundingList.forEach((item) => {
+        if(originalFundingSources.findIndex((fund) => (fund.name === item)) === -1) {
+          // FundingForm.FUNDING_SOURCES
+          console.log('pause here', fundings);
+          const label = fundings[fundings.findIndex((fund) => (fund.value === item))].label;
+          originalFundingSources.push({name: item, label, grant: ''});
+        } 
+      });
+      fundingSources = originalFundingSources
+    }
+    console.log(fundingSources);
+    this.setState({fundingSources, fundingList});
   }
   handleFundingOther(e) {
     const fundingOther = e.target.value;
@@ -53,7 +88,25 @@ export default class FundingForm extends WizardPage {
     const fundingWorkPackage = e.target.value;
     this.setState({fundingWorkPackage});
   }
+  
+  updateGrantNum(name, grantNum) {
+    const fundingSources = this.state.fundingSources;
+    fundingSources[fundingSources.findIndex((source) => (source.name === name))].grant = grantNum;
+    this.setState({fundingSources});
+  }
 
+  renderFunding() {
+    return (
+      <tbody>
+      {this.state.fundingSources.sort((x, y) => (x.name.localeCompare(y.name))).map((item) => {
+        return (
+          <ProposalFundingRow key={item.name} item={item} updateHandler={this.updateGrantNum} />
+        )
+      })}
+      </tbody>
+    )
+  }
+  
   render() {
     const formItemLayout = {
       labelCol: {
@@ -63,21 +116,26 @@ export default class FundingForm extends WizardPage {
         sm: { span: 18 },
       },
     };
+    const tableLayout = {
+      wrapperCol: {
+        sm: { span: 18, offset: 6 },
+      },
+    };
     const data = this.state;
     return(
       <Form>
         <AntDesignSelect
           label='Funding Sources'
-          placeholder="Select primary research area..."
+          placeholder="Select all funding sources..."
           multiple={true}
-          optionList={FundingSources.FundingSources}
-          value={data.fundingSources}
+          optionList={FundingForm.FUNDING_SOURCES}
+          value={data.fundingList}
           otherValue={data.fundingOther}
           handleChange={this.handleFundingChange}
           handleInput={this.handleFundingOther}
           required={true}
         />
-        {data.fundingSources.includes('doe_ber') && (
+        {data.fundingList.includes('doe_ber') && (
           <FormItem {...formItemLayout} className={'two-rows-label'} label="Are you the PI on the BER grant funding this work?" required={true}>
             <RadioGroup>
               <Radio value={1}>Yes</Radio>
@@ -85,9 +143,19 @@ export default class FundingForm extends WizardPage {
             </RadioGroup>
           </FormItem>
         )}
-        <FormItem {...formItemLayout} label="Work Package #" required={true}>
-          <Input defaultValue={data.fundingWorkPackage} onChange={this.handleWorkPackageChange}/>
-        </FormItem>
+        {data.fundingSources.length > 0 && (
+          <FormItem {...tableLayout}>
+            <table className="table table-striped table-bordered" style={{textAlign: 'center'}}>
+              <thead>
+              <tr>
+                <th style={{textAlign: 'center'}}>Funding Source</th>
+                <th style={{textAlign: 'center'}}>Primary Grant #</th>
+              </tr>
+              </thead>
+              {this.renderFunding()}
+            </table>
+          </FormItem>
+        )}
       </Form>
     );
   }

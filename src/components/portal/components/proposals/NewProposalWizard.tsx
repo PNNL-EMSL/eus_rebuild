@@ -33,9 +33,9 @@ class NewProposalWizard extends Wizard {
       participants: []
     },
     fundingData: {
+      fundingList: [],
       fundingSources: [],
       fundingOther: '',
-      fundingWorkPackage: '',
     },
     resourcesData: {
       resources: []

@@ -43,6 +43,7 @@ export default class ResourcesForm extends WizardPage {
     this.addToResources = this.addToResources.bind(this);
     this.removeFromResources = this.removeFromResources.bind(this);
     this.renderResources = this.renderResources.bind(this);
+    this.updateUsage = this.updateUsage.bind(this);
   }
 
   componentWillUnmount() {
@@ -59,6 +60,10 @@ export default class ResourcesForm extends WizardPage {
   beforeNext = () => {
     // push the data to a place? unsure what will be needed here
   };
+
+  updateUsage() {
+    console.log('TO IMPLEMENT: UPDATE USAGE');
+  }
 
   filterResources(e) {
     const filter = e.target.value.toLowerCase();
@@ -124,7 +129,7 @@ export default class ResourcesForm extends WizardPage {
       <tbody>
       {this.state.resources.sort((x, y) => (x.name - y.name)).map((item) => {
         return (
-          <ProposalResourceRow key={item.name} item={item} removeHandler={this.removeFromResources}/>
+          <ProposalResourceRow key={item.name} item={item} updateHandler={this.updateUsage} removeHandler={this.removeFromResources}/>
         )
       })}
       </tbody>

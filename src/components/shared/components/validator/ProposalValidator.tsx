@@ -19,17 +19,18 @@ export default class ProposalValidator {
       participantsForm:[
         { func: this.validateNotEmptyOrUndefined, field: undefined, tooltip: 'A proposal must have at least one participant'},
         { func: this.validateUsersORCID, field: undefined, tooltip: 'must have an ORCID iD linked to their account'},
-        { func: this.validateUsersProfession, field: undefined, tooltip: 'All participants must have a profession selected'},
-        { func: this.validateUsersInstitutions, field: undefined, tooltip: 'All participants must select their parent institution.'}
+        { func: this.validateUsersProfession, field: undefined, tooltip: 'must have a profession selected'},
+        { func: this.validateUsersInstitutions, field: undefined, tooltip: 'must select their parent institution.'}
       ],
       fundingForm: [
         { func: this.validateFundingSource, field: undefined, tooltip: 'You must specify at least one funding source'},
-        { func: this.validateNotEmptyOrUndefined, field: 'fundingWorkPackage', tooltip: 'You must specify a Work Package for the proposal'}
+        { func: this.validateFundingGrants, field: undefined, tooltip: 'must have a grant number for funding'}
       ]
     };
     this.validateUsersORCID = this.validateUsersORCID.bind(this);
     this.validateUsersProfession = this.validateUsersProfession.bind(this);
     this.validateUsersInstitutions = this.validateUsersInstitutions.bind(this);
+    this.validateFundingGrants = this.validateFundingGrants.bind(this);
   }
 
   validateUserField(users, field) {
@@ -42,10 +43,10 @@ export default class ProposalValidator {
     return invalidUsers;
   }
 
-  _createReturnText(userArray, tooltip) {
-    const last = userArray.pop();
-    const users = userArray.join(', ') + ' and ' + last;
-    return [users, tooltip].join(' ');
+  _createReturnText(fieldArray, tooltip) {
+    const last = fieldArray.pop();
+    const joined = fieldArray.join(', ') + ' and ' + last;
+    return [joined, tooltip].join(' ');
   }
 
   validateUsersORCID(data, tooltip, instance) {
@@ -111,6 +112,20 @@ export default class ProposalValidator {
   validateFundingSource(data, tooltip) {
     if(data.fundingSources.length === 0 || (data.fundingSources.includes('other') && data.fundingOther === '')) {
       return {field: 'fundingSources', tooltip}
+    }
+    return undefined;
+  }
+
+  validateFundingGrants(data, tooltip, instance) {
+    if(data.fundingSources.length !== 0) {
+      const fundingSources = data.fundingSources;
+      const invalidSources:string[] = [];
+      fundingSources.forEach((item) => {
+        if(item.grant === '' || item.grant === undefined) {
+          invalidSources.push(item.label);
+        }
+      });
+      return invalidSources.length === 0 ? undefined : {field: 'fundingSources', tooltip: instance._createReturnText(invalidSources, tooltip)}
     }
     return undefined;
   }

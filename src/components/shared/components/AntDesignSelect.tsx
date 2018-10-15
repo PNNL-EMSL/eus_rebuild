@@ -18,7 +18,7 @@ export default class AntDesignSelect extends Component<any, any> {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(value) {
+  handleChange(value, option) {
     if((!this.props.multiple && value === "other") || (this.props.multiple && value.includes("other"))) {
       this.setState({displayOther: true});
     } else {
