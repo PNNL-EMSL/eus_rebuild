@@ -22,6 +22,7 @@ export default class FundingForm extends WizardPage {
       fundingList: this.props.fundingData.fundingList,
       fundingOther: this.props.fundingData.fundingOther,
       fundingSources: this.props.fundingData.fundingSources,
+      berSelection: this.props.fundingData.berSelection
     };
 
     props.wizardInstance.beforeNext = this.beforeNext;
@@ -30,8 +31,8 @@ export default class FundingForm extends WizardPage {
     this.handleFundingOther = this.handleFundingOther.bind(this);
     this.handleWorkPackageChange = this.handleWorkPackageChange.bind(this);
     this.renderFunding = this.renderFunding.bind(this);
+    this.berUpdate = this.berUpdate.bind(this);
     this.updateGrantNum = this.updateGrantNum.bind(this);
-    
   }
 
   componentWillUnmount() {
@@ -80,13 +81,20 @@ export default class FundingForm extends WizardPage {
     console.log(fundingSources);
     this.setState({fundingSources, fundingList});
   }
+
   handleFundingOther(e) {
     const fundingOther = e.target.value;
     this.setState({fundingOther});
   }
+
   handleWorkPackageChange(e) {
     const fundingWorkPackage = e.target.value;
     this.setState({fundingWorkPackage});
+  }
+
+  berUpdate(e) {
+    const berSelection = e.target.value;
+    this.setState({berSelection})
   }
   
   updateGrantNum(name, grantNum) {
@@ -137,9 +145,9 @@ export default class FundingForm extends WizardPage {
         />
         {data.fundingList.includes('doe_ber') && (
           <FormItem {...formItemLayout} className={'two-rows-label'} label="Are you the PI on the BER grant funding this work?" required={true}>
-            <RadioGroup>
-              <Radio value={1}>Yes</Radio>
-              <Radio value={0}>No</Radio>
+            <RadioGroup defaultValue={data.berSelection} onChange={this.berUpdate}>
+              <Radio value={true}>Yes</Radio>
+              <Radio value={false}>No</Radio>
             </RadioGroup>
           </FormItem>
         )}

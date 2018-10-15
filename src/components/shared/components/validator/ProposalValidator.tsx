@@ -24,7 +24,8 @@ export default class ProposalValidator {
       ],
       fundingForm: [
         { func: this.validateFundingSource, field: undefined, tooltip: 'You must specify at least one funding source'},
-        { func: this.validateFundingGrants, field: undefined, tooltip: 'must have a grant number for funding'}
+        { func: this.validateFundingGrants, field: undefined, tooltip: 'must have a grant number for funding'},
+        { func: this.validateBerSelection, field: undefined, tooltip: 'You must specify whether you are the PI on the BER grant funding this proposal'}
       ]
     };
     this.validateUsersORCID = this.validateUsersORCID.bind(this);
@@ -44,8 +45,13 @@ export default class ProposalValidator {
   }
 
   _createReturnText(fieldArray, tooltip) {
-    const last = fieldArray.pop();
-    const joined = fieldArray.join(', ') + ' and ' + last;
+    let joined = '';
+    if(fieldArray.length > 1) {
+      const last = fieldArray.pop();
+      joined = fieldArray.join(', ') + ' and ' + last;
+    } else {
+      joined = fieldArray.join(', ');
+    }
     return [joined, tooltip].join(' ');
   }
 
@@ -126,6 +132,13 @@ export default class ProposalValidator {
         }
       });
       return invalidSources.length === 0 ? undefined : {field: 'fundingSources', tooltip: instance._createReturnText(invalidSources, tooltip)}
+    }
+    return undefined;
+  }
+
+  validateBerSelection(data, tooltip) {
+    if(data.fundingSources.findIndex((item) => (item.name === 'doe_ber')) !== -1 && data.berSelection === undefined) {
+      return {field: 'fundingBer', tooltip}
     }
     return undefined;
   }

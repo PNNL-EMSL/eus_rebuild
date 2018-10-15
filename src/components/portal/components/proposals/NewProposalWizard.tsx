@@ -36,10 +36,34 @@ class NewProposalWizard extends Wizard {
       fundingList: [],
       fundingSources: [],
       fundingOther: '',
+      berSelection: undefined
     },
     resourcesData: {
       resources: []
     },
+    materialsData: {
+      humanMaterials: undefined,
+      animalMaterials: undefined,
+      chemicalsSent: undefined,
+      chemicalsDescription: undefined,
+      chemicalsShip: undefined,
+      chemicalsShipOther: undefined,
+      chemicalsEnd: undefined,
+      chemicalsEndOther: undefined,
+      samplesSent: undefined,
+      samplesDescription: undefined,
+      samplesRadioactive: undefined,
+      samplesNanomaterials: undefined,
+      samplesAphis: undefined,
+      samplesAphisPermits: undefined,
+      samplesBiological: undefined,
+      samplesPests: undefined,
+      samplesAlive: undefined,
+      samplesShip: undefined,
+      samplesShipOther: undefined,
+      samplesEnd: undefined,
+      samplesEndOther: undefined
+    }
   };
 
   static PROP_INFO = 'info';
@@ -66,6 +90,7 @@ class NewProposalWizard extends Wizard {
       participantsData: this.props.participantsData,
       fundingData: this.props.fundingData,
       resourcesData: this.props.resourcesData,
+      materialsData: this.props.materialsData,
       proposalErrors: {},
       completeSteps: {},
     };
@@ -121,6 +146,7 @@ class NewProposalWizard extends Wizard {
       participantsData: this.state.participantsData,
       fundingData: this.state.fundingData,
       resourcesData: this.state.resourcesData,
+      materialsData: this.state.materialsData,
       proposalErrors: this.state.proposalErrors,
       updateData: this.updateData,
       updateErrors: this.updateErrors,
@@ -131,9 +157,7 @@ class NewProposalWizard extends Wizard {
 
   hasStepError(stepName) {
     let hasError = false;
-    console.log(this);
     const errors = this.state.proposalErrors;
-    console.log('errors', errors);
     if(stepName === NewProposalWizard.STEP_INFO) {
       if (errors.detailsErrors && errors.detailsErrors.length > 0) {
         hasError = errors.detailsErrors;
@@ -146,12 +170,19 @@ class NewProposalWizard extends Wizard {
       if (errors.fundingErrors && errors.fundingErrors.length > 0) {
         hasError = errors.fundingErrors;
       }
+    } else if (stepName === NewProposalWizard.STEP_RESOURCES) {
+      if (errors.resourcesErrors && errors.resourcesErrors.length > 0) {
+        hasError = errors.resourcesErrors;
+      }
+    } else if (stepName === NewProposalWizard.STEP_MATERIALS) {
+      if (errors.materialsErrors && errors.materialsErrors.length > 0) {
+        hasError = errors.materialsErrors;
+      }
     }
     return hasError;
   }
   
   hasStepComplete(stepName) {
-    console.log('completeSteps', stepName, this.state.completeSteps);
     const errors = this.state.proposalErrors;
     let isComplete = false;
     if(stepName === NewProposalWizard.STEP_INFO) {
@@ -166,11 +197,16 @@ class NewProposalWizard extends Wizard {
       if (errors.fundingErrors && errors.fundingErrors.length === 0) {
         isComplete = true;
       }
+    } else if (stepName === NewProposalWizard.STEP_RESOURCES) {
+      if (errors.resourcesErrors && errors.resourcesErrors.length === 0) {
+        isComplete = true;
+      }
+    } else if (stepName === NewProposalWizard.STEP_MATERIALS) {
+      if (errors.materialsErrors && errors.materialsErrors.length === 0) {
+        isComplete = true;
+      }
     }
     return isComplete;
-    //
-    // const completes = this.state.proposalCompletes;
-    // return true;
   }
 
 }

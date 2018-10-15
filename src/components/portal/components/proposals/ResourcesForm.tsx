@@ -58,11 +58,14 @@ export default class ResourcesForm extends WizardPage {
   };
 
   beforeNext = () => {
-    // push the data to a place? unsure what will be needed here
+    this.validatePage(this.state.resources);
+    this.props.updateData('resourcesData', {resources: this.state.resources});
   };
 
-  updateUsage() {
-    console.log('TO IMPLEMENT: UPDATE USAGE');
+  updateUsage(value, name) {
+    const resources = this.state.resources;
+    resources[resources.findIndex((resource) => (resource.name === name))].usage = Number(value);
+    this.setState({resources});
   }
 
   filterResources(e) {
@@ -84,15 +87,6 @@ export default class ResourcesForm extends WizardPage {
     const resources = this.state.resources;
     resources.splice(resources.findIndex((item) => (item.name === itemName)), 1);
     this.setState({resources});
-  }
-
-  renderForm() {
-    const data = this.props.data;
-    return (
-      <div>
-        <ResourcesForm data={data}/>
-      </div>
-    )
   }
 
   renderList() {
@@ -127,7 +121,7 @@ export default class ResourcesForm extends WizardPage {
   renderResources() {
     return (
       <tbody>
-      {this.state.resources.sort((x, y) => (x.name - y.name)).map((item) => {
+      {this.state.resources.sort((x, y) => (x.name.localeCompare(y.name))).map((item) => {
         return (
           <ProposalResourceRow key={item.name} item={item} updateHandler={this.updateUsage} removeHandler={this.removeFromResources}/>
         )
@@ -137,7 +131,6 @@ export default class ResourcesForm extends WizardPage {
   }
 
   render() {
-
     return(
       <div>
         {this.renderList()}
