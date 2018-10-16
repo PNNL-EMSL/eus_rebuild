@@ -19,7 +19,7 @@ export default class ProposalHome extends PortalPageBase {
 
   renderGetStarted() {
     return (
-      <div>
+      <div key="getStarted">
         <h1><strong>Get Started</strong></h1>
         <p>Click the "Create New Proposal" button to the right to start filling out a new proposal.</p>
         <Button type="primary" onClick={this.navigateToNew}>Create New Proposal</Button>
@@ -38,13 +38,13 @@ export default class ProposalHome extends PortalPageBase {
     // Saved (status = saved, submitted = Not Submitted)
     // Pending & Open (End date is after today)
     return (
-      <div />
+      <div key="existing"/>
     )
   }
 
   renderNewProposal() {
     return (
-      <div>
+      <div key='new'>
         <ProposalNew {...this.props} />
       </div>
     )
@@ -52,16 +52,16 @@ export default class ProposalHome extends PortalPageBase {
 
   renderLoadProposal(id) {
     return (
-      <div>
+      <div key='load'>
         Loading proposal {id}
-        <ProposalLoad id={id} {...this.props} />
+        <ProposalLoad  id={id} {...this.props} />
       </div>
     )
   }
 
   renderUndefinedType(type) {
     return (
-      <div>
+      <div key="undefined">
         Undefined proposal type: {type}
       </div>
     )

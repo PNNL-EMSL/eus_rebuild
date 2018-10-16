@@ -30,7 +30,6 @@ export default abstract class HeaderBase extends Component<any, any> {
   abstract renderContent(data);
 
   render() {
-    console.log('headerBase', this.props);
     return (
       <Query query={this.GET_HEADER_INFORMATION}>
         {({loading, error, data}) => {
@@ -39,7 +38,6 @@ export default abstract class HeaderBase extends Component<any, any> {
           } else if(error) {
             return <p>Error...</p>;
           } else {
-            console.log('header_data', data);
             const content = this.renderContent(data);
             return (
               <div className={headerStyle}>

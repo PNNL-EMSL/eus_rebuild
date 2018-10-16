@@ -64,17 +64,17 @@ export default class AdminNav extends Component<any, any> {
         <div><Link className={quickLink} to="EUSAdmin/software/capability_steward">Capability Steward</Link></div>
         <hr className={slimHr}/>
         <h4>User Services</h4>
-        <div><Link className={quickLink} to="EUSAdmin/proposals/user_services/calls">Manage Calls</Link></div>
-        <div><Link className={quickLink} to="EUSAdmin/proposals/user_services/CATs">Manage CATs</Link></div>
-        <div><Link className={quickLink} to="EUSAdmin/proposals/user_services/facilities">Manage Facilities</Link></div>
-        <div><Link className={quickLink} to="EUSAdmin/proposals/user_services/institutions">Manage Institutions</Link></div>
-        <div><Link className={quickLink} to="EUSAdmin/proposals/user_services/resources">Manage Resources</Link></div>
-        <div><Link className={quickLink} to="EUSAdmin/proposals/user_services/roles">Manage Roles</Link></div>
-        <div><Link className={quickLink} to="EUSAdmin/proposals/user_services/staff">Manage Staff</Link></div>
-        <div><Link className={quickLink} to="EUSAdmin/proposals/user_services/users">Manage Users</Link></div>
-        <div><Link className={quickLink} to="EUSAdmin/proposals/user_services/letters">Send Letters</Link></div>
-        <div><Link className={quickLink} to="EUSAdmin/proposals/user_services/lists">Update Lists</Link></div>
-        <div><Link className={quickLink} to="EUSAdmin/proposals/user_services/mailing_lists">Get Mailing Lists</Link></div>
+        <div><Link className={quickLink} to="EUSAdmin/user_services/calls">Manage Calls</Link></div>
+        <div><Link className={quickLink} to="EUSAdmin/user_services/CATs">Manage CATs</Link></div>
+        <div><Link className={quickLink} to="EUSAdmin/user_services/facilities">Manage Facilities</Link></div>
+        <div><Link className={quickLink} to="EUSAdmin/user_services/institutions">Manage Institutions</Link></div>
+        <div><Link className={quickLink} to="EUSAdmin/user_services/resources">Manage Resources</Link></div>
+        <div><Link className={quickLink} to="EUSAdmin/user_services/roles">Manage Roles</Link></div>
+        <div><Link className={quickLink} to="EUSAdmin/user_services/staff">Manage Staff</Link></div>
+        <div><Link className={quickLink} to="EUSAdmin/user_services/users">Manage Users</Link></div>
+        <div><Link className={quickLink} to="EUSAdmin/user_services/letters">Send Letters</Link></div>
+        <div><Link className={quickLink} to="EUSAdmin/user_services/lists">Update Lists</Link></div>
+        <div><Link className={quickLink} to="EUSAdmin/user_services/mailing_lists">Get Mailing Lists</Link></div>
       </div>
     )
   }

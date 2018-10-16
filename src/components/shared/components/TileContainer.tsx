@@ -22,13 +22,15 @@ export default class TileContainer extends Component<any, any> {
     let rowContent: JSX.Element[] = [];
     let innerRowContent: JSX.Element[] = [];
     let innerRow: JSX.Element[] = [];
+    let rowNum = 0;
+    let colNum = 0;
     Object.keys(tiles).map((key) => {
       const item = tiles[key];
       if(this.props.role >= item.visibleBy) {
         if (item.startInnerRow || innerRowContent.length !== 0) {
           // push tile to inner row array
         innerRowContent.push(
-          <Col span={item.span}>
+          <Col span={item.span} key={colNum++}>
             <NavigationTile
               id={item.id}
               key={item.id}
@@ -46,7 +48,7 @@ export default class TileContainer extends Component<any, any> {
         );
         } else {
         rowContent.push(
-          <Col span={item.span}>
+          <Col span={item.span} key={colNum++}>
             <NavigationTile
               id={item.id}
               key={item.id}
@@ -66,15 +68,15 @@ export default class TileContainer extends Component<any, any> {
         if(item.endInnerRow) {
           // push inner row content to row content
           // clear inner row content
-          innerRow.push(<Row>{innerRowContent}</Row>);
+          innerRow.push(<Row key={rowNum++}>{innerRowContent}</Row>);
           innerRowContent = [];
         }
         if(item.endRow) {
           if(innerRow.length !== 0) {
-            content.push(<Row><Col span={16}>{innerRow}</Col>{rowContent}</Row>);
+            content.push(<Row key={rowNum++}><Col key={colNum++} span={16}>{innerRow}</Col>{rowContent}</Row>);
             innerRow = [];
           } else {
-            content.push(<Row>{rowContent}</Row>);
+            content.push(<Row key={rowNum++}>{rowContent}</Row>);
           }
           rowContent = [];
         }
@@ -82,10 +84,10 @@ export default class TileContainer extends Component<any, any> {
     });
     if(innerRow.length !== 0) {
       console.log('innerRow', innerRow, 'rowContent', rowContent);
-      content.push(<Row><Col span={16}>{innerRow}</Col>{rowContent}</Row>);
+      content.push(<Row key={rowNum++}><Col key={colNum++} span={16}>{innerRow}</Col>{rowContent}</Row>);
       innerRow = [];
     } else {
-      content.push(<Row>{rowContent}</Row>);
+      content.push(<Row key={rowNum++}>{rowContent}</Row>);
     }
     console.log('tile content', content);
     return (

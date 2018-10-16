@@ -1,17 +1,9 @@
-// import { Menu } from 'antd';
+import React, {Component} from 'react';
 import { css, injectGlobal } from 'emotion';
-// import styled from 'react-emotion';
-import * as React from 'react';
-import { withRouter, Switch, Route } from 'react-router-dom';
-// import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
-import ExternalStyleSheets from 'components/shared/components//ExternalStyleSheets';
-import {colorDarkGrey} from 'styles/base';
+import { withRouter, Switch, Route } from 'react-router-dom';
 
 import ProposalHome from 'components/portal/pages/proposals/Home';
-// import ProposalNew from 'components/portal/pages/proposals/Home';
-// import ProposalExisting from 'components/portal/pages/proposals/Home';
 import Publications from 'components/portal/pages/Publications';
 import UserInfo from 'components/portal/pages/UserInfo';
 import Training from 'components/portal/pages/Training';
@@ -25,9 +17,9 @@ import MessageSettings from 'components/admin/pages/MessageSettings';
 import AccessError from 'components/shared/pages/AccessError';
 import InvalidPage from 'components/shared/pages/InvalidPage';
 import UserAdmin from 'components/admin/pages/UserAdmin';
-// import NavMenu from 'components/shared/components/NavMenu';
 
-// import logo from 'images/emsl_logo_notag.jpg';
+import ExternalStyleSheets from 'components/shared/components//ExternalStyleSheets';
+import {colorDarkGrey} from 'styles/base';
 
 // Define global styles
 injectGlobal`
@@ -64,31 +56,10 @@ const app: string = css`
  * properly with the withRouter HOC.
  * TODO: not sure how the prop interface declarations work...
  */
-class App extends React.Component<any, any> {
+class App extends Component<any, any> {
   static propTypes = {
     location: PropTypes.object.isRequired
   };
-
-  // Query to get the necessary information about the logged in user.
-  GET_HEADER_INFORMATION = gql`
-    {
-      CurrentUser @client {
-        userName,
-        roleLevel
-      }
-      navCollapsed @client
-    }
-  `;
-
-  // Slim query used for checking that the user is logged in, and redirecting if not.
-  GET_USER_LOGGED_IN = gql`
-    {
-      CurrentUser @client {
-        userName,
-        roleLevel
-      }
-    }
-  `;
   
   constructor(props) {
     super(props);
@@ -196,28 +167,35 @@ class App extends React.Component<any, any> {
     return (<UserAdmin {...this.props} restricted={true}/>);
   }
 
+  // renderCallManagement() {
+  //   return (<ManageCalls)
+  // }
+
   createPortalRoutes() {
+    let portalRouteNum = 0;
     return [
-      (<Route exact path="/" component={this.renderIndexPage} />),
-      (<Route exact path="/Portal" component={this.renderPortalPage} />),
-      (<Route exact path="/Portal/proposals" component={this.renderProposals} />),
-      (<Route exact path="/Portal/proposals/new" component={this.renderNewProposal} />),
-      (<Route exact path="/Portal/proposals/:id" component={this.renderExistingProposal} />),
-      (<Route exact path="/Portal/publications" component={this.renderPublications} />),
-      (<Route exact path="/Portal/userInfo" component={this.renderUserInfo} />),
-      (<Route exact path="/Portal/training" component={this.renderTraining} />),
-      (<Route exact path="/Portal/scheduleExperiments" component={this.renderExperiments} />),
-      (<Route exact path="/Portal/getData" component={this.renderGetData} />),
-      (<Route exact path="/Portal/SubmitSample" component={this.renderSubmitSample} />),
-      (<Route exact path="/Portal/ProvideFeedback" component={this.renderProvideFeedback} />)
+      (<Route key={portalRouteNum++} exact path="/" component={this.renderIndexPage} />),
+      (<Route key={portalRouteNum++} exact path="/Portal" component={this.renderPortalPage} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/proposals" component={this.renderProposals} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/proposals/new" component={this.renderNewProposal} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/proposals/:id" component={this.renderExistingProposal} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/publications" component={this.renderPublications} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/userInfo" component={this.renderUserInfo} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/training" component={this.renderTraining} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/scheduleExperiments" component={this.renderExperiments} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/getData" component={this.renderGetData} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/SubmitSample" component={this.renderSubmitSample} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/ProvideFeedback" component={this.renderProvideFeedback} />)
     ];
   }
 
   createAdminRoutes() {
+    let adminRouteNum = 0;
     return [
-      (<Route exact path="/EUSAdmin" component={this.renderAdminPage} />),
-      (<Route exact path="/EUSAdmin/messageSystem" component={this.renderMessageSettings} />),
-      (<Route exact path="/EUSAdmin/userAdmin" component={this.renderUserAdmin} />),
+      (<Route key={adminRouteNum++} exact path="/EUSAdmin" component={this.renderAdminPage} />),
+      (<Route key={adminRouteNum++} exact path="/EUSAdmin/messageSystem" component={this.renderMessageSettings} />),
+      (<Route key={adminRouteNum++} exact path="/EUSAdmin/userAdmin" component={this.renderUserAdmin} />),
+      // (<Route exact path="/EUSAdmin/user_services/calls" component={this.renderCallMangement} />),
     ];
   }
 
