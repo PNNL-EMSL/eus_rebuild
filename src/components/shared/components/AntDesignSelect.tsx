@@ -60,7 +60,7 @@ export default class AntDesignSelect extends Component<any, any> {
     const options = this.renderOptions();
     const displayOther = this.state.displayOther;
     return(
-      <FormItem {...formItemLayout} label={this.props.label} required={true} >
+      <FormItem {...formItemLayout} label={this.props.label} required={true} validateStatus={this.props.validateSelect ? 'error' : undefined} >
         <Select
           placeholder = {this.props.placeholder}
           onChange={this.handleChange}
@@ -74,6 +74,7 @@ export default class AntDesignSelect extends Component<any, any> {
             placeholder="Please Specify..."
             onChange={this.props.handleInput}
             defaultValue={this.props.otherValue}
+            
           />
         )}
       </FormItem>

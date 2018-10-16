@@ -18,7 +18,7 @@ export default class DetailsForm extends WizardPage {
 
   constructor(props) {
     super(props);
-    
+
     this.state = this.props.detailsData;
     props.wizardInstance.beforeNext = this.beforeNext;
     this.handleAreaChange = this.handleAreaChange.bind(this);
@@ -51,7 +51,6 @@ export default class DetailsForm extends WizardPage {
 
   beforeNext = () => {
     // push the data to a place? unsure what will be needed here
-    console.log('new state', this.props, this.state);
     this.validatePage(this.state);
     this.props.updateData('detailsData', this.state);
   };
@@ -126,6 +125,7 @@ export default class DetailsForm extends WizardPage {
   render() {
     const data = this.state;
     const dateFormat = 'MMMM DD, YYYY';
+    console.log('debug');
     const formItemLayout = {
       labelCol: {
         sm: { span: 6 },
@@ -142,7 +142,7 @@ export default class DetailsForm extends WizardPage {
         sm: { span: 12 },
       },
     };
-
+    const errors = this.props.proposalErrors.detailsErrors;
     return(
       <div>
         <Form>
@@ -154,15 +154,31 @@ export default class DetailsForm extends WizardPage {
               otherValue={data.researchOther}
               handleChange={this.handleAreaChange}
               handleInput={this.handleAreaOther}
+              validateSelect={errors && errors.some((error) => (error.name === 'researchArea'))}
+              validateSelectOther={errors && errors.some((error) => (error.name === 'researchOther'))}
               required={true}
             />
-          <FormItem {...formItemLayout} label="Title" required={true}>
+          <FormItem 
+            {...formItemLayout} 
+            label="Title" 
+            required={true}
+            validateStatus={errors && errors.some((error) => (error.field === 'title')) === true ? 'error' : undefined}
+          >
             <TextArea defaultValue={data.title} onChange={this.handleTitleChange} autosize />
           </FormItem>
-          <FormItem {...formItemLayout} label="Abstract (approx 500 words)" required={true}>
+          <FormItem 
+            {...formItemLayout} 
+            label="Abstract (approx 500 words)" 
+            required={true}
+            validateStatus={errors && errors.some((error) => (error.field === 'abstract')) === true ? 'error' : undefined}
+          >
             <TextArea defaultValue={data.abstract} onChange={this.handleAbstractChange} autosize />
           </FormItem>
-          <FormItem {...formItemLayout} label="Proposed Research (pdf doc)" required={true}>
+          <FormItem 
+            {...formItemLayout} 
+            label="Proposed Research (pdf doc)" 
+            required={true}
+          >
             TO BE IMPLEMENTED
           </FormItem>
           <hr />
@@ -180,25 +196,50 @@ export default class DetailsForm extends WizardPage {
               handleProposalPayChange={this.handleProposalPayChange}
               handleProposalThemeChange={this.handleProposalThemeChange}
               handleProposalReasonChange={this.handleProposalReasonChange}
+              validateSelect={errors && errors.some((error) => (error.field === 'proposalType'))}
+              validatePay={errors && errors.some((error) => (error.field === 'proposalPay'))}
+              validateTheme={errors && errors.some((error) => (error.field === 'proposalTheme'))}
+              validateReason={errors && errors.some((error) => (error.field === 'proposalReason'))}
+              validateRestricted={errors && errors.some((error) => (error.field === 'proposalRestricted'))}
               required={true}
             />
-          <FormItem {...formItemLayout} style={{whiteSpace: 'normal'}} label="Preferred Start Date" required={true}>
+          <FormItem 
+            {...formItemLayout} 
+            validateStatus={errors && errors.some((error) => (error.field === 'startDate')) === true ? 'error' : undefined} 
+            style={{whiteSpace: 'normal'}} 
+            label="Preferred Start Date" 
+            required={true}
+          >
             <DatePicker defaultValue={data.startDate} format={dateFormat} onChange={this.handleDateChange}/>
           </FormItem>
           <hr />
-          <FormItem {...radioItemLayout} className={'two-rows-label'} label="Is this proposal associated with a National Science Foundation Supplemental Funding Request?" required={true}>
+          <FormItem 
+            {...radioItemLayout} 
+            validateStatus={errors && errors.some((error) => (error.field === 'nsfRequest')) === true ? 'error' : undefined} 
+            className={'two-rows-label'} 
+            label="Is this proposal associated with a National Science Foundation Supplemental Funding Request?" 
+            required={true}
+          >
             <RadioGroup defaultValue={data.nsfRequest} onChange={this.handleNsfChange}>
               <Radio value={1}>Yes</Radio>
               <Radio value={0}>No</Radio>
             </RadioGroup>
           </FormItem>
-          <FormItem {...radioItemLayout} className={'two-rows-label'} label="Will you desire the assistance of EMSL Staff in obtaining and interpreting results?" required={true}>
+          <FormItem 
+            {...radioItemLayout} 
+            validateStatus={errors && errors.some((error) => (error.field === 'emslStaff')) === true ? 'error' : undefined} 
+            className={'two-rows-label'} 
+            label="Will you desire the assistance of EMSL Staff in obtaining and interpreting results?" 
+            required={true}
+          >
             <RadioGroup defaultValue={data.emslStaff} onChange={this.handleEmslChange}>
               <Radio value={1}>Yes</Radio>
               <Radio value={0}>No</Radio>
             </RadioGroup>
           </FormItem>
-          <FormItem {...formItemLayout} label="Laboratory Staff Contact">
+          <FormItem 
+            {...formItemLayout} 
+            label="Laboratory Staff Contact">
             <Input defaultValue={data.labPOC} onChange={this.handlePocChange}/>
           </FormItem>
         </Form>

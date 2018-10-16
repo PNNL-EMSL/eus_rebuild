@@ -77,6 +77,7 @@ export default class ProposalTypeSelect extends Component<any, any> {
     this.props.handleProposalReasonChange(e.target.value);
   }
 
+
   handleTheme(e) {
     this.props.handleProposalThemeChange(e.target.value);
   }
@@ -105,7 +106,13 @@ export default class ProposalTypeSelect extends Component<any, any> {
   renderGeneralQuestions() {
     const content:JSX.Element[] = [];
     content.push(
-      <FormItem {...radioItemLayout} className={'two-rows-label'} label="Are you planning to pay for any technical support needed?" required={true} >
+      <FormItem
+        {...radioItemLayout}
+        className={'two-rows-label'}
+        label="Are you planning to pay for any technical support needed?"
+        required={true}
+        validateStatus={this.props.validatePay ? 'error' : undefined}
+      >
         <RadioGroup defaultValue={this.props.pay} className={radioGroupStyling} onChange={this.handleNoPay}>
           <Radio value={1}>Yes</Radio>
           <Radio value={0}>No</Radio>
@@ -114,7 +121,13 @@ export default class ProposalTypeSelect extends Component<any, any> {
     );
     if(this.state.displayPayQuestion === 1) {
       content.push(
-        <FormItem {...radioItemLayout} className={'two-rows-label'} label="Is this business sensitive or restricted from public dissemination?" required={true} >
+        <FormItem
+          {...radioItemLayout}
+          className={'two-rows-label'}
+          label="Is this business sensitive or restricted from public dissemination?"
+          required={true}
+          validateStatus={this.props.validateRestricted ? 'error' : undefined}
+        >
           <RadioGroup defaultValue={this.props.restricted} className={radioGroupStyling} onChange={this.handleRestricted}>
             <Radio value={1}>Yes</Radio>
             <Radio value={0}>No</Radio>
@@ -123,7 +136,13 @@ export default class ProposalTypeSelect extends Component<any, any> {
       )
     } else if(this.state.displayPayQuestion === 0) {
       content.push(
-        <FormItem {...radioItemLayout} className={'two-rows-label'} label="Please indicate any special circumstances by selecting one of the options below:" required={true} >
+        <FormItem
+          {...radioItemLayout}
+          className={'two-rows-label'}
+          label="Please indicate any special circumstances by selecting one of the options below:"
+          required={true}
+          validateStatus={this.props.validateReason ? 'error' : undefined}
+        >
           <RadioGroup defaultValue={this.props.reason} className={radioGroupStyling} onChange={this.handleReason}>
             <Radio className={verticalRadio} value="N/A">Not applicable (will be held until the September panel review to compete for technical support)</Radio>
             <Radio className={verticalRadio} value="rapid">Research related to urgent deadlines/deliverables or small proof-of-principle request</Radio>
@@ -138,7 +157,12 @@ export default class ProposalTypeSelect extends Component<any, any> {
 
   renderPartnerQuestions() {
     return(
-      <FormItem {...radioItemLayout} className={'two-rows-label'} label="Please select the Science Theme that best fits your proposed research." required={true} >
+      <FormItem
+        {...radioItemLayout}
+        className={'two-rows-label'} label="Please select the Science Theme that best fits your proposed research."
+        required={true}
+        validateStatus={this.props.validateTheme ? 'error' : undefined}
+      >
         <RadioGroup defaultValue={this.props.theme} className={radioGroupStyling} onChange={this.handleTheme}>
           <Radio className={verticalRadio} value="bioSciences">Biological Sciences</Radio>
           <Radio className={verticalRadio} value="enviroSciences">Environmental Sciences</Radio>
@@ -162,7 +186,12 @@ export default class ProposalTypeSelect extends Component<any, any> {
     const options = this.renderOptions();
     const followOnQuestions = this.renderFollowOn();
     return(
-      <FormItem {...formItemLayout} label={this.props.label} required={true}>
+      <FormItem 
+        {...formItemLayout}
+        label={this.props.label}
+        validateStatus={this.props.validateSelect ? 'error' : undefined}
+        required={true}
+      >
         <Select
           placeholder = {this.props.placeholder}
           onChange={this.handleProposalTypeChange}

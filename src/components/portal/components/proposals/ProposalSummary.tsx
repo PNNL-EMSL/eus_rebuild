@@ -4,6 +4,7 @@ import DetailsForm from 'components/portal/components/proposals/DetailsForm';
 import FundingForm from 'components/portal/components/proposals/FundingForm';
 import ParticipantsForm from 'components/portal/components/proposals/ParticipantsForm';
 import ResourcesForm from 'components/portal/components/proposals/ResourcesForm';
+import MaterialsForm from 'components/portal/components/proposals/MaterialsForm';
 
 export default class ProposalSummary extends WizardPage {
 
@@ -27,6 +28,9 @@ export default class ProposalSummary extends WizardPage {
         <hr />
         <h3>Proposal Resources</h3>
         <ResourcesForm {...this.props}/>
+        <hr />
+        <h3>Proposal Materials</h3>
+        <MaterialsForm {...this.props}/>
       </div>
     )
   }

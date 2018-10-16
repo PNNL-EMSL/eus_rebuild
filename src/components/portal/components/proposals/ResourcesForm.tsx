@@ -51,10 +51,12 @@ export default class ResourcesForm extends WizardPage {
   }
   
   validatePage = (data) => {
-    let valid = false;
-    // Do the validation logic
-    valid = true;
-    return valid;
+    const errors = this.props.Validator.doValidate(data, 'resourcesForm');
+    const existingErrors = this.props.proposalErrors;
+    existingErrors.resourcesErrors = errors;
+    this.props.updateErrors(existingErrors);
+
+    this.props.updateComplete(errors.length === 0);
   };
 
   beforeNext = () => {

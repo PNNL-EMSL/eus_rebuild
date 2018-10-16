@@ -100,6 +100,7 @@ class NewProposalWizard extends Wizard {
   }
 
   updateData(field, data) {
+    console.log('pause here; materials data');
     this.setState({[field]: data});
   }
   

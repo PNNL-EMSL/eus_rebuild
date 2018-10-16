@@ -14,6 +14,7 @@ export default class MaterialsForm extends WizardPage {
 
   constructor(props) {
     super(props);
+    console.log('materials Form props', this.props);
     this.state = this.props.materialsData;
 
     this.handleHumanUpdate = this.handleHumanUpdate.bind(this);
@@ -39,12 +40,18 @@ export default class MaterialsForm extends WizardPage {
     this.handleSamplesEndUpdate = this.handleSamplesEndUpdate.bind(this);
     this.handleSamplesEndOtherUpdate = this.handleSamplesEndOtherUpdate.bind(this);
   }
+  
+  componentWillUnmount() {
+    this.beforeNext();
+  }
 
   validatePage = (data) => {
-    let valid = false;
-    // Do the validation logic
-    valid = true;
-    return valid;
+    const errors = this.props.Validator.doValidate(data, 'materialsForm');
+    const existingErrors = this.props.proposalErrors;
+    existingErrors.materialsErrors = errors;
+    this.props.updateErrors(existingErrors);
+
+    this.props.updateComplete(errors.length === 0);
   };
 
   beforeNext = () => {
@@ -158,6 +165,7 @@ export default class MaterialsForm extends WizardPage {
       height: '25px',
       lineHeight: '25px',
     };
+    const errors = this.props.proposalErrors.materialsErrors;
     return (
       <Form>
         <FormItem
@@ -166,6 +174,7 @@ export default class MaterialsForm extends WizardPage {
           label="Will your research involve the use of human blood, tissues, DNA, cells, cell lines or human biological samples in any form?"
           required={true}
           colon={false}
+          validateStatus={errors && errors.some((error) => (error.field === 'humanMaterials')) === true ? 'error' : undefined}
         >
           <RadioGroup defaultValue={data.humanMaterials} onChange={this.handleHumanUpdate}>
             <Radio value={true} >Yes</Radio>
@@ -178,6 +187,7 @@ export default class MaterialsForm extends WizardPage {
           label="Does this work involve the use of animals?"
           required={true}
           colon={false}
+          validateStatus={errors && errors.some((error) => (error.field === 'animalMaterials')) === true ? 'error' : undefined}
         >
           <RadioGroup defaultValue={data.animalMaterials} onChange={this.handleAnimalUpdate}>
             <Radio value={true} >Yes</Radio>
@@ -190,6 +200,7 @@ export default class MaterialsForm extends WizardPage {
           label="Will you be bringing or sending chemicals to the EMSL facility?"
           required={true}
           colon={false}
+          validateStatus={errors && errors.some((error) => (error.field === 'chemicalsStart')) === true ? 'error' : undefined}
         >
           <RadioGroup defaultValue={data.chemicalsSent} onChange={this.handleChemicalsSentUpdate}>
             <Radio value={true} >Yes</Radio>
@@ -203,6 +214,7 @@ export default class MaterialsForm extends WizardPage {
               className={'two-rows-label'}
               label="Description of chemicals"
               required={true}
+              validateStatus={errors && errors.some((error) => (error.field === 'chemicalsDescription')) === true ? 'error' : undefined}
             >
               <TextArea defaultValue={data.chemicalsDescription} onChange={this.handleChemicalsDescriptionUpdate}/>
             </FormItem>
@@ -212,6 +224,7 @@ export default class MaterialsForm extends WizardPage {
               label="How do you plan to bring/send the chemicals to the facility?"
               required={true}
               colon={false}
+              validateStatus={errors && errors.some((error) => (error.field === 'chemicalsShip')) === true ? 'error' : undefined}
             >
               <RadioGroup defaultValue={data.chemicalsShip} onChange={this.handleChemicalsShipUpdate}>
                 <Radio style={radioStyle} value='ship' >Ship</Radio>
@@ -222,8 +235,12 @@ export default class MaterialsForm extends WizardPage {
                     {...formItemLayout}
                     label="Specify"
                     required={true}
+                    validateStatus={errors && errors.some((error) => (error.field === 'chemicalsShipOther')) === true ? 'error' : undefined}
                   >
-                    <Input defaultValue={data.chemicalsShipOther} onChange={this.handleChemicalShipOtherUpdate}/>
+                    <Input
+                      defaultValue={data.chemicalsShipOther}
+                      onChange={this.handleChemicalShipOtherUpdate}
+                    />
                   </FormItem>
                 )}
               </RadioGroup>
@@ -233,6 +250,7 @@ export default class MaterialsForm extends WizardPage {
               className={'two-rows-label'}
               label="At the end of the project the chemicals will be"
               required={true}
+              validateStatus={errors && errors.some((error) => (error.field === 'chemicalsEnd')) === true ? 'error' : undefined}
             >
               <RadioGroup defaultValue={data.chemicalsEnd} onChange={this.handleChemicalEndUpdate}>
                 <Radio style={radioStyle} value='return' >Returned to you</Radio>
@@ -243,8 +261,12 @@ export default class MaterialsForm extends WizardPage {
                     {...formItemLayout}
                     label="Specify"
                     required={true}
+                    validateStatus={errors && errors.some((error) => (error.field === 'chemicalsEndOther')) === true ? 'error' : undefined}
                   >
-                    <Input defaultValue={data.chemicalsEndOther} onChange={this.handleChemicalEndUpdateOther}/>
+                    <Input
+                      defaultValue={data.chemicalsEndOther}
+                      onChange={this.handleChemicalEndUpdateOther}
+                    />
                   </FormItem>
                 )}
               </RadioGroup>
@@ -257,6 +279,7 @@ export default class MaterialsForm extends WizardPage {
           label="Does your experiment on EMSL resources involve samples?"
           required={true}
           colon={false}
+          validateStatus={errors && errors.some((error) => (error.field === 'samplesSent')) === true ? 'error' : undefined}
         >
           <RadioGroup defaultValue={data.samplesSent} onChange={this.handleSamplesSentUpdate}>
             <Radio value={true} >Yes</Radio>
@@ -270,6 +293,7 @@ export default class MaterialsForm extends WizardPage {
               className={'two-rows-label'}
               label="Description of samples"
               required={true}
+              validateStatus={errors && errors.some((error) => (error.field === 'samplesDescription')) === true ? 'error' : undefined}
             >
               <TextArea defaultValue={data.samplesDescription} onChange={this.handleSamplesDescriptionUpdate}/>
             </FormItem>
@@ -279,6 +303,7 @@ export default class MaterialsForm extends WizardPage {
               label="Do any of the samples contain radioactive isotopes?"
               required={true}
               colon={false}
+              validateStatus={errors && errors.some((error) => (error.field === 'samplesRadioactive')) === true ? 'error' : undefined}
             >
               <RadioGroup defaultValue={data.samplesRadioactive} onChange={this.handleSamplesRadioactiveUpdate}>
                 <Radio value={true} >Yes</Radio>
@@ -291,6 +316,7 @@ export default class MaterialsForm extends WizardPage {
               label="Do any of the samples contain bound or unbound engineered nanomaterials?"
               required={true}
               colon={false}
+              validateStatus={errors && errors.some((error) => (error.field === 'samplesNanomaterials')) === true ? 'error' : undefined}
             >
               <RadioGroup defaultValue={data.samplesNanomaterials} onChange={this.handleSamplesNanomaterialsUpdate}>
                 <Radio value={true} >Yes</Radio>
@@ -303,6 +329,7 @@ export default class MaterialsForm extends WizardPage {
               label="Are any of these sample regulated USDA APHIS (ex: certain soils containing biological material)?"
               required={true}
               colon={false}
+              validateStatus={errors && errors.some((error) => (error.field === 'samplesAphis')) === true ? 'error' : undefined}
             >
               <RadioGroup defaultValue={data.samplesAphis} onChange={this.handleSamplesAphisUpdate}>
                 <Radio value={true} >Yes</Radio>
@@ -315,6 +342,7 @@ export default class MaterialsForm extends WizardPage {
                 className={'two-rows-label'}
                 label="Enter each Permit Number, comma separated"
                 required={true}
+                validateStatus={errors && errors.some((error) => (error.field === 'samplesAphisPermits')) === true ? 'error' : undefined}
               >
                 <TextArea defaultValue={data.samplesAphisPermits} onChange={this.handleSamplesAphisPermitsUpdate}/>
               </FormItem>
@@ -325,6 +353,7 @@ export default class MaterialsForm extends WizardPage {
               label="Are any of the samples biological?"
               required={true}
               colon={false}
+              validateStatus={errors && errors.some((error) => (error.field === 'samplesBiological')) === true ? 'error' : undefined}
             >
               <RadioGroup defaultValue={data.samplesBiological} onChange={this.handleSamplesBiologicalUpdate}>
                 <Radio value={true} >Yes</Radio>
@@ -339,6 +368,7 @@ export default class MaterialsForm extends WizardPage {
                   label="Can the biologic samples contain plant pathogens/pests?"
                   required={true}
                   colon={false}
+                  validateStatus={errors && errors.some((error) => (error.field === 'samplesPests')) === true ? 'error' : undefined}
                 >
                   <RadioGroup defaultValue={data.samplesPests} onChange={this.handleSamplesPestsUpdate}>
                     <Radio value={true} >Yes</Radio>
@@ -352,6 +382,7 @@ export default class MaterialsForm extends WizardPage {
                     label="Are the pathogens/pests alive or inactive?"
                     required={true}
                     colon={false}
+                    validateStatus={errors && errors.some((error) => (error.field === 'samplesAlive')) === true ? 'error' : undefined}
                   >
                     <RadioGroup defaultValue={data.samplesAlive} onChange={this.handleSamplesAliveUpdate}>
                       <Radio value={true} >Alive</Radio>
@@ -367,6 +398,7 @@ export default class MaterialsForm extends WizardPage {
               label="How do you plan to bring/send the samples to the facility?"
               required={true}
               colon={false}
+              validateStatus={errors && errors.some((error) => (error.field === 'samplesShip')) === true ? 'error' : undefined}
             >
               <RadioGroup defaultValue={data.samplesShip} onChange={this.handleSamplesShipUpdate}>
                 <Radio style={radioStyle} value='ship' >Ship</Radio>
@@ -377,6 +409,7 @@ export default class MaterialsForm extends WizardPage {
                     {...formItemLayout}
                     label="Specify"
                     required={true}
+                    validateStatus={errors && errors.some((error) => (error.field === 'samplesShipOther')) === true ? 'error' : undefined}
                   >
                     <Input defaultValue={data.samplesShipOther} onChange={this.handleSamplesShipOtherUpdate}/>
                   </FormItem>
@@ -389,6 +422,7 @@ export default class MaterialsForm extends WizardPage {
               label="Will you need to perform sample preparation at the facility?"
               required={true}
               colon={false}
+              validateStatus={errors && errors.some((error) => (error.field === 'samplesPrep')) === true ? 'error' : undefined}
             >
               <RadioGroup defaultValue={data.samplesPrep} onChange={this.handleSamplesPrep}>
                 <Radio value={true} >Yes</Radio>
@@ -400,6 +434,7 @@ export default class MaterialsForm extends WizardPage {
               className={'two-rows-label'}
               label="At the end of the project the samples will be"
               required={true}
+              validateStatus={errors && errors.some((error) => (error.field === 'samplesEnd')) === true ? 'error' : undefined}
             >
               <RadioGroup defaultValue={data.samplesEnd} onChange={this.handleSamplesEndUpdate}>
                 <Radio style={radioStyle} value='return' >Ship</Radio>
@@ -410,6 +445,7 @@ export default class MaterialsForm extends WizardPage {
                     {...formItemLayout}
                     label="Specify"
                     required={true}
+                    validateStatus={errors && errors.some((error) => (error.field === 'samplesEndOther')) === true ? 'error' : undefined}
                   >
                     <Input defaultValue={data.samplesEndOther} onChange={this.handleSamplesEndOtherUpdate}/>
                   </FormItem>
