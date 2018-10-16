@@ -7,6 +7,8 @@ import { Form, Input, Tabs, Radio} from 'antd';
 import AntDesignSelect from 'components/shared/components/AntDesignSelect';
 import ProfessionTypes from 'components/portal/components/proposals/ProfessionTypes.json'
 import Prefixes from 'components/portal/pages/prefixes.json'
+import InstititionType from 'components/portal/pages/institutionType.json'
+
 import gql from 'graphql-tag'
 
 
@@ -60,12 +62,26 @@ static propTypes = {
     {
         CurrentUser @client {
             name,
+            prefix,
+            suffix,
             email,
             institution,
+            institutionType,
             orcid,
             orcidPermissions,
             profession,
-            professionOther
+            professionOther,
+            primaryCitzenship,
+            dualCitizenship,
+            department,
+            businessAddrL1,
+            businessAddrL2,
+            country,
+            stateOrProv,
+            city,
+            postalCode,
+            phone,
+            fax
 
 
         }
@@ -86,42 +102,87 @@ static propTypes = {
           this.handleProfessionChange = this.handleProfessionChange.bind(this);
           this.handleProfessionOther = this.handleProfessionOther.bind(this);
           this.handlePrefixChange = this.handlePrefixChange.bind(this);
-          this.handlePrefixOther = this.handlePrefixOther.bind(this);
+          this.handleInstitutionTypeChange = this.handleInstitutionTypeChange.bind(this);
+          this.handleInstitutionTypeOther = this.handleInstitutionTypeOther.bind(this);
+          this.handleSuffixChange = this.handleSuffixChange.bind(this);
+          this.handlePrimaryCitizenshipChange = this.handlePrimaryCitizenshipChange.bind(this);
+          this.handleDualCitizenshipChange = this.handleDualCitizenshipChange.bind(this);
+          this.handleDepartmentChange = this.handleDepartmentChange.bind(this);
+          this.handleBusinnessAddrL1Change = this.handleBusinnessAddrL1Change.bind(this);
+          this.handleBusinnessAddrL2Change = this.handleBusinnessAddrL2Change.bind(this);
+          this.handleCountryChange = this.handleCountryChange.bind(this);
+          this.handleStateOrProvChange = this.handleStateOrProvChange.bind(this);
+          this.handleCityChange = this.handleCityChange.bind(this);
+          this.handlePostalCodeChange = this.handlePostalCodeChange.bind(this);
+          this.handlePhoneChange = this.handlePhoneChange.bind(this);
+          this.handleFaxChange = this.handleFaxChange.bind(this);
     }
 
 
-    // handleSuffixChange() {
-    //     // Comment
-    // }
 
+    handleSuffixChange(e) {
+        const user = this.state.user;
+        user.suffix = e.target.value;
+        this.setState({user});
+    }
 
-    // handlePrimaryCitzenChange() {
-    //     // Commente
-    // }
+    handlePrimaryCitizenshipChange(e) {
+        // C
+    }
+    handleDualCitizenshipChange(e) {
+        // C
+    }
 
-    // handleDualCitizenChange() {
-    //     // Comment
-    // }
+    handleDepartmentChange(e) {
+        const user = this.state.user;
+        user.department= e.target.value;
+        this.setState({user});
+    }
 
-    // handleSSNChange() {
-    //     // Comment
-    // }
+    handleBusinnessAddrL1Change(e) {
+        const user = this.state.user;
+        user.businessAddrL1 = e.target.value;
+        this.setState({user});
+    }
 
-    // handleDOBChange() {
-    //     // COmment
-    // }
+    handleBusinnessAddrL2Change(e) {
+        const user = this.state.user;
+        user.businessAddrL2 = e.target.value;
+        this.setState({user});
+    }
 
-    // handleBirthCountryChange() {
-    //     // Comment
-    // }
+    handleCountryChange(e) {
+        //
+    }
 
-    // handleBirthPlaceChange() {
-    //     // Comment
-    // }
+    handleStateOrProvChange(e) {
+        // c 
+    }
 
-    // handleBirthCityChange() {
-    //     // COmment
-    // }
+    handleCityChange(e) {
+        const user = this.state.user;
+        user.city = e.target.value;
+        this.setState({user});
+    }
+
+    handlePostalCodeChange(e) {
+        const user = this.state.user;
+        user.postalCode = e.target.value;
+        this.setState({user});
+    }
+
+    handlePhoneChange(e) {
+        const user = this.state.user;
+        user.phone = e.target.value;
+        this.setState({user}); 
+    }
+
+    handleFaxChange(e) {
+        const user = this.state.user;
+        user.fax = e.target.value;
+        this.setState({user}); 
+    }
+
 
     handlePrefixChange(e) {
         console.log("Prefix On Change Called")
@@ -130,9 +191,6 @@ static propTypes = {
         this.setState({user});
     };
 
-    handlePrefixOther() {
-         // Need to add prefixes to DB
-    };
 
     handleProfessionChange(e) {
         console.log("Profession On Change Called")
@@ -144,7 +202,7 @@ static propTypes = {
     handleProfessionOther(e){
         const user = this.state.user;
         user.professionOther = e.target.value;
-        this.setState({user});;
+        this.setState({user});
     }
 
     handleEmailChange(e) {
@@ -158,7 +216,25 @@ static propTypes = {
         const user = this.state.user;
         user.instituion = e.target.value;
         this.setState({user});
+        // Need a way to type in a search bar and filter
+        // through the results that way
     }
+
+    handleInstitutionTypeChange(e) {
+        console.log("Instution Type On Change Called")
+        const user = this.state.user;
+        // user.instutionType = e;
+        this.setState({user});
+    }
+
+    handleInstitutionTypeOther(e) {
+        console.log("Instution Type Other Change Called")
+        const user = this.state.user;
+        user.instutionType = e.target.value;
+        this.setState({user});
+    }
+
+    
 
     handleOrcidChange(e) {
         const user = this.state.user;
@@ -180,6 +256,8 @@ static propTypes = {
           user,
         });
       }
+
+ 
 
 
     callback(key) {
@@ -213,14 +291,13 @@ static propTypes = {
                         optionList={Prefixes.Prefixes}
                         value={user.prefix} // Need to change to user.prefix, add to DB
                         handleChange={this.handlePrefixChange}
-                        handleInput={this.handlePrefixOther}
                         required={true}
                     />  
                 <FormItem {...formItemLayout} label="Name">
                     <Input disabled={true} value={user.name} />
                 </FormItem>
                 <FormItem {...formItemLayout} label="Suffix">
-                    <Input />
+                    <Input defaultValue={user.suffix} onChange={this.handleSuffixChange}/>
                 </FormItem> 
                 <FormItem {...formItemLayout} required={true} label="ORCID iD Permissions">
                     <p>User records will now be associated with ORCID® iDs. 
@@ -258,45 +335,52 @@ static propTypes = {
                     handleInput={this.handleProfessionOther}
                     required={true}
                 />     
-                <FormItem {...formItemLayout} required={true} label="Type of Institution">
-                    This needs to be implemented
-
-                </FormItem>
+                <AntDesignSelect
+                    label="Type of Institution"
+                    placeholder="Select institution type..."
+                    optionList={InstititionType.InstitutionType}
+                    value={user.institutionType}
+                    handleChange={this.handleInstitutionTypeChange}
+                    handleInput={this.handleInstitutionTypeOther}
+                    required={true}
+                />     
                 <FormItem {...formItemLayout} required={true} label="Institution name">
                     <Input defaultValue={user.institution} onChange={this.handleInstitutionChange}/>  
                 </FormItem>   
                 <FormItem {...formItemLayout} label="Department">
-                    <Input />    
+                    <Input defaultValue={user.department} onChange={this.handleDepartmentChange}/>    
                 </FormItem>
                 <FormItem {...formItemLayout} required={true} label="Business Address, Line 1">
-                    <Input />    
+                    <Input defaultValue={user.businessAddrL1} onChange={this.handleBusinnessAddrL1Change}/>    
                 </FormItem>  
                 <FormItem {...formItemLayout}  label="Business Address, Line 2">
-                    <Input />    
+                    <Input defaultValue={user.businessAddrL2} onChange={this.handleBusinnessAddrL2Change}/>     
                 </FormItem> 
                 <FormItem {...formItemLayout} required={true} label="Country">
-                    This needs to be implemented
+                    <Input defaultValue={user.country} onChange={this.handleCountryChange}/>   
+                    Needs to be implemented  
 
                 </FormItem>
                 <FormItem {...formItemLayout}  required={true} label="State/Province"> 
+                    <Input defaultValue={user.stateOrProv} onChange={this.handleStateOrProvChange}/>
                     This needs to be implemented
                     Note: This is only required for US and Canada.
 
                 </FormItem>
                 <FormItem {...formItemLayout} label="City">
-                    <Input />    
+                    <Input defaultValue={user.city} onChange={this.handleCityChange}/>    
                 </FormItem>
                 <FormItem {...formItemLayout} required={true} label="Postal Code">
-                    <Input />    
+                    <Input defaultValue={user.postalCode} onChange={this.handlePostalCodeChange}/>    
                 </FormItem>
                 <FormItem {...formItemLayout} required={true} label="Business phone number">
-                    <Input />    
+                    <Input defaultValue={user.phone} onChange={this.handlePhoneChange}/>    
                 </FormItem>
                 <FormItem {...formItemLayout} label="Business fax number">
-                    <Input />    
+                    <Input defaultValue={user.fax} onChange={this.handleFaxChange}/>    
                 </FormItem>
                 <FormItem {...formItemLayout} required={true} label="Business email address">
-                    <Input defaultValue={user.email}/>    
+                    <Input defaultValue={user.email} onChange={this.handleEmailChange}/>    
                 </FormItem>
 
             </Form>
