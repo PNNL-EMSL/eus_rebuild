@@ -24,14 +24,14 @@ export const headerFont = css`
   font-weight: 700;
   font-size: 16px;
   color: ${colorDarkGreen};
- `;
+`;
 
 export const flexRow = css`
   display: flex;
   flex: 0 0 auto;
   align-self: flex-start;
   align-items: center;
- `;
+`;
 
 export const footerStyle: string = css`
   display: inline-block;
@@ -72,9 +72,16 @@ export const contentStyle: string = css`
   position: relative;
 `;
 
+export const adminContentStyle: string = css`
+  top: 100px;
+  width: 80%;
+  position: relative;
+  float: right;
+  display: inline-block;
+`;
+
 export const headerStyle: string = css`
   padding: 5px 20px 5px 10px;
-  margin-top: -20px;
   display: flex;
   flex: 0 0 auto;
   flex-direction: row;
@@ -97,47 +104,6 @@ export const fontAwesomeContainerStyle: string = css`
   min-height: 100px
 `;
 
-// const header: string = css`
-//   padding: 5px 20px 5px 10px;
-//   display: flex;
-//   flex: 0 0 auto;
-//   flex-direction: row;
-//   background-color: white;
-//   align-items: center;
-//   max-width: 1078px;
-// `;
-// const footer: string = css`
-//   padding: 5px 20px 5px 10px;
-//   display: flex;
-//   flex: 0 0 auto;
-//   flex-direction: row;
-//   background-color: white;
-//   align-items: center;
-//   max-width: 1078px;
-// `;
-// const titleContainer: string = css`
-//   display: flex;
-//   flex: 1;
-//   flex-direction: column;
-//   margin-left: 10px;
-//   margin-top: -15px;
-// `;
-// const title: string = css`
-//   font-weight: 800;
-//   font-size: 28px;
-//   text-shadow: 2px 2px 8px #aaa;
-// `;
-// const content: string = css`
-//   margin: 5px 20px 15px 100px;
-//   max-width: 958px;
-// `;
-//
 export const Logo = styled('img')`
   height: 80px;
 `;
-//
-// const logout: string = css`
-//   text-align: right;
-//   float: right;
-//   width: 72%;
-// `;

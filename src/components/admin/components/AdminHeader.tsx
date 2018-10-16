@@ -2,54 +2,82 @@ import React from 'react';
 import { css } from 'emotion';
 import styled from 'react-emotion';
 import HeaderBase from 'components/shared/components/HeaderBase';
+import { Link } from 'react-router-dom';
+import logo from 'images/logo_white.png';
+import polygon from 'images/portal_icon_no_text.png';
+import {colorDarkGreen, colorWhite, colorLightOrange, Logo} from 'styles/base';
 
-import logo from 'images/emsl_logo_notag.jpg';
-
-const title: string = css`
-  font-weight: 800;
-  font-size: 28px;
-  text-shadow: 2px 2px 8px #aaa;
+const logout: string = css`
+  position: absolute;
+  right: 10px;
+  margin-top: 25px;
 `;
 
-const Logo = styled('img')`
-  height: 80px;
+const headerLinks: string = css`
+  color: ${colorLightOrange};
 `;
 
-const loginHeader: string = css`
+const dividers: string = css`
+  color: ${colorLightOrange};
+  margin: 10px;
+  display: inline;
+`;
+
+const Polygon = styled('img')`
+  position: absolute;
+  top: 0px;
+  left: 25%;
+  height: 91px;
+  width: 50%;
+`;
+
+const headerSpan: string = css`
   display: flex;
 `;
 
-const logout: string = css`
-  text-align: right;
-  float: right;
-  width: 72%;
+const headerText: string = css`
+  font-size: 39px;
+  min-width: 272px;
+  z-index: 3;
+  position: absolute;
+  left: calc(45% - 136px);
+  top: 20px;
+  color: ${colorDarkGreen};
 `;
 
+const userText: string = css`
+  font-size: 20px;
+  text-align: center;
+  color: ${colorWhite};
+  font-style: italic;
+`;
 
 export default class AdminHeader extends HeaderBase {
   constructor(props) {
     super(props);
   }
 
+
   renderContent(data) {
-    console.log('renderContent', this.props);
     return (
       <div>
-        <span>
+        <span className={headerSpan}>
           <Logo src={logo} alt="logo"/>
-          <span className={loginHeader}>
-            <div className={title}>EMSL User Admin</div>
-            {
-              (data.CurrentUser && data.CurrentUser.length !== 0) ? (
-                <div className={logout}>
-                  <div>Welcome {data.CurrentUser[0].userName}</div>
-                  <button onClick={this.props.logoutHandler}>Sign out</button>
-                </div>
-              ) : (<div />)
-            }
+          <Polygon src={polygon} alt="polygon" />
+          <p className={headerText}>EMSL USER ADMIN</p>
+          {
+            data.CurrentUser.length !== 0 ? (
+              <div className={logout}>
+                <div className={userText}>Welcome {data.CurrentUser[0].userName}</div>
+
+                <Link to="/Portal/userInfo" className={headerLinks}>My profile</Link>
+                <p className={dividers}>|</p>
+                <a href="#" className={headerLinks} onClick={this.props.logoutHandler}>Sign out</a>
+              </div>
+            ) : (<div />)
+          }
           </span>
-        </span>
       </div>
-    )
+    );
   }
 }
