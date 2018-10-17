@@ -3,7 +3,7 @@ import PortalPageBase from 'components/portal/pages/PortalPageBase';
 import {portalContentStyle} from 'styles/base'
 import PropTypes from 'prop-types';
 // import { cx, css } from 'emotion';
-import { Form, Input, Tabs, Radio} from 'antd';
+import { Form, Input, Tabs, Radio, Button} from 'antd';
 import AntDesignSelect from 'components/shared/components/AntDesignSelect';
 import ProfessionTypes from 'components/portal/components/proposals/ProfessionTypes.json'
 import Prefixes from 'components/portal/pages/prefixes.json'
@@ -60,7 +60,7 @@ static propTypes = {
 
     GET_USER_INFO = gql`
     {
-        CurrentUser @client {
+        CurrentUser @client {,
             name,
             prefix,
             suffix,
@@ -116,6 +116,8 @@ static propTypes = {
           this.handlePostalCodeChange = this.handlePostalCodeChange.bind(this);
           this.handlePhoneChange = this.handlePhoneChange.bind(this);
           this.handleFaxChange = this.handleFaxChange.bind(this);
+          this.handleOrcidPermissionRadioChange = this.handleOrcidPermissionRadioChange.bind(this);
+          this.submitChanges = this.submitChanges.bind(this);
     }
 
 
@@ -242,7 +244,7 @@ static propTypes = {
         this.setState({user});
     }
 
-    onOrcidPermissionRadioChange = (e) => {
+    handleOrcidPermissionRadioChange = (e) => {
         console.log('radio checked', e.target.value);
         const user = this.state.user;
         if (e.target.value === 1) {
@@ -258,7 +260,40 @@ static propTypes = {
       }
 
  
-
+    submitChanges(e) {
+        e.preventDefault();
+        // commit changes through gql query
+        // check if current user is the one getting updated
+        // if so, we need to update the current user role also
+        const query = this.GET_USER_INFO;
+        let users = this.props.client.readQuery({query}).CurrentUser;
+        const updating = users.filter((item) => (item.userName === this.state.userName))[0];
+        users = users.filter((item) => (item.email !== this.state.email));
+        updating.email = this.state.email;
+        updating.prefix = this.state.prefix;
+        updating.suffix = this.state.suffix;
+        updating.instituion = this.state.instituion;
+        updating.institutionType = this.state.institutionType;
+        updating.orcid = this.state.orcid;
+        updating.orcidPermissions = this.state.orcidPermissions;
+        updating.profession = this.state.profession;
+        updating.professionOther = this.state.professionOther;
+        updating.primaryCitzenship = this.state.primaryCitzenship;
+        updating.dualCitizenship = this.state.dualCitizenship;
+        updating.department = this.state.department;
+        updating.businessAddrL1 = this.state.businessAddrL1;
+        updating.businessAddrL2 = this.state.businessAddrL2;
+        updating.country = this.state.country;
+        updating.stateOrProv = this.state.stateOrProv;
+        updating.city = this.state.city;
+        updating.postalCode = this.state.postalCode;
+        updating.phone = this.state.phone;
+        updating.fax = this.state.fax;
+        users.push(updating);
+        const data = {Users: users};
+        console.log(data, users);
+        this.props.client.writeData({data});
+    }
 
     callback(key) {
         console.log(key);
@@ -309,7 +344,7 @@ static propTypes = {
                     To save these settings, be sure to click on the Save User Now link before leaving this page.</p>
                 </FormItem>  
                 <FormItem className={'two-rows-label'} {...formItemLayout} required={true} label="Do you authorize EMSL to post to your ORCID record?">
-                    <RadioGroup onChange={this.onOrcidPermissionRadioChange} value={this.state.radioValue}>
+                    <RadioGroup onChange={this.handleOrcidPermissionRadioChange} value={this.state.radioValue}>
                         <Radio value={1}>Yes</Radio>
                         <Radio value={2}>No</Radio>
                     </RadioGroup>
@@ -320,6 +355,7 @@ static propTypes = {
                 <FormItem {...formItemLayout} label="Dual Citizenship">
                     Needs to be implemented
                 </FormItem> 
+                <Button type="primary" onClick={this.submitChanges}>Submit All Changes</Button>
                 
 
             </Form>
@@ -382,6 +418,7 @@ static propTypes = {
                 <FormItem {...formItemLayout} required={true} label="Business email address">
                     <Input defaultValue={user.email} onChange={this.handleEmailChange}/>    
                 </FormItem>
+                <Button type="primary" onClick={this.submitChanges}>Submit All Changes</Button>
 
             </Form>
             </TabPane>
