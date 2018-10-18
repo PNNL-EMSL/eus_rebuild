@@ -11,7 +11,7 @@ export default abstract class PortalPageBase extends PageBase {
 
   renderPage() {
     const content = this.renderContent();
-    
+
     return (
       <div>
         <PortalHeader {...this.props} logoutHandler={this.logoutHandler} />

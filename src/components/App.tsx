@@ -150,7 +150,7 @@ class App extends Component<any, any> {
   renderGetData() {
     return (<GetData {...this.props} restricted={true}/>)
   }
-  
+
   renderSubmitSample() {
     return (<SubmitSample {...this.props} restricted={true}/>)
   }
@@ -193,8 +193,8 @@ class App extends Component<any, any> {
     let adminRouteNum = 0;
     return [
       (<Route key={adminRouteNum++} exact path="/EUSAdmin" component={this.renderAdminPage} />),
-      (<Route key={adminRouteNum++} exact path="/EUSAdmin/messageSystem" component={this.renderMessageSettings} />),
-      (<Route key={adminRouteNum++} exact path="/EUSAdmin/userAdmin" component={this.renderUserAdmin} />),
+      (<Route key={adminRouteNum++} exact path="/EUSAdmin/user_services/message_system" component={this.renderMessageSettings} />),
+      (<Route key={adminRouteNum++} exact path="/EUSAdmin/user_services/users" component={this.renderUserAdmin} />),
       // (<Route exact path="/EUSAdmin/user_services/calls" component={this.renderCallMangement} />),
     ];
   }
