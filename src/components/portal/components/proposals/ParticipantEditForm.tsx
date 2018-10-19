@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 import gql from 'graphql-tag';
 import AntDesignSelect from 'components/shared/components/AntDesignSelect';
 import ProfessionTypes from 'components/portal/components/proposals/ProfessionTypes.json'
-import { Button, Input, Checkbox } from 'antd';
+import { Form, Button, Input, Checkbox, Radio } from 'antd';
+
+const FormItem = Form.Item;
+const RadioGroup = Radio.Group;
 
 export default class ParticipantEditForm extends Component<any, any> {
   static GET_USERS = gql`
@@ -55,79 +58,85 @@ export default class ParticipantEditForm extends Component<any, any> {
   }
 
   render() {
+    const formItemLayout = {
+      labelCol: {
+        sm: { span: 6 },
+      },
+      wrapperCol: {
+        sm: { span: 18 },
+      },
+    };
     return (
-      <div>
-        <div>
-          <label>Name:</label>
+      <Form>
+        <FormItem label="Name" {...formItemLayout}>
           <Input defaultValue={this.props.participant.name} disabled />
-        </div>
-        <div>
-          <AntDesignSelect
-            label="Profession"
-            placeholder="Select profession..."
-            optionList={ProfessionTypes.ProfessionTypes}
-            value={this.props.participant.profession}
-            handleChange={this.handleProfessionChange}
-            handleInput={this.handleProfessionOther}
-            required={true}
-          />
-        </div>
-        <div>
-          <label>Email address</label>
+        </FormItem>
+        <AntDesignSelect
+          label="Profession"
+          placeholder="Select profession..."
+          optionList={ProfessionTypes.ProfessionTypes}
+          value={this.props.participant.profession}
+          handleChange={this.handleProfessionChange}
+          handleInput={this.handleProfessionOther}
+          required={true}
+        />
+        <FormItem label="Email address" {...formItemLayout}>
           <Input defaultValue={this.props.participant.email} />
-        </div>
+        </FormItem>
         {this.props.participant.orcid !== '' ? (
-          <div>
-            <label>ORCID iD</label>
+          <FormItem label="ORCID iD" {...formItemLayout}>
             <Input defaultValue={this.props.participant.orcid} disabled />
-          </div>
+          </FormItem>
         ) : (<div />)}
         {this.props.participant.orcid !== '' ? (
-          <div>
-            <label>ORCID Record Permissions</label>
-            <Input defaultValue={this.props.participant.orcidPermissions} disabled />
-          </div>
+          <FormItem label="ORCID Record Permissions" {...formItemLayout} className={'two-rows-label'}>
+            <RadioGroup defaultValue={this.props.participant.orcidPermissions} disabled>
+              <Radio value={1}>Yes</Radio>
+              <Radio value={0}>No</Radio>
+            </RadioGroup>
+          </FormItem>
         ) : (<div />)}
         {this.props.participant.orcid === '' &&
-          <div>
+          <FormItem>
             <Button onChange={this.linkToOrcid} >Link ORCID iD </Button>
-          </div>
+          </FormItem>
         }
-        <div>
-          <label>Institution Name</label>
+        <FormItem label="Institution Name" {...formItemLayout}>
           {this.props.participant.institution}
-        </div>
-        <div>
-          <label>Proposal Roles</label>
-          <div>
-            <label>Principal Investigator</label>
-            <Checkbox
-              checked={this.props.participant.proposalRoles.includes('Principal Investigator')}
-              disabled={false}
-              value="Principal Investigator"
-              onChange={this.handleRoleChange}
-            />
-            <label>Co-Investigator</label>
-            <Checkbox
-              checked={this.props.participant.proposalRoles.includes('Co-Investigator')}
-              disabled={false}
-              value="Co-Investigator"
-              onChange={this.handleRoleChange}
-            />
-            <label>Survey Respondent</label>
-            <Checkbox
-              checked={this.props.participant.proposalRoles.includes('Survey Respondent')}
-              disabled={this.props.participant.proposalRoles.includes('Principal Investigator')}
-              value="Survey Respondent"
-              onChange={this.handleRoleChange}
-            />
-          </div>
-        </div>
+        </FormItem>
+        <FormItem label="Proposal Roles" {...formItemLayout}>
+          <Checkbox
+            checked={this.props.participant.proposalRoles.includes('Principal Investigator')}
+            disabled={false}
+            value="Principal Investigator"
+            onChange={this.handleRoleChange}
+          >
+            Principal Investigator
+          </Checkbox>
+          <br/>
+          <Checkbox
+            checked={this.props.participant.proposalRoles.includes('Co-Investigator')}
+            disabled={false}
+            value="Co-Investigator"
+            onChange={this.handleRoleChange}
+          >
+            Co-Investigator
+          </Checkbox>
+          <br/>
+          <Checkbox
+            checked={this.props.participant.proposalRoles.includes('Survey Respondent')}
+            disabled={this.props.participant.proposalRoles.includes('Principal Investigator')}
+            value="Survey Respondent"
+            onChange={this.handleRoleChange}
+          >
+            Survey Respondent
+          </Checkbox>
+        </FormItem>
         <div>
           <Button onClick={this.props.cancelHandler}>Cancel</Button>
           <Button onClick={this.updateUser} type="primary">Submit Update</Button>
         </div>
-      </div>
+      </Form>
     )
   }
 }

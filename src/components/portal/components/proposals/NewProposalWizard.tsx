@@ -3,6 +3,7 @@ import DetailsForm from 'components/portal/components/proposals/DetailsForm';
 import FundingForm from 'components/portal/components/proposals/FundingForm';
 import ParticipantsForm from 'components/portal/components/proposals/ParticipantsForm';
 import ResourcesForm from 'components/portal/components/proposals/ResourcesForm';
+import MaterialsForm from 'components/portal/components/proposals/MaterialsForm';
 import ProposalSummary from 'components/portal/components/proposals/ProposalSummary';
 import ProposalValidator from 'components/shared/components/validator/ProposalValidator';
 
@@ -32,24 +33,52 @@ class NewProposalWizard extends Wizard {
       participants: []
     },
     fundingData: {
+      fundingList: [],
       fundingSources: [],
       fundingOther: '',
-      fundingWorkPackage: '',
+      berSelection: undefined
     },
-    resourcesData: {},
+    resourcesData: {
+      resources: []
+    },
+    materialsData: {
+      humanMaterials: undefined,
+      animalMaterials: undefined,
+      chemicalsSent: undefined,
+      chemicalsDescription: undefined,
+      chemicalsShip: undefined,
+      chemicalsShipOther: undefined,
+      chemicalsEnd: undefined,
+      chemicalsEndOther: undefined,
+      samplesSent: undefined,
+      samplesDescription: undefined,
+      samplesRadioactive: undefined,
+      samplesNanomaterials: undefined,
+      samplesAphis: undefined,
+      samplesAphisPermits: undefined,
+      samplesBiological: undefined,
+      samplesPests: undefined,
+      samplesAlive: undefined,
+      samplesShip: undefined,
+      samplesShipOther: undefined,
+      samplesEnd: undefined,
+      samplesEndOther: undefined
+    }
   };
 
   static PROP_INFO = 'info';
   static PROP_PARTICIPANTS = 'participants';
   static PROP_FUNDING = 'funding';
   static PROP_RESOURCES = 'resources';
+  static PROP_MATERIALS = 'materials';
   static PROP_SUMMARY = 'summary';
 
-  static STEP_INFO = 'Proposal Details';
+  static STEP_INFO = 'Details';
   static STEP_PARTICIPANTS = 'Participants';
   static STEP_FUNDING = 'Funding';
-  static STEP_RESOURCES = 'Proposal Resources';
-  static STEP_SUMMARY = 'Proposal Summary';
+  static STEP_RESOURCES = 'Resources';
+  static STEP_MATERIALS = 'Materials';
+  static STEP_SUMMARY = 'Summary';
   
   static VALIDATOR = new ProposalValidator();
 
@@ -61,6 +90,7 @@ class NewProposalWizard extends Wizard {
       participantsData: this.props.participantsData,
       fundingData: this.props.fundingData,
       resourcesData: this.props.resourcesData,
+      materialsData: this.props.materialsData,
       proposalErrors: {},
       completeSteps: {},
     };
@@ -70,6 +100,7 @@ class NewProposalWizard extends Wizard {
   }
 
   updateData(field, data) {
+    console.log('pause here; materials data');
     this.setState({[field]: data});
   }
   
@@ -89,6 +120,7 @@ class NewProposalWizard extends Wizard {
       NewProposalWizard.STEP_PARTICIPANTS,
       NewProposalWizard.STEP_FUNDING,
       NewProposalWizard.STEP_RESOURCES,
+      NewProposalWizard.STEP_MATERIALS,
       NewProposalWizard.STEP_SUMMARY,
     ];
 
@@ -101,7 +133,8 @@ class NewProposalWizard extends Wizard {
       { component: ParticipantsForm, id: NewProposalWizard.PROP_PARTICIPANTS, stepPos: 1},
       { component: FundingForm, id: NewProposalWizard.PROP_FUNDING, stepPos: 2},
       { component: ResourcesForm, id: NewProposalWizard.PROP_RESOURCES, stepPos: 3},
-      { component: ProposalSummary, id: NewProposalWizard.PROP_SUMMARY, stepPos: 4},
+      { component: MaterialsForm, id: NewProposalWizard.PROP_MATERIALS, stepPos: 4},
+      { component: ProposalSummary, id: NewProposalWizard.PROP_SUMMARY, stepPos: 5},
     ];
 
     return pages;
@@ -114,6 +147,7 @@ class NewProposalWizard extends Wizard {
       participantsData: this.state.participantsData,
       fundingData: this.state.fundingData,
       resourcesData: this.state.resourcesData,
+      materialsData: this.state.materialsData,
       proposalErrors: this.state.proposalErrors,
       updateData: this.updateData,
       updateErrors: this.updateErrors,
@@ -124,27 +158,32 @@ class NewProposalWizard extends Wizard {
 
   hasStepError(stepName) {
     let hasError = false;
-    console.log(this);
     const errors = this.state.proposalErrors;
-    console.log('errors', errors);
     if(stepName === NewProposalWizard.STEP_INFO) {
       if (errors.detailsErrors && errors.detailsErrors.length > 0) {
         hasError = errors.detailsErrors;
       }
     } else if (stepName === NewProposalWizard.STEP_PARTICIPANTS) {
-      if( errors.no_participant || errors.no_principal ) {
-        hasError = true;
+      if( errors.participantsErrors && errors.participantsErrors.length > 0 ) {
+        hasError = errors.participantsErrors;
       }
     } else if (stepName === NewProposalWizard.STEP_FUNDING) {
       if (errors.fundingErrors && errors.fundingErrors.length > 0) {
         hasError = errors.fundingErrors;
+      }
+    } else if (stepName === NewProposalWizard.STEP_RESOURCES) {
+      if (errors.resourcesErrors && errors.resourcesErrors.length > 0) {
+        hasError = errors.resourcesErrors;
+      }
+    } else if (stepName === NewProposalWizard.STEP_MATERIALS) {
+      if (errors.materialsErrors && errors.materialsErrors.length > 0) {
+        hasError = errors.materialsErrors;
       }
     }
     return hasError;
   }
   
   hasStepComplete(stepName) {
-    console.log('completeSteps', stepName, this.state.completeSteps);
     const errors = this.state.proposalErrors;
     let isComplete = false;
     if(stepName === NewProposalWizard.STEP_INFO) {
@@ -159,11 +198,16 @@ class NewProposalWizard extends Wizard {
       if (errors.fundingErrors && errors.fundingErrors.length === 0) {
         isComplete = true;
       }
+    } else if (stepName === NewProposalWizard.STEP_RESOURCES) {
+      if (errors.resourcesErrors && errors.resourcesErrors.length === 0) {
+        isComplete = true;
+      }
+    } else if (stepName === NewProposalWizard.STEP_MATERIALS) {
+      if (errors.materialsErrors && errors.materialsErrors.length === 0) {
+        isComplete = true;
+      }
     }
     return isComplete;
-    //
-    // const completes = this.state.proposalCompletes;
-    // return true;
   }
 
 }

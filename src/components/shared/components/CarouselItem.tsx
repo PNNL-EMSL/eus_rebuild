@@ -19,11 +19,12 @@ export default class CarouselItem extends Component<any, any> {
       <div>
         <a href={this.props.webUrl} target="_blank">
           <img src={this.props.src} style={{display: 'block', margin: 'auto'}} width={90} height={60}/>
-          <p className={legend}>
-            {this.props.text}
-            <div><a style={{ color: colorLightOrange }}>Read more...</a></div>
-          </p>
         </a>
+        <p className={legend}>
+          {this.props.text}
+          <br />
+          <a style={{ color: colorLightOrange }}>Read more...</a>
+        </p>
       </div>
     );
   }

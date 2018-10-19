@@ -16,11 +16,11 @@ const orcidColumn: string = css`
 `;
 
 const rolesColumn: string = css`
-  width: 25%;
+  width: 20%;
 `;
 
 const buttonColumn: string = css`
-  width: 10%;
+  width: 15%;
 `;
 
 export default class ParticipantRow extends Component<any, any> {
@@ -143,6 +143,7 @@ export default class ParticipantRow extends Component<any, any> {
           visible={this.state.showEditModal}
           onCancel={this.closeEdit}
           footer={null}
+          width="50%"
         >
           <ParticipantEditForm
             participant={user}

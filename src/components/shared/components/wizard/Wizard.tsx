@@ -201,6 +201,7 @@ export default class Wizard extends React.Component<any, any> {
         const lastStep = index === (stepsList.length - 1) ? true : false;
         if (stepErrors[step]) {
           stepStatus = 'error';
+          console.log('steperrors[step]', step, stepErrors[step], stepErrors);
           stepErrors[step].forEach((item, errIndex) => {
             if(errIndex > 2) {
               return;
