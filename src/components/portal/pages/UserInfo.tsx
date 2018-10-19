@@ -60,7 +60,8 @@ static propTypes = {
 
     GET_USER_INFO = gql`
     {
-        CurrentUser @client {,
+        Users @client {
+            userName,
             name,
             prefix,
             suffix,
@@ -82,8 +83,31 @@ static propTypes = {
             postalCode,
             phone,
             fax
+        }
 
-
+        CurrentUser @client  {,
+            userName,
+            name,
+            prefix,
+            suffix,
+            email,
+            institution,
+            institutionType,
+            orcid,
+            orcidPermissions,
+            profession,
+            professionOther,
+            primaryCitzenship,
+            dualCitizenship,
+            department,
+            businessAddrL1,
+            businessAddrL2,
+            country,
+            stateOrProv,
+            city,
+            postalCode,
+            phone,
+            fax
         }
     }
 `;
@@ -266,33 +290,42 @@ static propTypes = {
         // check if current user is the one getting updated
         // if so, we need to update the current user role also
         const query = this.GET_USER_INFO;
-        let users = this.props.client.readQuery({query}).CurrentUser;
-        const updating = users.filter((item) => (item.userName === this.state.userName))[0];
-        users = users.filter((item) => (item.email !== this.state.email));
-        updating.email = this.state.email;
-        updating.prefix = this.state.prefix;
-        updating.suffix = this.state.suffix;
-        updating.instituion = this.state.instituion;
-        updating.institutionType = this.state.institutionType;
-        updating.orcid = this.state.orcid;
-        updating.orcidPermissions = this.state.orcidPermissions;
-        updating.profession = this.state.profession;
-        updating.professionOther = this.state.professionOther;
-        updating.primaryCitzenship = this.state.primaryCitzenship;
-        updating.dualCitizenship = this.state.dualCitizenship;
-        updating.department = this.state.department;
-        updating.businessAddrL1 = this.state.businessAddrL1;
-        updating.businessAddrL2 = this.state.businessAddrL2;
-        updating.country = this.state.country;
-        updating.stateOrProv = this.state.stateOrProv;
-        updating.city = this.state.city;
-        updating.postalCode = this.state.postalCode;
-        updating.phone = this.state.phone;
-        updating.fax = this.state.fax;
+        console.log("Query", query);
+        let users = this.props.client.readQuery({query}).Users;
+        console.log("Users", users);
+        console.log("Current User", this.state.user);
+        const updating = users.find((item) => (item.userName === this.state.user.userName));
+        users = users.filter((item) => (item.userName !== this.state.user.userName));
+        console.log("Updating", updating);
+        console.log("Email", this.state.user.email)
+        updating.email = this.state.user.email;
+        updating.prefix = this.state.user.prefix;
+        updating.suffix = this.state.user.suffix;
+        updating.institution = this.state.user.institution;
+        updating.institutionType = this.state.user.institutionType;
+        updating.orcid = this.state.user.orcid;
+        updating.orcidPermissions = this.state.user.orcidPermissions;
+        updating.profession = this.state.user.profession;
+        updating.professionOther = this.state.user.professionOther;
+        updating.primaryCitzenship = this.state.user.primaryCitzenship;
+        updating.dualCitizenship = this.state.user.dualCitizenship;
+        updating.department = this.state.user.department;
+        updating.businessAddrL1 = this.state.user.businessAddrL1;
+        updating.businessAddrL2 = this.state.user.businessAddrL2;
+        updating.country = this.state.user.country;
+        updating.stateOrProv = this.state.user.stateOrProv;
+        updating.city = this.state.user.city;
+        updating.postalCode = this.state.user.postalCode;
+        updating.phone = this.state.user.phone;
+        updating.fax = this.state.user.fax;
+        console.log("Final update", updating);
         users.push(updating);
         const data = {Users: users};
         console.log(data, users);
         this.props.client.writeData({data});
+        const usersUpdated = this.props.client.readQuery({query}).Users;
+        console.log("Updated results", usersUpdated); 
+        console.log("Data", data, users);
     }
 
     callback(key) {
