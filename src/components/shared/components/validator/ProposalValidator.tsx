@@ -1,9 +1,10 @@
 import ValidatorBase from 'components/shared/components/validator/ValidatorBase';
 
 export default class ProposalValidator extends ValidatorBase {
-  functionList:any = [];
 
   constructor() {
+    super();
+
     this.functionList = {
       detailsForm: [
         { func: this.validateResearchArea, field: undefined, tooltip: 'Research Area must be defined' },

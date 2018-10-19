@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import { css } from 'emotion';
 import { Link } from 'react-router-dom';
-
 import { colorLightOrange, colorWhite } from 'styles/base';
 
 const adminNavMenu: string = css`

@@ -1,10 +1,5 @@
 export default class ValidatorBase {
-
-  constructor(props) {
-    super(props);
-    
-    
-  }
+  functionList:any = [];
   
   _createReturnText(fieldArray, tooltip) {
     let joined = '';

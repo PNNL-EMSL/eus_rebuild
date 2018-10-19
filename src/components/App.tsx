@@ -18,6 +18,8 @@ import AccessError from 'components/shared/pages/AccessError';
 import InvalidPage from 'components/shared/pages/InvalidPage';
 import UserAdmin from 'components/admin/pages/UserAdmin';
 
+import ManageCallsHome from 'components/admin/pages/manageCalls/Home';
+
 import ExternalStyleSheets from 'components/shared/components//ExternalStyleSheets';
 import {colorDarkGrey} from 'styles/base';
 
@@ -83,6 +85,7 @@ class App extends Component<any, any> {
     this.renderProvideFeedback = this.renderProvideFeedback.bind(this);
     this.renderMessageSettings = this.renderMessageSettings.bind(this);
     this.renderUserAdmin = this.renderUserAdmin.bind(this);
+    this.renderCallManagement = this.renderCallManagement.bind(this);
 
     // Action handlers
     this.logoutHandler = this.logoutHandler.bind(this);
@@ -167,9 +170,9 @@ class App extends Component<any, any> {
     return (<UserAdmin {...this.props} restricted={true}/>);
   }
 
-  // renderCallManagement() {
-  //   return (<ManageCalls)
-  // }
+  renderCallManagement() {
+    return (<ManageCallsHome {...this.props} restricted={true} />);
+  }
 
   createPortalRoutes() {
     let portalRouteNum = 0;
@@ -195,7 +198,7 @@ class App extends Component<any, any> {
       (<Route key={adminRouteNum++} exact path="/EUSAdmin" component={this.renderAdminPage} />),
       (<Route key={adminRouteNum++} exact path="/EUSAdmin/user_services/message_system" component={this.renderMessageSettings} />),
       (<Route key={adminRouteNum++} exact path="/EUSAdmin/user_services/users" component={this.renderUserAdmin} />),
-      // (<Route exact path="/EUSAdmin/user_services/calls" component={this.renderCallMangement} />),
+      (<Route key={adminRouteNum++} exact path="/EUSAdmin/user_services/calls" component={this.renderCallManagement} />),
     ];
   }
 
