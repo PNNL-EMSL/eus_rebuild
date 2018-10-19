@@ -28,7 +28,6 @@ export default abstract class PageBase extends Component<any, any> {
 
   constructor(props) {
     super(props);
-    this.state = {userLoggedIn: this.isUserLoggedIn()};
 
     this.isUserLoggedIn = this.isUserLoggedIn.bind(this);
     this.doLogin = this.doLogin.bind(this);
@@ -54,7 +53,7 @@ export default abstract class PageBase extends Component<any, any> {
    */
   passesPageRestriction() : boolean {
     if(this.props.restricted) {
-      return this.state.userLoggedIn && this.userHasAccess();
+      return this.isUserLoggedIn() && this.userHasAccess();
     }
     return true;
   }
@@ -90,7 +89,6 @@ export default abstract class PageBase extends Component<any, any> {
   }
 
   logoutHandler() {
-    console.log('logout handler called');
     this.props.client.writeData({data: {CurrentUser: []}});
     this.setState({userLoggedIn: false});
   }
@@ -103,7 +101,7 @@ export default abstract class PageBase extends Component<any, any> {
    * Renders the appropriate restricted content based on if the user needs to log in or if they have insufficient access
    */
   renderRestrictionContent() {
-    if(!this.state.userLoggedIn) {
+    if(!this.isUserLoggedIn()) {
       return (<Login {...this.props} loginHandler={this.doLogin} />);
     }
     return (<AccessError {...this.props} />);
@@ -116,7 +114,7 @@ export default abstract class PageBase extends Component<any, any> {
 
   render() {
     let content;
-    if(this.passesPageRestriction()) {
+    if(this.passesPageRestriction() === true) {
       content = this.renderPage();
     } else {
       content = this.renderRestrictionContent();

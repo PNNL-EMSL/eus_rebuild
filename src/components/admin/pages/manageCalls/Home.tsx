@@ -1,5 +1,7 @@
 import React from 'react';
 import AdminPageBase from 'components/admin/pages/AdminPageBase';
+import CurrentCalls from 'components/admin/pages/manageCalls/CurrentCalls';
+import ManageCallsNew from 'components/admin/pages/manageCalls/New';
 import { Tabs } from 'antd';
 
 const TabPane = Tabs.TabPane;
@@ -17,6 +19,7 @@ export default class ManageCallsHome extends AdminPageBase {
     //    second with a list of all calls
     // get list of current calls
     // show the form for adding a new call
+    console.log('rendering manageCallsHome');
 
     return (
       <div>
@@ -24,10 +27,12 @@ export default class ManageCallsHome extends AdminPageBase {
           <TabPane tab="Active Calls">
             <div>
               List of all active calls
-
+              <CurrentCalls />
+              
             </div>
             <div>
               Form for adding a new call
+              <ManageCallsNew />
             </div>
           </TabPane>
           <TabPane tab="All Calls">
