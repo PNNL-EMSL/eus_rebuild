@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Form, Input, DatePicker} from 'antd';
 import AntDesignSelect from 'components/shared/components/AntDesignSelect';
+import CallCriterionTable from 'components/admin/pages/manageCalls/CallCriterionTable';
+
 import CallTypes from 'components/admin/pages/manageCalls/CallTypes.json';
 import CallThemes from 'components/admin/pages/manageCalls/CallThemes.json';
 
@@ -17,6 +19,7 @@ export default class ManageCallsNew extends Component<any, any> {
       callThemeOther: undefined,
       scienceTheme: undefined,
       proposalId: undefined,
+      criteria: []
     };
 
     this.handleCallTypeChange = this.handleCallTypeChange.bind(this);
@@ -28,7 +31,8 @@ export default class ManageCallsNew extends Component<any, any> {
     this.handleProposalDurationChange = this.handleProposalDurationChange.bind(this);
     this.handleCallStartDateChange = this.handleCallStartDateChange.bind(this);
     this.handleCallEndDateChange = this.handleCallEndDateChange.bind(this);
-
+    this.handleCriteriaAdd = this.handleCriteriaAdd.bind(this);
+    this.handleCriteriaRemove = this.handleCriteriaRemove.bind(this);
   }
 
   handleCallTypeChange(callType) {
@@ -71,6 +75,18 @@ export default class ManageCallsNew extends Component<any, any> {
   handleCallEndDateChange(e) {
     const callEndDate = e.target.value;
     this.setState({callEndDate});
+  }
+
+  handleCriteriaAdd(data) {
+    const criteria = this.state.criteria;
+    criteria.push(data);
+    this.setState({criteria});
+  }
+
+  handleCriteriaRemove(data) {
+    const criteria = this.state.criteria;
+    criteria.splice(criteria.findIndex((item) => (data.title === item.title)), 1);
+    this.setState({criteria});
   }
 
   render() {
@@ -130,6 +146,7 @@ export default class ManageCallsNew extends Component<any, any> {
         <FormItem {...formItemLayout} label="Call End Data">
           <DatePicker defaultValue={data.callEndDate} onChange={this.handleCallEndDateChange}/>
         </FormItem>
+        <CallCriterionTable criteria={data.criteria} onAdd={this.handleCriteriaAdd} onRemove={this.handleCriteriaRemove}/>
       </Form>
     )
   }

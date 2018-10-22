@@ -10,11 +10,16 @@ const TabPane = Tabs.TabPane;
 export default class ManageCallsHome extends AdminPageBase {
   constructor(props) {
     super(props);
+
+    this.state = {
+      allCalls: []
+    }
   }
 
+
+
   renderContent() {
-
-
+    // const currentCalls = this.state.allCalls.filter((item) => (item.callStartDate > 'today' && item.callEndDate < 'today'))
     return (
       <div className={adminFormContentStyle}>
         <Tabs defaultActiveKey="1">
