@@ -7,8 +7,6 @@ import {colorLightOrange, colorDisabled} from 'styles/base';
 
 const breadcrumb:string = css`
   position: relative;
-  top: 95px;
-  left: 20px;
   font-size: 16px;
 `;
 

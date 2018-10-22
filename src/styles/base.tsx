@@ -80,6 +80,14 @@ export const adminContentStyle: string = css`
   display: inline-block;
 `;
 
+export const adminFormContentStyle: string = css`
+  background: ${colorWhite};
+  overflow: auto;
+  max-height: calc(100vh - 180px);
+  margin: 20px;
+  padding: 20px;
+`;
+
 export const headerStyle: string = css`
   padding: 5px 20px 5px 10px;
   display: flex;

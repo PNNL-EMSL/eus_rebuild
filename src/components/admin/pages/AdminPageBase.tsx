@@ -17,7 +17,7 @@ export default abstract class AdminPageBase extends PageBase {
         <AdminHeader {...this.props} logoutHandler={this.logoutHandler}/>
         <div >
           <AdminNav {...this.props} pathname={this.props.location.pathname} direction="horizontal"/>
-          <div className={adminContentStyle} >
+          <div className={adminContentStyle}>
             <BreadcrumbBar {...this.props} />
             {content}
           </div>

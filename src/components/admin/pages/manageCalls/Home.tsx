@@ -3,6 +3,7 @@ import AdminPageBase from 'components/admin/pages/AdminPageBase';
 import CurrentCalls from 'components/admin/pages/manageCalls/CurrentCalls';
 import ManageCallsNew from 'components/admin/pages/manageCalls/New';
 import { Tabs } from 'antd';
+import { adminFormContentStyle } from 'styles/base';
 
 const TabPane = Tabs.TabPane;
 
@@ -14,17 +15,10 @@ export default class ManageCallsHome extends AdminPageBase {
   renderContent() {
 
 
-    // Tabbed view: 2 tabs,
-    //    first with current/new calls,
-    //    second with a list of all calls
-    // get list of current calls
-    // show the form for adding a new call
-    console.log('rendering manageCallsHome');
-
     return (
-      <div>
+      <div className={adminFormContentStyle}>
         <Tabs defaultActiveKey="1">
-          <TabPane tab="Active Calls">
+          <TabPane key="1" tab="Active Calls">
             <div>
               List of all active calls
               <CurrentCalls />
@@ -35,7 +29,7 @@ export default class ManageCallsHome extends AdminPageBase {
               <ManageCallsNew />
             </div>
           </TabPane>
-          <TabPane tab="All Calls">
+          <TabPane key="2" tab="All Calls">
             <div>
               List of ALL calls, not just active
             </div>

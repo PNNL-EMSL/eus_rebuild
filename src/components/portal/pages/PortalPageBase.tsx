@@ -3,8 +3,15 @@ import PortalHeader from 'components/portal/components/PortalHeader';
 import PortalFooter from 'components/portal/components/PortalFooter';
 import PageBase from 'components/shared/pages/PageBase';
 import BreadcrumbBar from 'components/shared/components/BreadcrumbBar';
+import {css} from 'emotion';
 
 import {contentStyle} from 'styles/base';
+
+const breadcrumb:string = css`
+    top: 95px !important;
+    position: relative;
+    left: 20px !important; 
+  `;
 
 export default abstract class PortalPageBase extends PageBase {
   abstract renderContent();
@@ -15,7 +22,9 @@ export default abstract class PortalPageBase extends PageBase {
     return (
       <div>
         <PortalHeader {...this.props} logoutHandler={this.logoutHandler} />
-        <BreadcrumbBar {...this.props} />
+        <div className={breadcrumb}>
+          <BreadcrumbBar {...this.props} />
+        </div>
         <div className={contentStyle} >
           {content}
         </div>
