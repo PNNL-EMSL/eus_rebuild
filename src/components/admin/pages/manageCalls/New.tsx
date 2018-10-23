@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {Form, Input, DatePicker} from 'antd';
+import {Form, Input, DatePicker, Button} from 'antd';
 import AntDesignSelect from 'components/shared/components/AntDesignSelect';
-import CallCriterionTable from 'components/admin/pages/manageCalls/CallCriterionTable';
+import CallCriterionTable from 'components/admin/components/manageCalls/CallCriterionTable';
 
-import CallTypes from 'components/admin/pages/manageCalls/CallTypes.json';
-import CallThemes from 'components/admin/pages/manageCalls/CallThemes.json';
+import CallTypes from 'components/admin/components/manageCalls/CallTypes.json';
+import CallThemes from 'components/admin/components/manageCalls/CallThemes.json';
 
 const FormItem = Form.Item;
 
@@ -19,6 +19,9 @@ export default class ManageCallsNew extends Component<any, any> {
       callThemeOther: undefined,
       scienceTheme: undefined,
       proposalId: undefined,
+      proposalDuration: undefined,
+      callStartDate: undefined,
+      callEndDate: undefined,
       criteria: []
     };
 
@@ -33,6 +36,8 @@ export default class ManageCallsNew extends Component<any, any> {
     this.handleCallEndDateChange = this.handleCallEndDateChange.bind(this);
     this.handleCriteriaAdd = this.handleCriteriaAdd.bind(this);
     this.handleCriteriaRemove = this.handleCriteriaRemove.bind(this);
+    
+    this.addCall = this.addCall.bind(this);
   }
 
   handleCallTypeChange(callType) {
@@ -68,12 +73,12 @@ export default class ManageCallsNew extends Component<any, any> {
   }
 
   handleCallStartDateChange(e) {
-    const callStartDate = e.target.value;
+    const callStartDate = e.toString();
     this.setState({callStartDate});
   }
 
   handleCallEndDateChange(e) {
-    const callEndDate = e.target.value;
+    const callEndDate = e.toString();
     this.setState({callEndDate});
   }
 
@@ -87,6 +92,10 @@ export default class ManageCallsNew extends Component<any, any> {
     const criteria = this.state.criteria;
     criteria.splice(criteria.findIndex((item) => (data.title === item.title)), 1);
     this.setState({criteria});
+  }
+  
+  addCall() {
+    this.props.addCall(this.state);
   }
 
   render() {
@@ -147,6 +156,7 @@ export default class ManageCallsNew extends Component<any, any> {
           <DatePicker defaultValue={data.callEndDate} onChange={this.handleCallEndDateChange}/>
         </FormItem>
         <CallCriterionTable criteria={data.criteria} onAdd={this.handleCriteriaAdd} onRemove={this.handleCriteriaRemove}/>
+        <Button onClick={this.addCall}>Add Call</Button>
       </Form>
     )
   }

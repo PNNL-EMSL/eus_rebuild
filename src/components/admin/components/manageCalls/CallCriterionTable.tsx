@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import CallCriterionRow from 'components/admin/pages/manageCalls/CallCriterionRow';
-import NewCallCriterion from 'components/admin/pages/manageCalls/NewCallCriterion';
+import CallCriterionRow from 'components/admin/components/manageCalls/CallCriterionRow';
+import NewCallCriterion from 'components/admin/components/manageCalls/NewCallCriterion';
 import {Button, Modal} from 'antd';
 
-import SampleCriteria from 'components/admin/pages/manageCalls/SampleCriteria.json';
+import SampleCriteria from 'components/admin/components/manageCalls/SampleCriteria.json';
 
 export default class CallCriterionTable extends Component<any, any>{
   constructor(props) {

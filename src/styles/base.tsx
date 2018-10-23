@@ -84,6 +84,7 @@ export const adminFormContentStyle: string = css`
   background: ${colorWhite};
   overflow: auto;
   max-height: calc(100vh - 180px);
+  min-height: calc(100vh - 180px);
   margin: 20px;
   padding: 20px;
 `;
