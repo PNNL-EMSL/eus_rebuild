@@ -2,6 +2,7 @@ import React from 'react';
 import AdminPageBase from 'components/admin/pages/AdminPageBase';
 import CallTable from 'components/admin/components/manageCalls/CallTable';
 import ManageCallsNew from 'components/admin/pages/manageCalls/New';
+import moment from 'moment';
 import { Tabs } from 'antd';
 import { adminFormContentStyle } from 'styles/base';
 
@@ -25,20 +26,17 @@ export default class ManageCallsHome extends AdminPageBase {
   }
 
   renderContent() {
-    const currentCalls = this.state.allCalls.filter((item) => (item.callStartDate > 'today' && item.callEndDate < 'today'))
+    const today = moment();
+    const currentCalls = this.state.allCalls.filter((item) => (moment(item.callStartDate, 'MMMM DD, YYYY') < today && moment(item.callEndDate, 'MMMM DD, YYYY') > today));
     return (
       <div className={adminFormContentStyle}>
         <Tabs defaultActiveKey="1">
           <TabPane key="1" tab="Active Calls">
-            <div>
-              List of all active calls
-              <CallTable calls={currentCalls} />
-              
-            </div>
-            <div>
-              Form for adding a new call
-              <ManageCallsNew addCall={this.addCall}/>
-            </div>
+            <h3>Active Calls</h3>
+            <CallTable calls={currentCalls} />
+            <hr />
+            <h3>Create New Call</h3>
+            <ManageCallsNew addCall={this.addCall}/>
           </TabPane>
           <TabPane key="2" tab="All Calls">
             <div>

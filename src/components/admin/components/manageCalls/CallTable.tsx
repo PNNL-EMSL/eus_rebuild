@@ -30,10 +30,11 @@ export default class CallTable extends Component<any, any> {
 
   renderCalls() {
     const rows:JSX.Element[] = [];
+    let index = 0;
     this.props.calls.forEach((call) => {
       const callTitle = this.createCallTitle(call);
       rows.push(
-        <tr>
+        <tr key={index++}>
           <td>{call.id}</td>
           <td>{callTitle}</td>
           <td>{call.proposalDuration}</td>
@@ -43,7 +44,7 @@ export default class CallTable extends Component<any, any> {
           <td>{call.callExtensions}</td>
           <td>Manage Criterion</td>
           <td>Manage Extensions</td>
-          <td>Manage Close Reviews</td>
+          <td>Close Reviews</td>
         </tr>
       )
     });

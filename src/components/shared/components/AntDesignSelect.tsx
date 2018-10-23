@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Select, Input, Form} from 'antd';
+import FormError from 'components/shared/components/FormError';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -8,12 +9,19 @@ const OptGroup = Select.OptGroup;
 export default class AntDesignSelect extends Component<any, any> {
 
   static defaultProps = {
-    multiple: false
+    multiple: false,
+    layout: {
+      labelCol: {
+        sm: { span: 6 },
+      },
+      wrapperCol: {
+        sm: { span: 18 },
+      },
+    }
   };
 
   constructor(props) {
     super(props);
-
     this.state = { displayOther: ((!props.multiple && props.value === "other") || (props.multiple && props.value.includes("other"))) };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -31,7 +39,7 @@ export default class AntDesignSelect extends Component<any, any> {
     const content:JSX.Element[] = [];
     subGroup.forEach((subItem) => {
       content.push(<Option key={subItem.value} value={subItem.value}>{subItem.label}</Option>)
-    })
+    });
     return content;
   }
 
@@ -49,18 +57,10 @@ export default class AntDesignSelect extends Component<any, any> {
   }
 
   render() {
-    const formItemLayout = {
-      labelCol: {
-        sm: { span: 6 },
-      },
-      wrapperCol: {
-        sm: { span: 18 },
-      },
-    };
     const options = this.renderOptions();
     const displayOther = this.state.displayOther;
     return(
-      <FormItem {...formItemLayout} label={this.props.label} required={true} validateStatus={this.props.validateSelect ? 'error' : undefined} >
+      <FormItem {...this.props.layout} label={this.props.label} required={true} validateStatus={this.props.validateSelect ? 'error' : undefined} >
         <Select
           placeholder = {this.props.placeholder}
           onChange={this.handleChange}
@@ -69,13 +69,16 @@ export default class AntDesignSelect extends Component<any, any> {
         >
           {options}
         </Select>
+        {this.props.selectError && (<FormError error={this.props.selectError} />)}
         {displayOther === true && (
-          <Input
-            placeholder="Please Specify..."
-            onChange={this.props.handleInput}
-            defaultValue={this.props.otherValue}
-            
-          />
+          <FormItem validateStatus={this.props.validateSelectOther ? 'error' : undefined}>
+            <Input
+              placeholder="Please Specify..."
+              onChange={this.props.handleInput}
+              defaultValue={this.props.otherValue}
+            />
+            {this.props.selectOtherError && (<FormError error={this.props.selectOtherError} />)}
+          </FormItem>
         )}
       </FormItem>
     )

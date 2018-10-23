@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import CallCriterionRow from 'components/admin/components/manageCalls/CallCriterionRow';
 import NewCallCriterion from 'components/admin/components/manageCalls/NewCallCriterion';
 import {Button, Modal} from 'antd';
+import {buttonMargin} from 'styles/base';
 
 import SampleCriteria from 'components/admin/components/manageCalls/SampleCriteria.json';
 
@@ -36,10 +37,11 @@ export default class CallCriterionTable extends Component<any, any>{
   
   getCriteriaRows() {
     const rows:JSX.Element[] = [];
-    
+    let index = 0;
     this.props.criteria.forEach((item) => {
       rows.push(
         <CallCriterionRow
+          key={index++}
           data={item}
           handleWeightChange={this.props.handleWeightChange}
           handlePanelReviewChange={this.props.handlePanelReviewChange}
@@ -52,11 +54,12 @@ export default class CallCriterionTable extends Component<any, any>{
   
   getExistingCriteria() {
     const rows:JSX.Element[] = [];
-
+    let index = 0;
     SampleCriteria.SampleCriteria.forEach((item) => {
       if(this.props.criteria.findIndex((selected) => (selected.title === item.title)) === -1) {
         rows.push(
           <CallCriterionRow
+            key={index++}
             data={item}
             handleWeightChange={this.props.handleWeightChange}
             handlePanelReviewChange={this.props.handlePanelReviewChange}
@@ -74,8 +77,8 @@ export default class CallCriterionTable extends Component<any, any>{
     const existingContent = this.getExistingCriteria();
     return(
       <div>
-        <Button onClick={this.showExistingCriteriaModal}>Add Existing Criteria</Button>
-        <Button onClick={this.showNewCriteriaModal}>Create New Criteria</Button>
+        <Button type="primary" className={buttonMargin} onClick={this.showExistingCriteriaModal}>Add Existing Criteria</Button>
+        <Button type="primary" className={buttonMargin} onClick={this.showNewCriteriaModal}>Create New Criteria</Button>
         <Modal
           title="Create New Criterion"
           visible={this.state.showNewModal}

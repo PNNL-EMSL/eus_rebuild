@@ -1,7 +1,11 @@
 import React, {Component} from 'react';
-import {Form, Input, DatePicker, Button} from 'antd';
+import {Form, Input, DatePicker, Button } from 'antd';
+import moment from 'moment';
 import AntDesignSelect from 'components/shared/components/AntDesignSelect';
 import CallCriterionTable from 'components/admin/components/manageCalls/CallCriterionTable';
+import CallValidator from 'components/shared/components/validator/CallValidator';
+import FormError from 'components/shared/components/FormError';
+import { buttonMargin } from 'styles/base';
 
 import CallTypes from 'components/admin/components/manageCalls/CallTypes.json';
 import CallThemes from 'components/admin/components/manageCalls/CallThemes.json';
@@ -9,20 +13,25 @@ import CallThemes from 'components/admin/components/manageCalls/CallThemes.json'
 const FormItem = Form.Item;
 
 export default class ManageCallsNew extends Component<any, any> {
+  static VALIDATOR = new CallValidator();
+
   constructor(props) {
     super(props);
 
     this.state = {
-      callType: undefined,
-      callTypeOther: undefined,
-      callTheme: undefined,
-      callThemeOther: undefined,
-      scienceTheme: undefined,
-      proposalId: undefined,
-      proposalDuration: undefined,
-      callStartDate: undefined,
-      callEndDate: undefined,
-      criteria: []
+      call: {
+        callType: 'other',
+        callTypeOther: undefined,
+        callTheme: undefined,
+        callThemeOther: undefined,
+        scienceTheme: undefined,
+        proposalId: undefined,
+        proposalDuration: undefined,
+        callStartDate: undefined,
+        callEndDate: undefined,
+        criteria: []
+      },
+      errors: []
     };
 
     this.handleCallTypeChange = this.handleCallTypeChange.bind(this);
@@ -41,76 +50,134 @@ export default class ManageCallsNew extends Component<any, any> {
   }
 
   handleCallTypeChange(callType) {
-    this.setState({callType, callTheme: undefined, callThemeOther: undefined});
+    const call = this.state.call;
+    call.callType = callType;
+    call.callTheme = undefined;
+    call.callThemeOther = undefined;
+    this.setState({call});
   }
 
   handleCallTypeOther(e) {
-    const callTypeOther = e.target.value;
-    this.setState({callTypeOther});
+    const call = this.state.call;
+    call.callTypeOther = e.target.value;
+    this.setState({call});
   }
 
   handleCallThemeChange(callTheme) {
-    this.setState({callTheme});
+    const call = this.state.call;
+    call.callTheme = callTheme;
+    this.setState({call});
   }
 
   handleCallThemeOther(e) {
-    const callThemeOther = e.target.value;
-    this.setState({callThemeOther});
+    const call = this.state.call;
+    call.callThemeOther = e.target.value;
+    this.setState({call});
   }
 
   handleScienceThemeChange(scienceTheme) {
-    this.setState({scienceTheme})
+    const call = this.state.call;
+    call.scienceTheme = scienceTheme;
+    this.setState({call})
   }
 
   handleProposalIdChange(e) {
-    const proposalId = e.target.value;
-    this.setState({proposalId});
+    const call = this.state.call;
+    call.proposalId = e.target.value;
+    this.setState({call});
   }
 
   handleProposalDurationChange(e) {
-    const proposalDuration = e.target.value;
-    this.setState({proposalDuration});
+    const call = this.state.call;
+    call.proposalDuration = e.target.value;
+    this.setState({call});
   }
 
   handleCallStartDateChange(e) {
-    const callStartDate = e.toString();
-    this.setState({callStartDate});
+    const call = this.state.call;
+    call.callStartDate = e.format('MMMM DD, YYYY');
+    this.setState({call});
   }
 
   handleCallEndDateChange(e) {
-    const callEndDate = e.toString();
-    this.setState({callEndDate});
+    const call = this.state.call;
+    call.callEndDate = e.format('MMMM DD, YYYY');
+    this.setState({call});
   }
 
   handleCriteriaAdd(data) {
-    const criteria = this.state.criteria;
+    const call = this.state.call;
+    const criteria = call.criteria;
     criteria.push(data);
-    this.setState({criteria});
+    this.setState({call});
   }
 
   handleCriteriaRemove(data) {
-    const criteria = this.state.criteria;
+    const call = this.state.call;
+    const criteria = call.criteria;
     criteria.splice(criteria.findIndex((item) => (data.title === item.title)), 1);
-    this.setState({criteria});
+    this.setState({call});
   }
   
   addCall() {
-    this.props.addCall(this.state);
+    const errors = this.validateCall(this.state.call);
+    if(errors.length === 0) {
+      this.props.addCall(this.state.call);
+      this.clearState();
+    }
+    this.displayErrors(errors);
+  }
+
+  validateCall(call) {
+    return ManageCallsNew.VALIDATOR.doValidate(call, 'callForm');
+  }
+
+  displayErrors(errors) {
+    const errorArray:string[] = [];
+    errors.forEach((error) => {
+      errorArray[error.field] = error.tooltip;
+    });
+    this.setState({errors: errorArray});
+  }
+
+  clearState() {
+    this.setState({
+      call: {
+        callType: undefined,
+        callTypeOther: undefined,
+        callTheme: undefined,
+        callThemeOther: undefined,
+        scienceTheme: undefined,
+        proposalId: undefined,
+        proposalDuration: undefined,
+        callStartDate: undefined,
+        callEndDate: undefined,
+        criteria: []
+      },
+      errors: []
+    });
   }
 
   render() {
-    const data = this.state;
+    const data = this.state.call;
+    const errors = this.state.errors;
+    console.log(errors);
+    const dateFormat = 'MMMM DD, YYYY';
+    const startDate = data.callStartDate !== undefined ? moment(data.callStartDate, dateFormat) : undefined;
+    const endDate = data.callEndDate !== undefined ? moment(data.callEndDate, dateFormat) : undefined;
+    const criteriaError = errors.criteria;
     const formItemLayout = {
       labelCol: {
-        sm: { span: 6 },
+        sm: { span: 11 },
       },
       wrapperCol: {
-        sm: { span: 18 },
+        sm: { span: 11 },
       },
     };
     return (
       <Form>
         <AntDesignSelect
+          layout={formItemLayout}
           label="Call Type"
           placeholder="Select call type..."
           value={data.callType}
@@ -118,12 +185,20 @@ export default class ManageCallsNew extends Component<any, any> {
           handleChange={this.handleCallTypeChange}
           handleInput={this.handleCallTypeOther}
           optionList={CallTypes.CallTypes}
+          validateSelect={errors && errors.callType}
+          selectError={errors.callType}
+          validateSelectOther={errors && errors.callTypeOther}
+          selectOtherError={errors.callTypeOther}
         />
-        <FormItem {...formItemLayout} label="Proposal ID" >
+        <FormItem
+          {...formItemLayout}
+          label="Proposal ID"
+        >
           <Input defaultValue={data.proposalId} onChange={this.handleProposalIdChange}/>
         </FormItem>
         {data.callType && (
           <AntDesignSelect
+            layout={formItemLayout}
             label="Call Theme"
             placeholder="Select call theme..."
             value={data.callTheme}
@@ -131,9 +206,14 @@ export default class ManageCallsNew extends Component<any, any> {
             handleChange={this.handleCallThemeChange}
             handleInput={this.handleCallThemeOther}
             optionList={CallThemes[data.callType]}
+            validateSelect={errors && errors.callTheme}
+            selectError={errors.callTheme}
+            validateSelectOther={errors && errors.callThemeOther}
+            selectOtherError={errors.callThemeOther}
           />
         )}
         <AntDesignSelect
+          layout={formItemLayout}
           label="Science Theme"
           placeholder="Select Science theme..."
           value={data.scienceTheme}
@@ -145,18 +225,42 @@ export default class ManageCallsNew extends Component<any, any> {
               {value: 'other', label: 'Other'}
             ]
           }
+          validateSelect={errors && errors.scienceTheme}
+          selectError={errors.scienceTheme}
         />
-        <FormItem {...formItemLayout} label="Maximum Proposal Duration for Call">
+        <FormItem
+          {...formItemLayout}
+          label="Maximum Proposal Duration for Call (years)"
+          required={true}
+          validateStatus={errors && errors.proposalDuration ? 'error' : undefined}
+        >
           <Input defaultValue={data.proposalDuration} onChange={this.handleProposalDurationChange}/>
+          {errors.proposalDuration && (<FormError error={errors.proposalDuration} />)}
         </FormItem>
-        <FormItem {...formItemLayout} label="Call Start Date">
-          <DatePicker defaultValue={data.callStartDate} onChange={this.handleCallStartDateChange}/>
+        <FormItem
+          {...formItemLayout}
+          required={true}
+          label="Call Start Date"
+          validateStatus={errors && errors.callStartDate ? 'error' : undefined}
+        >
+          <DatePicker defaultValue={startDate} onChange={this.handleCallStartDateChange}/>
+          {errors.proposalDuration && (<FormError error={errors.callStartDate}/>)}
         </FormItem>
-        <FormItem {...formItemLayout} label="Call End Data">
-          <DatePicker defaultValue={data.callEndDate} onChange={this.handleCallEndDateChange}/>
+        <FormItem
+          {...formItemLayout}
+          required={true}
+          label="Call End Date"
+          validateStatus={errors && errors.callEndDate ? 'error' : undefined}
+        >
+          <DatePicker defaultValue={endDate} onChange={this.handleCallEndDateChange}/>
+          {errors.proposalDuration && (<FormError error={errors.callEndDate}/>)}
         </FormItem>
+        <h4>Call Criteria</h4>
+        {criteriaError !== undefined && (
+          <FormError error={criteriaError}/>
+        )}
         <CallCriterionTable criteria={data.criteria} onAdd={this.handleCriteriaAdd} onRemove={this.handleCriteriaRemove}/>
-        <Button onClick={this.addCall}>Add Call</Button>
+        <Button type="primary" className={buttonMargin} onClick={this.addCall}>Add Call</Button>
       </Form>
     )
   }

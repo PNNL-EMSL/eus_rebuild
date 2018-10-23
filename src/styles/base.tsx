@@ -113,6 +113,15 @@ export const fontAwesomeContainerStyle: string = css`
   min-height: 100px
 `;
 
+export const buttonMargin: string = css`
+  margin: 10px;
+`;
+
+export const errorStyle: string = css`
+  color: ${colorRed};
+  line-height: 1.5;
+`;
+
 export const Logo = styled('img')`
   height: 80px;
 `;
