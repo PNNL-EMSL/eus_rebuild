@@ -1,10 +1,10 @@
 {"SampleCriteria": [
-  {"title": "sample1", "text": "sample1", "weight": 20, "panel": false, "isDefault": false},
-  {"title": "sample2", "text": "sample2", "weight": 20, "panel": true, "isDefault": false},
-  {"title": "sample3", "text": "sample3", "weight": 20, "panel": false, "isDefault": false},
-  {"title": "sample4", "text": "sample4", "weight": 20, "panel": true, "isDefault": false},
-  {"title": "sample5", "text": "sample5", "weight": 20, "panel": false, "isDefault": false},
-  {"title": "sample6", "text": "sample6", "weight": 20, "panel": true, "isDefault": false},
-  {"title": "sample7", "text": "sample7", "weight": 20, "panel": false, "isDefault": false},
-  {"title": "Scientific merit and quality of the proposed research (50% of total score)", "text": "How important is the proposed activity to advancing knowledge and understanding within its own field or across different fields? To what extent does the proposed activity suggest and explore creative and original concepts? How well conceived and organized is the proposed activity?", "weight": 50, "panel": false, "isDefault": true}
+  {"id": 1,"title": "sample1", "text": "sample1", "weight": 100, "panel": false, "isDefault": false},
+  {"id": 2,"title": "sample2", "text": "sample2", "weight": 20, "panel": true, "isDefault": false},
+  {"id": 3,"title": "sample3", "text": "sample3", "weight": 20, "panel": false, "isDefault": false},
+  {"id": 4,"title": "sample4", "text": "sample4", "weight": 20, "panel": true, "isDefault": false},
+  {"id": 5,"title": "sample5", "text": "sample5", "weight": 20, "panel": false, "isDefault": false},
+  {"id": 6,"title": "sample6", "text": "sample6", "weight": 20, "panel": true, "isDefault": false},
+  {"id": 7,"title": "sample7", "text": "sample7", "weight": 20, "panel": false, "isDefault": false},
+  {"id": 8,"title": "Scientific merit and quality of the proposed research (50% of total score)", "text": "How important is the proposed activity to advancing knowledge and understanding within its own field or across different fields? To what extent does the proposed activity suggest and explore creative and original concepts? How well conceived and organized is the proposed activity?", "weight": 50, "panel": false, "isDefault": true}
 ]}

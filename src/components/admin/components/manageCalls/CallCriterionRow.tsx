@@ -6,44 +6,46 @@ export default class CallCriterionRow extends Component<any, any>{
     super(props);
 
     this.addCriterion = this.addCriterion.bind(this);
+    this.handlePanelChange = this.handlePanelChange.bind(this);
+    this.handleWeightChange = this.handleWeightChange.bind(this);
   }
 
   addCriterion() {
     this.props.addCriterion(this.props.data);
   }
 
-  renderAdd(data) {
-    return(
-      <tr>
-        <td><b>{data.title}</b></td>
-        <td>{data.text}</td>
-        <td>
-          <i className="fas fa-plus-circle fa-2x" onClick={this.addCriterion}/>
-        </td>
-      </tr>
-    );
+  handleWeightChange(e) {
+    const data = this.props.data;
+    data.weight = e.target.value;
+    this.props.handleCriteriaChange(data);
   }
 
-  renderFull(data) {
-    return(
-      <tr>
-        <td><b>{data.title}</b></td>
-        <td>{data.text}</td>
-        <td>
-          <Input defaultValue={data.weight} onChange={this.props.handleWeightChange} style={{width: '60px'}}/>%
-        </td>
-        <td>
-          <Checkbox defaultChecked={data.panel} onChange={this.props.handlePanelReviewChange} />
-        </td>
-        <td>
-          <i className="fas fa-times-circle fa-2x" onClick={this.props.removeCriterion}/>
-        </td>
-      </tr>
-    );
+  handlePanelChange(e) {
+    const data = this.props.data;
+    data.panelReview = e.target.checked;
+    this.props.handleCriteriaChange(data);
   }
 
   render() {
     const data = this.props.data;
-    return this.props.add ? this.renderAdd(data) : this.renderFull(data);
+    return(
+      <tr>
+        <td><b>{data.title}</b></td>
+        <td>{data.text}</td>
+        <td>
+          <Input defaultValue={data.weight} disabled={this.props.add} onChange={this.handleWeightChange} style={{width: '60px'}}/>%
+        </td>
+        <td>
+          <Checkbox defaultChecked={data.panel} disabled={this.props.add} onChange={this.handlePanelChange} />
+        </td>
+        <td>
+          {this.props.add ?
+            (<i className="fas fa-plus-circle fa-2x" onClick={this.addCriterion}/>)
+            :
+            (<i className="fas fa-times-circle fa-2x" onClick={this.props.removeCriterion}/>
+            )}
+        </td>
+      </tr>
+    );
   }
 }

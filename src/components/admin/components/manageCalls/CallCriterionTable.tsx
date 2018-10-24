@@ -2,11 +2,13 @@ import React, {Component} from 'react';
 import CallCriterionRow from 'components/admin/components/manageCalls/CallCriterionRow';
 import NewCallCriterion from 'components/admin/components/manageCalls/NewCallCriterion';
 import {Button, Modal} from 'antd';
-import {buttonMargin} from 'styles/base';
+import {buttonMargin, modalTableStyle} from 'styles/base';
 
 import SampleCriteria from 'components/admin/components/manageCalls/SampleCriteria.json';
 
 export default class CallCriterionTable extends Component<any, any>{
+  static EXISTING = SampleCriteria.SampleCriteria;
+
   constructor(props) {
     super(props);
     
@@ -17,6 +19,7 @@ export default class CallCriterionTable extends Component<any, any>{
     
     this.getCriteriaRows = this.getCriteriaRows.bind(this);
     this.showNewCriteriaModal = this.showNewCriteriaModal.bind(this);
+    this.addToCriteria = this.addToCriteria.bind(this);
     this.showExistingCriteriaModal = this.showExistingCriteriaModal.bind(this);
     this.closeModals = this.closeModals.bind(this);
   }
@@ -32,8 +35,6 @@ export default class CallCriterionTable extends Component<any, any>{
   closeModals() {
     this.setState({showNewModal: false, showExistingModal: false});
   }
-
-
   
   getCriteriaRows() {
     const rows:JSX.Element[] = [];
@@ -43,26 +44,40 @@ export default class CallCriterionTable extends Component<any, any>{
         <CallCriterionRow
           key={index++}
           data={item}
-          handleWeightChange={this.props.handleWeightChange}
-          handlePanelReviewChange={this.props.handlePanelReviewChange}
+          handleCriteriaChange={this.props.handleCriteriaChange}
           removeCriterion={this.props.onRemove}
         />);
     });
     
     return rows;
   }
+
+  addToCriteria(data) {
+    const existing = CallCriterionTable.EXISTING;
+    // read data from SampleCriteria.json
+
+    data.id = existing.length + 1;
+    existing.push(data);
+    // splice in data passed in
+    // as part of above, update id in data to be new id
+
+
+    // write all data back to SampleCriteria.json
+
+    const criteriaCopy = JSON.parse(JSON.stringify(data));
+    this.props.onAdd(criteriaCopy);
+    this.closeModals();
+  }
   
   getExistingCriteria() {
     const rows:JSX.Element[] = [];
     let index = 0;
-    SampleCriteria.SampleCriteria.forEach((item) => {
+    CallCriterionTable.EXISTING.forEach((item) => {
       if(this.props.criteria.findIndex((selected) => (selected.title === item.title)) === -1) {
         rows.push(
           <CallCriterionRow
             key={index++}
             data={item}
-            handleWeightChange={this.props.handleWeightChange}
-            handlePanelReviewChange={this.props.handlePanelReviewChange}
             addCriterion={this.props.onAdd}
             add={true}
           />);
@@ -82,18 +97,29 @@ export default class CallCriterionTable extends Component<any, any>{
         <Modal
           title="Create New Criterion"
           visible={this.state.showNewModal}
-          onOk={this.props.onAdd}
+          footer={null}
           onCancel={this.closeModals}
+          width={700}
         >
-          <NewCallCriterion onAdd={this.props.onAdd}/>
+          <NewCallCriterion onAdd={this.addToCriteria}/>
         </Modal>
         <Modal
           title="Add Existing Criterion"
           visible={this.state.showExistingModal}
-          onOk={this.props.onAdd}
+          footer={null}
           onCancel={this.closeModals}
+          width={900}
         >
-          <table>
+          <table className={modalTableStyle} >
+            <thead>
+            <tr>
+              <th style={{width: '300px'}}>Criteria title</th>
+              <th style={{width: '300px'}}>Criteria Description</th>
+              <th style={{width: '100px'}} >Default Weight (%)</th>
+              <th style={{width: '100px'}}>Show to Review Panel by Default?</th>
+              <th style={{width: '30px'}}/>
+            </tr>
+            </thead>
             <tbody>
               {existingContent}
             </tbody>
@@ -103,8 +129,8 @@ export default class CallCriterionTable extends Component<any, any>{
           <table className="table table-striped table-bordered">
             <thead>
               <tr>
-                <th>Criteria title</th>
-                <th>Criteria Description</th>
+                <th style={{width: '300px'}}>Criteria title</th>
+                <th style={{width: '300px'}}>Criteria Description</th>
                 <th style={{width: '95px'}} >Weight (%)</th>
                 <th style={{width: '75px'}}>Show to Review Panel?</th>
                 <th style={{width: '30px'}}/>

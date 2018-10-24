@@ -20,7 +20,7 @@ export default class ManageCallsNew extends Component<any, any> {
 
     this.state = {
       call: {
-        callType: 'other',
+        callType: undefined,
         callTypeOther: undefined,
         callTheme: undefined,
         callThemeOther: undefined,
@@ -45,6 +45,7 @@ export default class ManageCallsNew extends Component<any, any> {
     this.handleCallEndDateChange = this.handleCallEndDateChange.bind(this);
     this.handleCriteriaAdd = this.handleCriteriaAdd.bind(this);
     this.handleCriteriaRemove = this.handleCriteriaRemove.bind(this);
+    this.handleCriteriaChange = this.handleCriteriaChange.bind(this);
     
     this.addCall = this.addCall.bind(this);
   }
@@ -95,20 +96,28 @@ export default class ManageCallsNew extends Component<any, any> {
 
   handleCallStartDateChange(e) {
     const call = this.state.call;
-    call.callStartDate = e.format('MMMM DD, YYYY');
+    if(e === null) {
+      call.callStartDate = undefined;
+    } else {
+      call.callStartDate = e.format('MMMM DD, YYYY');
+    }
     this.setState({call});
   }
 
   handleCallEndDateChange(e) {
     const call = this.state.call;
-    call.callEndDate = e.format('MMMM DD, YYYY');
+    if(e === null) {
+      call.callEndDate = undefined;
+    } else {
+      call.callEndDate = e.format('MMMM DD, YYYY');
+    }
     this.setState({call});
   }
 
   handleCriteriaAdd(data) {
     const call = this.state.call;
     const criteria = call.criteria;
-    criteria.push(data);
+    criteria.push(JSON.parse(JSON.stringify(data)));
     this.setState({call});
   }
 
@@ -117,6 +126,12 @@ export default class ManageCallsNew extends Component<any, any> {
     const criteria = call.criteria;
     criteria.splice(criteria.findIndex((item) => (data.title === item.title)), 1);
     this.setState({call});
+  }
+
+  handleCriteriaChange(data) {
+    const call = this.state.call;
+    const criteria = call.criteria;
+    criteria.splice(criteria.findIndex((item) => (data.id === item.id)), 1, data);
   }
   
   addCall() {
@@ -259,7 +274,12 @@ export default class ManageCallsNew extends Component<any, any> {
         {criteriaError !== undefined && (
           <FormError error={criteriaError}/>
         )}
-        <CallCriterionTable criteria={data.criteria} onAdd={this.handleCriteriaAdd} onRemove={this.handleCriteriaRemove}/>
+        <CallCriterionTable
+          criteria={data.criteria}
+          handleCriteriaChange={this.handleCriteriaChange}
+          onAdd={this.handleCriteriaAdd}
+          onRemove={this.handleCriteriaRemove}
+        />
         <Button type="primary" className={buttonMargin} onClick={this.addCall}>Add Call</Button>
       </Form>
     )

@@ -21,6 +21,9 @@ export default class ManageCallsHome extends AdminPageBase {
 
   addCall(data) {
     const allCalls = this.state.allCalls;
+    data.id = allCalls.length + 1;
+    data.callExtensions = [];
+    data.reviewsOpen = false;
     allCalls.push(data);
     this.setState({allCalls});
   }

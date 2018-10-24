@@ -33,7 +33,7 @@ export default class CallValidator extends ValidatorBase {
     console.log('validate criteria full', data);
     if(data.criteria && data.criteria.length !== 0 ) {
       let total = 0;
-      data.criteria.forEach((item) => (total += item.weight));
+      data.criteria.forEach((item) => (total += Number(item.weight)));
       if(total !== 100) {
         return {field: 'criteria', tooltip}
       }
