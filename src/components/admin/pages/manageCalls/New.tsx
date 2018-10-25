@@ -21,18 +21,7 @@ export default class ManageCallsNew extends Component<any, any> {
     super(props);
 
     this.state = {
-      call: {
-        callType: undefined,
-        callTypeOther: undefined,
-        callTheme: undefined,
-        callThemeOther: undefined,
-        scienceTheme: undefined,
-        proposalId: undefined,
-        proposalDuration: undefined,
-        callStartDate: undefined,
-        callEndDate: undefined,
-        criteria: []
-      },
+      call: this.props.callInfo,
       errors: []
     };
 

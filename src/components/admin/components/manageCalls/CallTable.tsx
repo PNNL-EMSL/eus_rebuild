@@ -12,7 +12,7 @@ export default class CallTable extends Component<any, any> {
     let index = 0;
     this.props.calls.forEach((call) => {
       rows.push(
-        <CallRow key={index++} call={call}/>
+        <CallRow key={index++} call={call} onCopy={this.props.onCopy}/>
       )
     });
     return rows;
@@ -27,16 +27,17 @@ export default class CallTable extends Component<any, any> {
           <table className="table table-striped table-bordered">
             <thead>
             <tr>
-              <th style={{minWidth: '42px', maxWidth: '42px'}} >ID</th>
+              <th>ID</th>
               <th>Call Name</th>
-              <th style={{minWidth: '80px', maxWidth: '80px'}} >Duration (yr.)</th>
-              <th style={{minWidth: '150px', maxWidth: '175px'}} >Start Date</th>
-              <th style={{minWidth: '150px', maxWidth: '175px'}} >End Date</th>
+              <th>Duration (yr.)</th>
+              <th>Start Date</th>
+              <th>End Date</th>
               <th style={{minWidth: '100px', maxWidth: '100px'}} >Proposal ID</th>
               <th style={{minWidth: '100px', maxWidth: '100px'}} ># of Extensions</th>
               <th style={{minWidth: '105px', maxWidth: '105px'}}  />
               <th style={{minWidth: '105px', maxWidth: '105px'}}  />
               <th style={{minWidth: '105px', maxWidth: '105px'}}  />
+              <th />
             </tr>
             </thead>
             <tbody>

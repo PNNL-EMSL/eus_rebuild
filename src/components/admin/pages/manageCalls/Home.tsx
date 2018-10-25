@@ -13,10 +13,25 @@ export default class ManageCallsHome extends AdminPageBase {
     super(props);
 
     this.state = {
-      allCalls: []
+      allCalls: [],
+      newCall: {
+        callType: undefined,
+        callTypeOther: undefined,
+        callTheme: undefined,
+        callThemeOther: undefined,
+        scienceTheme: undefined,
+        proposalId: undefined,
+        proposalDuration: undefined,
+        callStartDate: undefined,
+        callEndDate: undefined,
+        criteria: []
+      },
+      currentTab: '1'
     };
 
     this.addCall = this.addCall.bind(this);
+    this.copyCall = this.copyCall.bind(this);
+    this.updateTab = this.updateTab.bind(this);
   }
 
   addCall(data) {
@@ -28,22 +43,39 @@ export default class ManageCallsHome extends AdminPageBase {
     this.setState({allCalls});
   }
 
+  copyCall(id) {
+    const call = JSON.parse(JSON.stringify(this.state.allCalls[this.state.allCalls.findIndex((item) => item.id === id)]));
+    this.setState({call, currentTab: '1'});
+  }
+  
+  updateTab(currentTab) {
+    this.setState({currentTab});
+  }
+
   renderContent() {
     const today = moment();
     const currentCalls = this.state.allCalls.filter((item) => (moment(item.callStartDate, 'MMMM DD, YYYY') < today && moment(item.callEndDate, 'MMMM DD, YYYY') > today));
     return (
       <div className={adminFormContentStyle}>
-        <Tabs defaultActiveKey="1">
+        <Tabs activeKey={this.state.currentTab} onChange={this.updateTab}>
           <TabPane key="1" tab="Active Calls">
             <h3>Active Calls</h3>
-            <CallTable calls={currentCalls} />
+            {currentCalls.length ? (
+              <CallTable calls={currentCalls} onCopy={this.copyCall}/>
+            ) : (
+              <h4>No Currently Active Calls</h4>
+            )}
             <hr />
             <h3>Create New Call</h3>
-            <ManageCallsNew addCall={this.addCall}/>
+            <ManageCallsNew addCall={this.addCall} callInfo={this.state.newCall}/>
           </TabPane>
           <TabPane key="2" tab="All Calls">
             <div>
-              <CallTable calls={this.state.allCalls} />
+              {this.state.allCalls.length ? (
+                <CallTable calls={this.state.allCalls} onCopy={this.copyCall}/>
+              ) : (
+                <h4>No Calls have been created. Please create one to proceed</h4>
+              )}
             </div>
           </TabPane>
         </Tabs>

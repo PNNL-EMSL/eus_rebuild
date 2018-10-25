@@ -25,6 +25,7 @@ export default class CallRow extends Component<any, any> {
     this.showCriterion = this.showCriterion.bind(this);
     this.showExtensions = this.showExtensions.bind(this);
     this.closeReviews = this.closeReviews.bind(this);
+    this.doCopy = this.doCopy.bind(this);
     this.closeModals = this.closeModals.bind(this);
   }
 
@@ -59,6 +60,10 @@ export default class CallRow extends Component<any, any> {
   closeReviews() {
     this.setState({canCloseReviews: false});
     // TODO: update reviews in call and notify user that they are closed.
+  }
+  
+  doCopy() {
+    this.props.onCopy(this.state.call.id);
   }
 
   closeModals() {
@@ -102,6 +107,7 @@ export default class CallRow extends Component<any, any> {
             <Button className={twoLineButton} type="primary" onClick={this.closeReviews}>Close<br />Reviews</Button>
           )}
         </td>
+        <td><Button className={twoLineButton} type="primary" onClick={this.doCopy}><i className='fas fa-copy fa-2x' /></Button></td>
         <Modal
           title={"Manage Criterion for "+callTitle}
           visible={this.state.criterionVisible}
