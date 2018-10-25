@@ -71,6 +71,7 @@ static propTypes = {
             email,
             institution,
             institutionType,
+            institutionTypeOther,
             orcid,
             orcidPermissions,
             profession,
@@ -96,6 +97,7 @@ static propTypes = {
             email,
             institution,
             institutionType,
+            institutionTypeOther,
             orcid,
             orcidPermissions,
             profession,
@@ -272,7 +274,7 @@ static propTypes = {
     handleInstitutionTypeChange(e) {
         console.log("Instution Type On Change Called")
         const user = this.state.user;
-        user.instutionType = e;
+        user.institutionType = e;
         this.setState({user});
     }
 
@@ -294,12 +296,7 @@ static propTypes = {
     handleOrcidPermissionRadioChange = (e) => {
         console.log('radio checked', e.target.value);
         const user = this.state.user;
-        if (e.target.value === 1) {
-            user.orcidPermissions = "Y";
-        }
-        else {
-            user.orcidPermissions = "N"; 
-        }
+        user.orcidPermissions = e.target.value;
         this.setState({
           radioValue: e.target.value,
           user,
@@ -340,6 +337,16 @@ static propTypes = {
         return user;
     }
 
+    undefinedToBlank(user) {
+        Object.keys(user).forEach((key) => {
+            if (user[key] === undefined) {
+                user[key] = "";
+            }
+        })
+        
+        return user;
+    }
+
     validateForm() {
         // Call the validator and check validation.
         return UserInfo.VALIDATOR.doValidate(this.state.user, "UserProfileForm");
@@ -356,7 +363,7 @@ static propTypes = {
         let users = this.props.client.readQuery({query}).Users;
         console.log("Users", users);
         console.log("Current User", this.state.user);
-        const updating = users.find((item) => (item.userName === this.state.user.userName));
+        let updating = users.find((item) => (item.userName === this.state.user.userName));
         users = users.filter((item) => (item.userName !== this.state.user.userName));
         console.log("Updating", updating);
         console.log("Email", this.state.user.email)
@@ -365,6 +372,7 @@ static propTypes = {
         updating.suffix = this.state.user.suffix;
         updating.institution = this.state.user.institution;
         updating.institutionType = this.state.user.institutionType;
+        updating.institutionTypeOther = this.state.user.institutionTypeOther;
         updating.orcid = this.state.user.orcid;
         updating.orcidPermissions = this.state.user.orcidPermissions;
         updating.profession = this.state.user.profession;
@@ -381,6 +389,7 @@ static propTypes = {
         updating.phone = this.state.user.phone;
         updating.fax = this.state.user.fax;
         console.log("Final update", updating);
+        updating = this.undefinedToBlank(updating);
         users.push(updating);
         const data = {Users: users};
         console.log(data, users);
@@ -388,6 +397,7 @@ static propTypes = {
         const usersUpdated = this.props.client.readQuery({query}).Users;
         console.log("Updated results", usersUpdated); 
         console.log("Data", data, users);
+        
     }
 
     callback(key) {
@@ -423,6 +433,8 @@ static propTypes = {
                         optionList={Prefixes.Prefixes}
                         value={user.prefix} // Need to change to user.prefix, add to DB
                         handleChange={this.handlePrefixChange}
+                        validateSelect={errors && errors.prefix}
+                        selectError={errors.prefix}
                         required={true}
                     />  
                 <FormItem {...formItemLayout} label="Name">
@@ -441,9 +453,9 @@ static propTypes = {
                     To save these settings, be sure to click on the Save User Now link before leaving this page.</p>
                 </FormItem>  
                 <FormItem className={'two-rows-label'} {...formItemLayout} required={true} label="Do you authorize EMSL to post to your ORCID record?">
-                    <RadioGroup onChange={this.handleOrcidPermissionRadioChange} value={this.state.radioValue}>
-                        <Radio value={1}>Yes</Radio>
-                        <Radio value={2}>No</Radio>
+                    <RadioGroup onChange={this.handleOrcidPermissionRadioChange} value={user.orcidPermissions} >
+                        <Radio value="Y">Yes</Radio>
+                        <Radio value="N">No</Radio>
                     </RadioGroup>
                 </FormItem>
                 <FormItem {...formItemLayout} required={true} label="Primary Citizenship">
@@ -478,6 +490,7 @@ static propTypes = {
                     placeholder="Select institution type..."
                     optionList={InstitutionType.InstitutionType}
                     value={user.institutionType}
+                    otherValue={user.institutionTypeOther}
                     handleChange={this.handleInstitutionTypeChange}
                     handleInput={this.handleInstitutionTypeOther} // THis was commented out earlier
                     validateSelect={errors && errors.institutionType}
