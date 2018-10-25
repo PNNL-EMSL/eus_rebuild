@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import CallCriterionRow from 'components/admin/components/manageCalls/CallCriterionRow';
 import NewCallCriterion from 'components/admin/components/manageCalls/NewCallCriterion';
-import {Button, Modal} from 'antd';
+import {Button, Modal, Form, Input} from 'antd';
 import {buttonMargin, modalTableStyle} from 'styles/base';
 
 import SampleCriteria from 'components/admin/components/manageCalls/SampleCriteria.json';
+
+const FormItem = Form.Item;
 
 export default class CallCriterionTable extends Component<any, any>{
   static EXISTING = SampleCriteria.SampleCriteria;
@@ -14,14 +16,17 @@ export default class CallCriterionTable extends Component<any, any>{
     
     this.state = {
       showExistingModal: false,
-      showNewModal: false
+      showNewModal: false,
+      filterInput: ''
     };
-    
-    this.getCriteriaRows = this.getCriteriaRows.bind(this);
+
     this.showNewCriteriaModal = this.showNewCriteriaModal.bind(this);
-    this.addToCriteria = this.addToCriteria.bind(this);
     this.showExistingCriteriaModal = this.showExistingCriteriaModal.bind(this);
     this.closeModals = this.closeModals.bind(this);
+    this.handleFilterChange = this.handleFilterChange.bind(this);
+    this.getCriteriaRows = this.getCriteriaRows.bind(this);
+    this.getExistingCriteria = this.getExistingCriteria.bind(this);
+    this.addToCriteria = this.addToCriteria.bind(this);
   }
 
   showNewCriteriaModal() {
@@ -33,7 +38,11 @@ export default class CallCriterionTable extends Component<any, any>{
   }
   
   closeModals() {
-    this.setState({showNewModal: false, showExistingModal: false});
+    this.setState({showNewModal: false, showExistingModal: false, filterInput: ''});
+  }
+
+  handleFilterChange(e) {
+    this.setState({filterInput: e.target.value});
   }
   
   getCriteriaRows() {
@@ -48,7 +57,25 @@ export default class CallCriterionTable extends Component<any, any>{
           removeCriterion={this.props.onRemove}
         />);
     });
-    
+    return rows;
+  }
+  
+  getExistingCriteria() {
+    const rows:JSX.Element[] = [];
+    let index = 0;
+    CallCriterionTable.EXISTING.forEach((item) => {
+      if(this.props.criteria.findIndex((selected) => (selected.title === item.title)) === -1) {
+        if(item.title.toLowerCase().includes(this.state.filterInput.toLowerCase()) || item.text.toLowerCase().includes(this.state.filterInput.toLowerCase())) {
+          rows.push(
+            <CallCriterionRow
+              key={index++}
+              data={item}
+              addCriterion={this.props.onAdd}
+              add={true}
+            />);
+        }
+      }
+    });
     return rows;
   }
 
@@ -68,28 +95,18 @@ export default class CallCriterionTable extends Component<any, any>{
     this.props.onAdd(criteriaCopy);
     this.closeModals();
   }
-  
-  getExistingCriteria() {
-    const rows:JSX.Element[] = [];
-    let index = 0;
-    CallCriterionTable.EXISTING.forEach((item) => {
-      if(this.props.criteria.findIndex((selected) => (selected.title === item.title)) === -1) {
-        rows.push(
-          <CallCriterionRow
-            key={index++}
-            data={item}
-            addCriterion={this.props.onAdd}
-            add={true}
-          />);
-      }
-    });
-
-    return rows;
-  }
 
   render() {
     const content = this.getCriteriaRows();
     const existingContent = this.getExistingCriteria();
+    const formItemLayout = {
+      labelCol: {
+        sm: { span: 5 },
+      },
+      wrapperCol: {
+        sm: { span: 17 },
+      },
+    };
     return(
       <div>
         <Button type="primary" className={buttonMargin} onClick={this.showExistingCriteriaModal}>Add Existing Criteria</Button>
@@ -110,6 +127,11 @@ export default class CallCriterionTable extends Component<any, any>{
           onCancel={this.closeModals}
           width={900}
         >
+          <Form>
+            <FormItem label="Search filter" {...formItemLayout}>
+              <Input value={this.state.filterInput} onChange={this.handleFilterChange} />
+            </FormItem>
+          </Form>
           <table className={modalTableStyle} >
             <thead>
             <tr>
