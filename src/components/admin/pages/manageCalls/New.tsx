@@ -249,7 +249,7 @@ export default class ManageCallsNew extends Component<any, any> {
           required={true}
           validateStatus={errors && errors.proposalDuration ? 'error' : undefined}
         >
-          <Input defaultValue={data.proposalDuration} onChange={this.handleProposalDurationChange}/>
+          <Input value={data.proposalDuration} onChange={this.handleProposalDurationChange}/>
           {errors.proposalDuration && (<FormError error={errors.proposalDuration} />)}
         </FormItem>
         <FormItem
@@ -258,7 +258,7 @@ export default class ManageCallsNew extends Component<any, any> {
           label="Call Start Date"
           validateStatus={errors && errors.callStartDate ? 'error' : undefined}
         >
-          <DatePicker defaultValue={startDate} onChange={this.handleCallStartDateChange}/>
+          <DatePicker value={startDate} onChange={this.handleCallStartDateChange}/>
           {errors.proposalDuration && (<FormError error={errors.callStartDate}/>)}
         </FormItem>
         <FormItem
@@ -267,7 +267,7 @@ export default class ManageCallsNew extends Component<any, any> {
           label="Call End Date"
           validateStatus={errors && errors.callEndDate ? 'error' : undefined}
         >
-          <DatePicker defaultValue={endDate} onChange={this.handleCallEndDateChange}/>
+          <DatePicker value={endDate} onChange={this.handleCallEndDateChange}/>
           {errors.proposalDuration && (<FormError error={errors.callEndDate}/>)}
         </FormItem>
         <h4>Call Criteria</h4>

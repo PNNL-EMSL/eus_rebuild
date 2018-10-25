@@ -43,7 +43,6 @@ export default class ManageCallsHome extends AdminPageBase {
           </TabPane>
           <TabPane key="2" tab="All Calls">
             <div>
-              List of ALL calls, not just active
               <CallTable calls={this.state.allCalls} />
             </div>
           </TabPane>

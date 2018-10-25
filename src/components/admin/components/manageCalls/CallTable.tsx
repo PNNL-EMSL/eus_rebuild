@@ -27,16 +27,16 @@ export default class CallTable extends Component<any, any> {
           <table className="table table-striped table-bordered">
             <thead>
             <tr>
-              <th>ID</th>
+              <th style={{minWidth: '42px', maxWidth: '42px'}} >ID</th>
               <th>Call Name</th>
-              <th>Duration (yr.)</th>
-              <th>Start Date</th>
-              <th>End Date</th>
-              <th>Proposal ID</th>
-              <th># of Extensions</th>
-              <th />
-              <th />
-              <th />
+              <th style={{minWidth: '80px', maxWidth: '80px'}} >Duration (yr.)</th>
+              <th style={{minWidth: '150px', maxWidth: '175px'}} >Start Date</th>
+              <th style={{minWidth: '150px', maxWidth: '175px'}} >End Date</th>
+              <th style={{minWidth: '100px', maxWidth: '100px'}} >Proposal ID</th>
+              <th style={{minWidth: '100px', maxWidth: '100px'}} ># of Extensions</th>
+              <th style={{minWidth: '105px', maxWidth: '105px'}}  />
+              <th style={{minWidth: '105px', maxWidth: '105px'}}  />
+              <th style={{minWidth: '105px', maxWidth: '105px'}}  />
             </tr>
             </thead>
             <tbody>

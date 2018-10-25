@@ -17,6 +17,7 @@ export default class CallValidator extends ValidatorBase {
         { func: this.validateNotEmptyOrUndefined, field: 'proposalDuration', tooltip: 'You must specify a maximum length (in years) for proposals on this call'},
         { func: this.validateHasCriteria, field: undefined, tooltip: 'You must have at least one criteria for a call'},
         { func: this.validateCriteriaFull, field: undefined, tooltip: 'The total weight over all criteria must be 100%'},
+        
       ]
     }
   }

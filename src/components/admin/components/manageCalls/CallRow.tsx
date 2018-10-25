@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import CallCriterionTable from 'components/admin/components/manageCalls/CallCriterionTable';
 import CallExtensionForm from 'components/admin/components/manageCalls/CallExtensionForm';
 import {Button, Modal} from 'antd';
+import {twoLineButton} from 'styles/base';
 
 import CallTypes from 'components/admin/components/manageCalls/CallTypes.json';
 import CallThemes from 'components/admin/components/manageCalls/CallThemes.json';
@@ -13,6 +14,7 @@ export default class CallRow extends Component<any, any> {
     this.state = {
       criterionVisible: false,
       extensionsVisible: false,
+      canCloseReviews: this.props.call.reviewsOpen,
       call: this.props.call
     };
 
@@ -22,6 +24,7 @@ export default class CallRow extends Component<any, any> {
 
     this.showCriterion = this.showCriterion.bind(this);
     this.showExtensions = this.showExtensions.bind(this);
+    this.closeReviews = this.closeReviews.bind(this);
     this.closeModals = this.closeModals.bind(this);
   }
 
@@ -51,6 +54,11 @@ export default class CallRow extends Component<any, any> {
 
   showExtensions() {
     this.setState({extensionsVisible: true});
+  }
+
+  closeReviews() {
+    this.setState({canCloseReviews: false});
+    // TODO: update reviews in call and notify user that they are closed.
   }
 
   closeModals() {
@@ -87,9 +95,13 @@ export default class CallRow extends Component<any, any> {
         <td>{call.callEndDate}</td>
         <td>{call.proposalId}</td>
         <td>{call.callExtensions.length}</td>
-        <td><Button type="primary" onClick={this.showCriterion}>Manage Criterion</Button></td>
-        <td><Button type="primary" onClick={this.showExtensions}>Manage Extensions</Button></td>
-        <td><Button type="primary" >Close Reviews</Button></td>
+        <td><Button className={twoLineButton} type="primary" onClick={this.showCriterion}>Manage<br />Criterion</Button></td>
+        <td><Button className={twoLineButton} type="primary" onClick={this.showExtensions}>Manage<br />Extensions</Button></td>
+        <td>
+          {this.state.canCloseReviews && (
+            <Button className={twoLineButton} type="primary" onClick={this.closeReviews}>Close<br />Reviews</Button>
+          )}
+        </td>
         <Modal
           title={"Manage Criterion for "+callTitle}
           visible={this.state.criterionVisible}

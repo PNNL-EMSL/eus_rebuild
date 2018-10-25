@@ -116,6 +116,10 @@ export const buttonMargin: string = css`
   margin: 10px;
 `;
 
+export const twoLineButton: string = css`
+  height: 45px !important;
+`;
+
 export const errorStyle: string = css`
   color: ${colorRed};
   line-height: 1.5;

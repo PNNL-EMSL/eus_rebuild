@@ -65,7 +65,7 @@ export default class AntDesignSelect extends Component<any, any> {
           placeholder = {this.props.placeholder}
           onChange={this.handleChange}
           mode={this.props.multiple ? 'multiple' : 'default'}
-          defaultValue={this.props.value}
+          value={this.props.value}
         >
           {options}
         </Select>
@@ -75,7 +75,7 @@ export default class AntDesignSelect extends Component<any, any> {
             <Input
               placeholder="Please Specify..."
               onChange={this.props.handleInput}
-              defaultValue={this.props.otherValue}
+              value={this.props.otherValue}
             />
             {this.props.selectOtherError && (<FormError error={this.props.selectOtherError} />)}
           </FormItem>
