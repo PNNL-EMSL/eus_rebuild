@@ -39,6 +39,13 @@ export default class ManageCallsNew extends Component<any, any> {
     
     this.addCall = this.addCall.bind(this);
   }
+  
+  componentWillReceiveProps(nextProps) {
+    // You don't have to do this check first, but it can help prevent an unneeded render
+    if ((nextProps.callInfo.id !== this.state.call.id) && (nextProps.callInfo.id !== undefined)) {
+      this.setState({ call: nextProps.callInfo });
+    }
+  }
 
   handleCallTypeChange(callType) {
     const call = this.state.call;

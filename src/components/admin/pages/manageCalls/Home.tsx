@@ -8,24 +8,27 @@ import { adminFormContentStyle } from 'styles/base';
 
 const TabPane = Tabs.TabPane;
 
+const newCall = {
+  id: undefined,
+  callType: undefined,
+  callTypeOther: undefined,
+  callTheme: undefined,
+  callThemeOther: undefined,
+  scienceTheme: undefined,
+  proposalId: undefined,
+  proposalDuration: undefined,
+  callStartDate: undefined,
+  callEndDate: undefined,
+  criteria: []
+};
+
 export default class ManageCallsHome extends AdminPageBase {
   constructor(props) {
     super(props);
 
     this.state = {
       allCalls: [],
-      newCall: {
-        callType: undefined,
-        callTypeOther: undefined,
-        callTheme: undefined,
-        callThemeOther: undefined,
-        scienceTheme: undefined,
-        proposalId: undefined,
-        proposalDuration: undefined,
-        callStartDate: undefined,
-        callEndDate: undefined,
-        criteria: []
-      },
+      newCall,
       currentTab: '1'
     };
 
@@ -40,12 +43,12 @@ export default class ManageCallsHome extends AdminPageBase {
     data.callExtensions = [];
     data.reviewsOpen = false;
     allCalls.push(data);
-    this.setState({allCalls});
+    this.setState({allCalls, newCall});
   }
 
   copyCall(id) {
-    const call = JSON.parse(JSON.stringify(this.state.allCalls[this.state.allCalls.findIndex((item) => item.id === id)]));
-    this.setState({call, currentTab: '1'});
+    const copyCall = JSON.parse(JSON.stringify(this.state.allCalls[this.state.allCalls.findIndex((item) => item.id === id)]));
+    this.setState({newCall: copyCall, currentTab: '1'});
   }
   
   updateTab(currentTab) {
@@ -54,6 +57,7 @@ export default class ManageCallsHome extends AdminPageBase {
 
   renderContent() {
     const today = moment();
+    const call = JSON.parse(JSON.stringify(this.state.newCall));
     const currentCalls = this.state.allCalls.filter((item) => (moment(item.callStartDate, 'MMMM DD, YYYY') < today && moment(item.callEndDate, 'MMMM DD, YYYY') > today));
     return (
       <div className={adminFormContentStyle}>
@@ -67,7 +71,7 @@ export default class ManageCallsHome extends AdminPageBase {
             )}
             <hr />
             <h3>Create New Call</h3>
-            <ManageCallsNew addCall={this.addCall} callInfo={this.state.newCall}/>
+            <ManageCallsNew addCall={this.addCall} callInfo={call}/>
           </TabPane>
           <TabPane key="2" tab="All Calls">
             <div>
