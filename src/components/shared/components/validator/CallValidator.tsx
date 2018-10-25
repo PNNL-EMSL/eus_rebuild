@@ -7,8 +7,8 @@ export default class CallValidator extends ValidatorBase {
 
     this.functionList = {
       callForm: [
-        { func: this.validateNotEmptyOrUndefined, field: 'callStartDate', tooltip: 'You must specify a date when the call starts'},
-        { func: this.validateNotEmptyOrUndefined, field: 'callEndDate', tooltip: 'You must specify a date when the call ends'},
+        { func: this.validateNotEmptyOrUndefined, field: 'callStartDate', tooltip: 'You must specify a date range for the call'},
+        { func: this.validateNotEmptyOrUndefined, field: 'callEndDate', tooltip: 'You must specify a date range for the call'},
         { func: this.validateNotEmptyOrUndefined, field: 'callType', tooltip: 'You must specify a Call type'},
         { func: this.validateOtherIfSelected, field: 'callTypeOther', parentField: 'callType', tooltip: 'You must specify the New Call Type for this call'},
         { func: this.validateNotEmptyOrUndefined, field: 'callTheme', tooltip: 'You must specify a Call Theme'},

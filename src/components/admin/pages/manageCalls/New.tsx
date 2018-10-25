@@ -11,6 +11,8 @@ import CallTypes from 'components/admin/components/manageCalls/CallTypes.json';
 import CallThemes from 'components/admin/components/manageCalls/CallThemes.json';
 
 const FormItem = Form.Item;
+const RangePicker = DatePicker.RangePicker;
+const dateFormat = 'MMMM DD, YYYY';
 
 export default class ManageCallsNew extends Component<any, any> {
   static VALIDATOR = new CallValidator();
@@ -41,8 +43,7 @@ export default class ManageCallsNew extends Component<any, any> {
     this.handleScienceThemeChange = this.handleScienceThemeChange.bind(this);
     this.handleProposalIdChange = this.handleProposalIdChange.bind(this);
     this.handleProposalDurationChange = this.handleProposalDurationChange.bind(this);
-    this.handleCallStartDateChange = this.handleCallStartDateChange.bind(this);
-    this.handleCallEndDateChange = this.handleCallEndDateChange.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
     this.handleCriteriaAdd = this.handleCriteriaAdd.bind(this);
     this.handleCriteriaRemove = this.handleCriteriaRemove.bind(this);
     this.handleCriteriaChange = this.handleCriteriaChange.bind(this);
@@ -94,22 +95,14 @@ export default class ManageCallsNew extends Component<any, any> {
     this.setState({call});
   }
 
-  handleCallStartDateChange(e) {
+  handleDateChange(e) {
     const call = this.state.call;
-    if(e === null) {
+    if(e.length) {
+      call.callStartDate = e[0].format(dateFormat);
+      call.callEndDate = e[1].format(dateFormat);
+    } else {
       call.callStartDate = undefined;
-    } else {
-      call.callStartDate = e.format('MMMM DD, YYYY');
-    }
-    this.setState({call});
-  }
-
-  handleCallEndDateChange(e) {
-    const call = this.state.call;
-    if(e === null) {
       call.callEndDate = undefined;
-    } else {
-      call.callEndDate = e.format('MMMM DD, YYYY');
     }
     this.setState({call});
   }
@@ -176,10 +169,9 @@ export default class ManageCallsNew extends Component<any, any> {
   render() {
     const data = this.state.call;
     const errors = this.state.errors;
-    console.log(errors);
-    const dateFormat = 'MMMM DD, YYYY';
-    const startDate = data.callStartDate !== undefined ? moment(data.callStartDate, dateFormat) : undefined;
-    const endDate = data.callEndDate !== undefined ? moment(data.callEndDate, dateFormat) : undefined;
+    const moments:any[] = [];
+    moments.push(data.callStartDate !== undefined ? moment(data.callStartDate, dateFormat) : undefined);
+    moments.push(data.callEndDate !== undefined ? moment(data.callEndDate, dateFormat) : undefined);
     const criteriaError = errors.criteria;
     const formItemLayout = {
       labelCol: {
@@ -255,20 +247,14 @@ export default class ManageCallsNew extends Component<any, any> {
         <FormItem
           {...formItemLayout}
           required={true}
-          label="Call Start Date"
+          label="Dates for the Call"
           validateStatus={errors && errors.callStartDate ? 'error' : undefined}
         >
-          <DatePicker value={startDate} onChange={this.handleCallStartDateChange}/>
-          {errors.proposalDuration && (<FormError error={errors.callStartDate}/>)}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          required={true}
-          label="Call End Date"
-          validateStatus={errors && errors.callEndDate ? 'error' : undefined}
-        >
-          <DatePicker value={endDate} onChange={this.handleCallEndDateChange}/>
-          {errors.proposalDuration && (<FormError error={errors.callEndDate}/>)}
+          <RangePicker value={moments} onChange={this.handleDateChange} />
+          {((errors.callStartDate || errors.callEndDate) && errors.callStartDate) ?
+            (<FormError error={errors.callStartDate}/>) :
+            (<FormError error={errors.callEndDate} />)
+          }
         </FormItem>
         <h4>Call Criteria</h4>
         {criteriaError !== undefined && (
