@@ -7,9 +7,10 @@ import { Form, Input, Tabs, Radio, Button} from 'antd';
 import AntDesignSelect from 'components/shared/components/AntDesignSelect';
 import ProfessionTypes from 'components/portal/components/proposals/ProfessionTypes.json'
 import Prefixes from 'components/portal/pages/prefixes.json'
-import InstititionType from 'components/portal/pages/institutionType.json'
-
+import InstitutionType from 'components/portal/pages/institutionType.json'
+import UserProfileValidator from 'components/portal/pages/UserProfileValidator'
 import gql from 'graphql-tag'
+import FormError from 'components/shared/components/FormError';
 
 
 const FormItem = Form.Item;
@@ -57,6 +58,8 @@ static propTypes = {
     data: PropTypes.object,        // the data from the wizard that the page will fill out
     onChange: PropTypes.func       // handler when any data is changed on the page;  it passes the new data and validation state
     };
+
+    static VALIDATOR = new UserProfileValidator();
 
     GET_USER_INFO = gql`
     {
@@ -112,12 +115,14 @@ static propTypes = {
     }
 `;
     
+
     constructor(props) {
         super(props);
 
         this.state = {
             radioValue: 1,
-            user: this.props.client.readQuery({query: this.GET_USER_INFO}).CurrentUser[0]
+            user: this.blankToUndefined(this.props.client.readQuery({query: this.GET_USER_INFO}).CurrentUser[0]),
+            errors: []
           }
 
           this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -142,9 +147,19 @@ static propTypes = {
           this.handleFaxChange = this.handleFaxChange.bind(this);
           this.handleOrcidPermissionRadioChange = this.handleOrcidPermissionRadioChange.bind(this);
           this.submitChanges = this.submitChanges.bind(this);
+          this.validateForm = this.validateForm.bind(this);
+          this.saveChangesToDatabase = this.saveChangesToDatabase.bind(this);
     }
 
 
+    
+    // const UndefinedToNull = (Component) => (props) => {
+    //     const newProps = props.map(p => p === null ? undefined : p)
+    //     return <Component {...newProps}>
+    //   }
+
+
+    
 
     handleSuffixChange(e) {
         const user = this.state.user;
@@ -178,11 +193,19 @@ static propTypes = {
     }
 
     handleCountryChange(e) {
-        //
+        // Note: This will change once we have drop-down
+        // Placeholder onChange for validation
+        const user = this.state.user;
+        user.country = e.target.value;
+        this.setState({user});
     }
 
     handleStateOrProvChange(e) {
-        // c 
+        // Note: This will change once we have drop-down
+        // Placeholder onChange for validation
+        const user = this.state.user;
+        user.stateOrProv = e.target.value;
+        this.setState({user});
     }
 
     handleCityChange(e) {
@@ -240,7 +263,7 @@ static propTypes = {
     handleInstitutionChange(e) {
         console.log("Institution On Change called")
         const user = this.state.user;
-        user.instituion = e.target.value;
+        user.institution = e.target.value;
         this.setState({user});
         // Need a way to type in a search bar and filter
         // through the results that way
@@ -249,14 +272,14 @@ static propTypes = {
     handleInstitutionTypeChange(e) {
         console.log("Instution Type On Change Called")
         const user = this.state.user;
-        // user.instutionType = e;
+        user.instutionType = e;
         this.setState({user});
     }
 
     handleInstitutionTypeOther(e) {
         console.log("Instution Type Other Change Called")
         const user = this.state.user;
-        user.instutionType = e.target.value;
+        user.institutionTypeOther = e.target.value;
         this.setState({user});
     }
 
@@ -283,9 +306,48 @@ static propTypes = {
         });
       }
 
+    displayErrors(errors) {
+        const errorArray:string[] = [];
+        errors.forEach((error) => {
+          errorArray[error.field] = error.tooltip;
+        });
+        this.setState({errors: errorArray});
+    }  
+
  
     submitChanges(e) {
         e.preventDefault();
+
+
+        // check validation
+        const errors = this.validateForm();
+        if (errors.length === 0) {
+            this.saveChangesToDatabase(); 
+        }
+
+        this.displayErrors(errors);           
+
+
+    }
+
+    blankToUndefined(user) {
+        Object.keys(user).forEach((key) => {
+            if (user[key] === "") {
+                user[key] = undefined;
+            }
+        })
+        
+        return user;
+    }
+
+    validateForm() {
+        // Call the validator and check validation.
+        return UserInfo.VALIDATOR.doValidate(this.state.user, "UserProfileForm");
+        
+        
+    }
+
+    saveChangesToDatabase() {
         // commit changes through gql query
         // check if current user is the one getting updated
         // if so, we need to update the current user role also
@@ -346,7 +408,9 @@ static propTypes = {
       };
 
       const user = this.state.user;
-    return (
+      const errors = this.state.errors;
+      console.log("Errors", errors)
+      return (
       <div  className={portalContentStyle}>
           
 
@@ -400,38 +464,60 @@ static propTypes = {
                     placeholder="Select profession..."
                     optionList={ProfessionTypes.ProfessionTypes}
                     value={user.profession}
+                    otherValue={user.professionOther}
                     handleChange={this.handleProfessionChange}
                     handleInput={this.handleProfessionOther}
+                    validateSelect={errors && errors.profession}
+                    selectError={errors.profession}
+                    validateSelectOther={errors && errors.professionOther}
+                    selectOtherError={errors.professionOther}
                     required={true}
                 />     
                 <AntDesignSelect
                     label="Type of Institution"
                     placeholder="Select institution type..."
-                    optionList={InstititionType.InstitutionType}
+                    optionList={InstitutionType.InstitutionType}
                     value={user.institutionType}
                     handleChange={this.handleInstitutionTypeChange}
-                    handleInput={this.handleInstitutionTypeOther}
+                    handleInput={this.handleInstitutionTypeOther} // THis was commented out earlier
+                    validateSelect={errors && errors.institutionType}
+                    selectError={errors.institutionType}
+                    validateSelectOther={errors && errors.institutionTypeOther}
+                    selectOtherError={errors.institutionTypeOther}
                     required={true}
                 />     
-                <FormItem {...formItemLayout} required={true} label="Institution name">
-                    <Input defaultValue={user.institution} onChange={this.handleInstitutionChange}/>  
+                <FormItem {...formItemLayout} required={true} label="Institution name"
+                    validateStatus={errors && errors.institution ? 'error' : undefined}
+
+                 >
+                    <Input defaultValue={user.institution} onChange={this.handleInstitutionChange}/>
+                    {errors.institution && (<FormError error={errors.institution}/>)}  
                 </FormItem>   
                 <FormItem {...formItemLayout} label="Department">
                     <Input defaultValue={user.department} onChange={this.handleDepartmentChange}/>    
                 </FormItem>
-                <FormItem {...formItemLayout} required={true} label="Business Address, Line 1">
-                    <Input defaultValue={user.businessAddrL1} onChange={this.handleBusinnessAddrL1Change}/>    
+                <FormItem {...formItemLayout} required={true} label="Business Address, Line 1"
+                    validateStatus={errors && errors.businessAddrL1 ? 'error' : undefined} >
+                    <Input defaultValue={user.businessAddrL1} onChange={this.handleBusinnessAddrL1Change}/>
+                    {errors.businessAddrL1 && (<FormError error={errors.businessAddrL1}/>)}  
+    
                 </FormItem>  
                 <FormItem {...formItemLayout}  label="Business Address, Line 2">
                     <Input defaultValue={user.businessAddrL2} onChange={this.handleBusinnessAddrL2Change}/>     
                 </FormItem> 
-                <FormItem {...formItemLayout} required={true} label="Country">
-                    <Input defaultValue={user.country} onChange={this.handleCountryChange}/>   
+                <FormItem {...formItemLayout} required={true} label="Country"
+                    validateStatus={errors && errors.country ? 'error' : undefined} >
+                    <Input defaultValue={user.country} onChange={this.handleCountryChange}/>
+                    {errors.country && (<FormError error={errors.country}/>)}  
+   
                     Needs to be implemented  
 
                 </FormItem>
-                <FormItem {...formItemLayout}  required={true} label="State/Province"> 
+                <FormItem {...formItemLayout}  required={true} label="State/Province"
+                    validateStatus={errors && errors.stateOrProv ? 'error' : undefined} >                    
                     <Input defaultValue={user.stateOrProv} onChange={this.handleStateOrProvChange}/>
+                    {errors.stateOrProv && (<FormError error={errors.stateOrProv}/>)}  
+
                     This needs to be implemented
                     Note: This is only required for US and Canada.
 
@@ -439,17 +525,24 @@ static propTypes = {
                 <FormItem {...formItemLayout} label="City">
                     <Input defaultValue={user.city} onChange={this.handleCityChange}/>    
                 </FormItem>
-                <FormItem {...formItemLayout} required={true} label="Postal Code">
-                    <Input defaultValue={user.postalCode} onChange={this.handlePostalCodeChange}/>    
+                <FormItem {...formItemLayout} required={true} label="Postal Code"
+                    validateStatus={errors && errors.postalCode ? 'error' : undefined} >                    
+                    <Input defaultValue={user.postalCode} onChange={this.handlePostalCodeChange}/> 
+                    {errors.postalCode && (<FormError error={errors.postalCode}/>)}    
                 </FormItem>
-                <FormItem {...formItemLayout} required={true} label="Business phone number">
-                    <Input defaultValue={user.phone} onChange={this.handlePhoneChange}/>    
+                <FormItem {...formItemLayout} required={true} label="Business phone number"
+                    validateStatus={errors && errors.phone ? 'error' : undefined} >                    
+                    <Input defaultValue={user.phone} onChange={this.handlePhoneChange}/>  
+                    {errors.phone && (<FormError error={errors.phone}/>)}    
                 </FormItem>
                 <FormItem {...formItemLayout} label="Business fax number">
                     <Input defaultValue={user.fax} onChange={this.handleFaxChange}/>    
                 </FormItem>
-                <FormItem {...formItemLayout} required={true} label="Business email address">
-                    <Input defaultValue={user.email} onChange={this.handleEmailChange}/>    
+                <FormItem {...formItemLayout} required={true} label="Business email address"
+                    validateStatus={errors && errors.email ? 'error' : undefined} >                    
+                    <Input defaultValue={user.email} onChange={this.handleEmailChange}/>
+                    {errors.email && (<FormError error={errors.email}/>)}    
+    
                 </FormItem>
                 <Button type="primary" onClick={this.submitChanges}>Submit All Changes</Button>
 
