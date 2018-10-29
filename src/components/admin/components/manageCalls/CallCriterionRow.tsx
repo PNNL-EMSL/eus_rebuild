@@ -26,17 +26,26 @@ export default class CallCriterionRow extends Component<any, any>{
     this.props.handleCriteriaChange(data);
   }
 
+  moveCriterionUp() {
+    console.log('moveUp');
+  }
+
+  moveCriterionDown() {
+    console.log('moveDown');
+  }
+
   render() {
     const data = this.props.data;
+    console.log('row rerender');
     return(
       <tr>
         <td><b>{data.title}</b></td>
         <td>{data.text}</td>
         <td>
-          <Input defaultValue={data.weight} disabled={this.props.add} onChange={this.handleWeightChange} style={{width: '60px'}}/>%
+          <Input value={data.weight} disabled={this.props.add} onChange={this.handleWeightChange} style={{width: '60px'}}/>%
         </td>
         <td>
-          <Checkbox defaultChecked={data.panel} disabled={this.props.add} onChange={this.handlePanelChange} />
+          <Checkbox checked={data.panel} disabled={this.props.add} onChange={this.handlePanelChange} />
         </td>
         <td>
           {this.props.add ?
@@ -45,6 +54,12 @@ export default class CallCriterionRow extends Component<any, any>{
             (<i className="fas fa-times-circle fa-2x" onClick={this.props.removeCriterion}/>
             )}
         </td>
+        {!this.props.add &&
+          (<td>
+            {!this.props.first && (<i className="fas fa-arrow-circle-up" onClick={this.moveCriterionUp}/>)}
+            {!this.props.last && (<i className="fas fa-arrow-circle-down" onClick={this.moveCriterionDown}/>)}
+          </td>)
+        }
       </tr>
     );
   }

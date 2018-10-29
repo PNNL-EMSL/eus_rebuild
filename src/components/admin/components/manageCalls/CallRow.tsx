@@ -99,6 +99,7 @@ export default class CallRow extends Component<any, any> {
         <td>{call.callStartDate}</td>
         <td>{call.callEndDate}</td>
         <td>{call.proposalId}</td>
+        <td>{call.numProposals}</td>
         <td>{call.callExtensions.length}</td>
         <td><Button className={twoLineButton} type="primary" onClick={this.showCriterion}>Manage<br />Criterion</Button></td>
         <td><Button className={twoLineButton} type="primary" onClick={this.showExtensions}>Manage<br />Extensions</Button></td>
@@ -130,7 +131,7 @@ export default class CallRow extends Component<any, any> {
           width={1000}
         >
           <CallExtensionForm
-            criteria={call.callExtensions}
+            callExtensions={call.callExtensions}
             handleCriteriaChange={this.handleCriteriaChange}
             onAdd={this.handleCriteriaAdd}
             onRemove={this.handleCriteriaRemove}

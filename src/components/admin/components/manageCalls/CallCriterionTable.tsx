@@ -24,9 +24,11 @@ export default class CallCriterionTable extends Component<any, any>{
     this.showExistingCriteriaModal = this.showExistingCriteriaModal.bind(this);
     this.closeModals = this.closeModals.bind(this);
     this.handleFilterChange = this.handleFilterChange.bind(this);
+    this.applyEvenWeights = this.applyEvenWeights.bind(this);
     this.getCriteriaRows = this.getCriteriaRows.bind(this);
     this.getExistingCriteria = this.getExistingCriteria.bind(this);
     this.addToCriteria = this.addToCriteria.bind(this);
+    
   }
 
   showNewCriteriaModal() {
@@ -45,14 +47,31 @@ export default class CallCriterionTable extends Component<any, any>{
     this.setState({filterInput: e.target.value});
   }
   
+  applyEvenWeights() {
+    const evenWeight = Math.round(100 / this.props.criteria.length);
+    let runningTotal = 0;
+    const instance = this;
+    this.props.criteria.forEach((criteria, index) => {
+      if((instance.props.criteria.length - 1 !== index)) {
+        criteria.weight = evenWeight;
+      } else {
+        criteria.weight = 100 - runningTotal;
+      }
+      instance.props.handleCriteriaChange(criteria);
+      runningTotal += evenWeight;
+    })
+  }
+  
   getCriteriaRows() {
     const rows:JSX.Element[] = [];
     let index = 0;
-    this.props.criteria.forEach((item) => {
+    this.props.criteria.forEach((item, itemIndex) => {
       rows.push(
         <CallCriterionRow
           key={index++}
           data={item}
+          first={itemIndex === 0}
+          last={itemIndex === (this.props.criteria.length - 1)}
           handleCriteriaChange={this.props.handleCriteriaChange}
           removeCriterion={this.props.onRemove}
         />);
@@ -111,6 +130,7 @@ export default class CallCriterionTable extends Component<any, any>{
       <div>
         <Button type="primary" className={buttonMargin} onClick={this.showExistingCriteriaModal}>Add Existing Criteria</Button>
         <Button type="primary" className={buttonMargin} onClick={this.showNewCriteriaModal}>Create New Criteria</Button>
+        <Button type="primary" className={buttonMargin} disabled={this.props.criteria.length === 0} onClick={this.applyEvenWeights}>Apply weights evenly</Button>
         <Modal
           title="Create New Criterion"
           visible={this.state.showNewModal}
@@ -135,10 +155,10 @@ export default class CallCriterionTable extends Component<any, any>{
           <table className={modalTableStyle} >
             <thead>
             <tr>
-              <th style={{width: '300px'}}>Criteria title</th>
+              <th style={{width: '270px'}}>Criteria title</th>
               <th style={{width: '300px'}}>Criteria Description</th>
-              <th style={{width: '100px'}} >Default Weight (%)</th>
-              <th style={{width: '100px'}}>Show to Review Panel by Default?</th>
+              <th style={{width: '95px'}} >Default Weight (%)</th>
+              <th style={{width: '75px'}}>Show to External Reviewers by Default?</th>
               <th style={{width: '30px'}}/>
             </tr>
             </thead>
@@ -151,10 +171,11 @@ export default class CallCriterionTable extends Component<any, any>{
           <table className="table table-striped table-bordered">
             <thead>
               <tr>
-                <th style={{width: '300px'}}>Criteria title</th>
+                <th style={{width: '270px'}}>Criteria title</th>
                 <th style={{width: '300px'}}>Criteria Description</th>
                 <th style={{width: '95px'}} >Weight (%)</th>
-                <th style={{width: '75px'}}>Show to Review Panel?</th>
+                <th style={{width: '75px'}}>Show to External Reviewers?</th>
+                <th style={{width: '30px'}}/>
                 <th style={{width: '30px'}}/>
               </tr>
             </thead>

@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Form, Button, DatePicker} from 'antd';
 
 const FormItem = Form.Item;
-const RangePicker = DatePicker.RangePicker;
 
 export default class CallExtensionForm extends Component<any, any> {
   constructor(props) {
@@ -40,6 +39,14 @@ export default class CallExtensionForm extends Component<any, any> {
 
   render() {
     const content = this.viewPriorExtensions();
+    const formItemLayout = {
+      labelCol: {
+        sm: { span: 11 },
+      },
+      wrapperCol: {
+        sm: { span: 11 },
+      },
+    };
     return (
       <div>
         <div>
@@ -48,11 +55,21 @@ export default class CallExtensionForm extends Component<any, any> {
         </div>
         <hr />
         <Form>
-          <FormItem label="Start Date for extension">
-            <RangePicker />
-          </FormItem>
-          <FormItem label="End Date for extension">
-            <DatePicker />
+          <FormItem
+            colon={false}
+            {...formItemLayout}
+            label={
+            <FormItem
+            {...formItemLayout}
+            label="Start Date for extension">
+              <DatePicker />
+            </FormItem>
+          }>
+            <FormItem
+              {...formItemLayout}
+              label="End Date for extension">
+              <DatePicker />
+            </FormItem>
           </FormItem>
           <Button type="primary">
             Submit
