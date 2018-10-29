@@ -21,6 +21,7 @@ export default class CallRow extends Component<any, any> {
     this.handleCriteriaAdd = this.handleCriteriaAdd.bind(this);
     this.handleCriteriaRemove = this.handleCriteriaRemove.bind(this);
     this.handleCriteriaChange = this.handleCriteriaChange.bind(this);
+    this.handleExtensionAdd = this.handleExtensionAdd.bind(this);
 
     this.showCriterion = this.showCriterion.bind(this);
     this.showExtensions = this.showExtensions.bind(this);
@@ -47,6 +48,14 @@ export default class CallRow extends Component<any, any> {
     const call = this.state.call;
     const criteria = call.criteria;
     criteria.splice(criteria.findIndex((item) => (data.id === item.id)), 1, data);
+    this.setState({call});
+  }
+
+  handleExtensionAdd(data) {
+    const call = this.state.call;
+    const extentions = call.callExtensions;
+    extentions.push(data);
+    this.setState({call});
   }
 
   showCriterion() {
@@ -132,9 +141,8 @@ export default class CallRow extends Component<any, any> {
         >
           <CallExtensionForm
             callExtensions={call.callExtensions}
-            handleCriteriaChange={this.handleCriteriaChange}
-            onAdd={this.handleCriteriaAdd}
-            onRemove={this.handleCriteriaRemove}
+            endDate={call.callEndDate}
+            onAdd={this.handleExtensionAdd}
           />
         </Modal>
       </tr>

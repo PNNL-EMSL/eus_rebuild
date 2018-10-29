@@ -8,6 +8,8 @@ export default class CallCriterionRow extends Component<any, any>{
     this.addCriterion = this.addCriterion.bind(this);
     this.handlePanelChange = this.handlePanelChange.bind(this);
     this.handleWeightChange = this.handleWeightChange.bind(this);
+    this.moveCriterionUp = this.moveCriterionUp.bind(this);
+    this.moveCriterionDown = this.moveCriterionDown.bind(this);
   }
 
   addCriterion() {
@@ -27,16 +29,15 @@ export default class CallCriterionRow extends Component<any, any>{
   }
 
   moveCriterionUp() {
-    console.log('moveUp');
+    this.props.moveUp(this.props.itemIndex-1, this.props.itemIndex);
   }
 
   moveCriterionDown() {
-    console.log('moveDown');
+    this.props.moveDown(this.props.itemIndex+1, this.props.itemIndex);
   }
 
   render() {
     const data = this.props.data;
-    console.log('row rerender');
     return(
       <tr>
         <td><b>{data.title}</b></td>

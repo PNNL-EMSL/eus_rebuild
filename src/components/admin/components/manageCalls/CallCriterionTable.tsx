@@ -70,9 +70,12 @@ export default class CallCriterionTable extends Component<any, any>{
         <CallCriterionRow
           key={index++}
           data={item}
+          itemIndex
           first={itemIndex === 0}
           last={itemIndex === (this.props.criteria.length - 1)}
           handleCriteriaChange={this.props.handleCriteriaChange}
+          moveUp={this.props.moveUp}
+          moveDown={this.props.moveDown}
           removeCriterion={this.props.onRemove}
         />);
     });

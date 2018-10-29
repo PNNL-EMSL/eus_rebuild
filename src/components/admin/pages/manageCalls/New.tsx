@@ -34,12 +34,14 @@ export default class ManageCallsNew extends Component<any, any> {
     this.handleProposalIdChange = this.handleProposalIdChange.bind(this);
     this.handleProposalStartChange = this.handleProposalStartChange.bind(this);
     this.handleProposalDurationChange = this.handleProposalDurationChange.bind(this);
+    this.handleProposalDurTypeChange = this.handleProposalDurTypeChange.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
     this.handleEndDateChange = this.handleEndDateChange.bind(this);
     this.handleCriteriaAdd = this.handleCriteriaAdd.bind(this);
     this.handleCriteriaRemove = this.handleCriteriaRemove.bind(this);
     this.handleCriteriaChange = this.handleCriteriaChange.bind(this);
-    
+    this.moveCriterion = this.moveCriterion.bind(this);
+
     this.addCall = this.addCall.bind(this);
   }
   
@@ -91,6 +93,8 @@ export default class ManageCallsNew extends Component<any, any> {
   handleProposalDurationChange(e) {
     const call = this.state.call;
     call.proposalDuration = e.target.value;
+    // If the Duration Type is 'year', set it as the number of months for the years entered.
+    call.proposalDuration = call.proposalDurType === 'year' ? call.proposalDuration * 12 : call.proposalDuration;
     this.setState({call});
   }
 
@@ -148,6 +152,13 @@ export default class ManageCallsNew extends Component<any, any> {
     const call = this.state.call;
     const criteria = call.criteria;
     criteria.splice(criteria.findIndex((item) => (data.id === item.id)), 1, data);
+    this.setState({call});
+  }
+
+  moveCriterion(to, from) {
+    const call = this.state.call;
+    const criteria = call.criteria;
+    criteria.splice(to, 0, criteria.splice(from, 1)[0]);
     this.setState({call});
   }
   
@@ -300,10 +311,9 @@ export default class ManageCallsNew extends Component<any, any> {
         >
           <FormItem
             {...formItemLayout}
-            label={<Input {...formItemLayout} value={proposalDuration} onChange={this.handleProposalDurationChange}/>}
+            label={<Input value={proposalDuration} onChange={this.handleProposalDurationChange}/>}
           >
             <Select
-              {...formItemLayout}
               value={data.proposalDurType}
               onChange={this.handleProposalDurTypeChange}
             >
@@ -341,6 +351,8 @@ export default class ManageCallsNew extends Component<any, any> {
           handleCriteriaChange={this.handleCriteriaChange}
           onAdd={this.handleCriteriaAdd}
           onRemove={this.handleCriteriaRemove}
+          moveUp={this.moveCriterion}
+          moveDown={this.moveCriterion}
         />
         <Button type="primary" className={buttonMargin} onClick={this.addCall}>Add Call</Button>
       </Form>
