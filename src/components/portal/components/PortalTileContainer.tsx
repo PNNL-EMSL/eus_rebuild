@@ -15,6 +15,6 @@ export default class PortalTileContainer extends TileContainer {
     {id: 3, span: 14, endInnerRow: true, height: 100, width: 240, background: normal, visibleBy:1, text: 'Get Data', img: "fas fa-chart-bar fa-3x", path: '/Portal/getData'},
     {id: 4, span: 9, startInnerRow: true, height: 100, width: 150, background: normal, visibleBy:10, text: 'Schedule Experiments', img: "far fa-calendar-alt fa-3x", path: '/Portal/scheduleExperiments'},
     {id: 5, span: 14, endInnerRow: true, height: 100, width: 240, background: normal, visibleBy:1, text: 'Sample Status', img: "fas fa-flask fa-3x", path: '/Portal/sampleStatus'},
-    {id: 6, span: 8, height: 210, count: 6, width: 200, background: normal, visibleBy:1, text: 'Reviews', img: "far fa-thumbs-up fa-3x", path: '/Portal/userInfo'},
+    {id: 6, span: 8, height: 210, count: 6, width: 200, background: normal, visibleBy:1, text: 'Reviews', img: "far fa-thumbs-up fa-3x", path: '/Portal/reviews'},
   ];
 }

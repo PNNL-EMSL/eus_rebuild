@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter, Switch, Route } from 'react-router-dom';
 
 import ProposalHome from 'components/portal/pages/proposals/Home';
+import ReviewsHome from 'components/portal/pages/reviews/Home';
 import Publications from 'components/portal/pages/Publications';
 import UserInfo from 'components/portal/pages/UserInfo';
 import Training from 'components/portal/pages/Training';
@@ -76,6 +77,9 @@ class App extends Component<any, any> {
     this.renderProposals = this.renderProposals.bind(this);
     this.renderNewProposal = this.renderNewProposal.bind(this);
     this.renderExistingProposal = this.renderExistingProposal.bind(this);
+    this.renderReviews = this.renderReviews.bind(this);
+    this.renderNewReview = this.renderNewReview.bind(this);
+    this.renderExistingReview = this.renderExistingReview.bind(this);
     this.renderPublications = this.renderPublications.bind(this);
     this.renderUserInfo = this.renderUserInfo.bind(this);
     this.renderTraining = this.renderTraining.bind(this);
@@ -116,24 +120,32 @@ class App extends Component<any, any> {
     return (<AdminHome navStyle={this.state.navMenuType} {...this.props} restricted={true} roleLevel={999}/>);
   }
 
-  renderProposals({match, location}) {
-    console.log('match:', match);
-    console.log('location:', location);
+  renderProposals() {
     return (<ProposalHome {...this.props} restricted={true}/>);
   }
 
-  renderNewProposal({match}) {
-    console.log('match:', match);
+  renderNewProposal() {
     return (<ProposalHome {...this.props} restricted={true} type='new' />);
     // return (<ProposalNew {...this.props} restricted={true}/>);
   }
 
   renderExistingProposal({match}) {
-    console.log('match:', match);
     return (<ProposalHome {...this.props} restricted={true} id={match.params.id} />);
     // return (<ProposalExisting {...this.props} restricted={true} id={match.params.id} />);
   }
 
+  renderReviews() {
+    return (<ReviewsHome {...this.props} restricted={true}/>);
+  }
+
+  renderNewReview() {
+    return (<ReviewsHome {...this.props} restricted={true} type="new" />);
+  }
+  
+  renderExistingReview({match}) {
+    return (<ReviewsHome {...this.props} restricted={true} id={match.params.id} />);
+  }
+  
   renderPublications() {
     return (<Publications {...this.props} restricted={true}/>);
   }
@@ -182,13 +194,16 @@ class App extends Component<any, any> {
       (<Route key={portalRouteNum++} exact path="/Portal/proposals" component={this.renderProposals} />),
       (<Route key={portalRouteNum++} exact path="/Portal/proposals/new" component={this.renderNewProposal} />),
       (<Route key={portalRouteNum++} exact path="/Portal/proposals/:id" component={this.renderExistingProposal} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/reviews" component={this.renderReviews} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/reviews/new" component={this.renderNewReview} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/reviews/:id" component={this.renderExistingReview} />),
       (<Route key={portalRouteNum++} exact path="/Portal/publications" component={this.renderPublications} />),
-      (<Route key={portalRouteNum++} exact path="/Portal/userInfo" component={this.renderUserInfo} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/user_info" component={this.renderUserInfo} />),
       (<Route key={portalRouteNum++} exact path="/Portal/training" component={this.renderTraining} />),
-      (<Route key={portalRouteNum++} exact path="/Portal/scheduleExperiments" component={this.renderExperiments} />),
-      (<Route key={portalRouteNum++} exact path="/Portal/getData" component={this.renderGetData} />),
-      (<Route key={portalRouteNum++} exact path="/Portal/SubmitSample" component={this.renderSubmitSample} />),
-      (<Route key={portalRouteNum++} exact path="/Portal/ProvideFeedback" component={this.renderProvideFeedback} />)
+      (<Route key={portalRouteNum++} exact path="/Portal/schedule_experiments" component={this.renderExperiments} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/get_data" component={this.renderGetData} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/sample_status" component={this.renderSubmitSample} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/provide_feedback" component={this.renderProvideFeedback} />)
     ];
   }
 
