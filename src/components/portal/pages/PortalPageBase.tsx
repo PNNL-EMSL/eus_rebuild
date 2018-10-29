@@ -5,10 +5,7 @@ import PageBase from 'components/shared/pages/PageBase';
 import BreadcrumbBar from 'components/shared/components/BreadcrumbBar';
 import {css} from 'emotion';
 
-// import {portalPageContentStyle} from 'styles/base';
-
 import {contentStyle} from 'styles/base';
-// Was attached to the div which displays "Content";
 
 const breadcrumb:string = css`
     top: 95px !important;

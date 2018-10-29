@@ -16,8 +16,8 @@ const orcid:string = css`
   color: ${colorWhite};
   padding: 1em;
   border: ${colorBlack} 1px solid;
-  margin-top: 5px;
-  min-height: 420px;
+  margin-top: 1.5em;
+  min-height: 3em;
   float: left;
 `;
 
@@ -33,18 +33,15 @@ const tilesDiv:string = css`
 
 const announcementDiv = css`
   display: inline-block;
-  width: calc(15% + 620px);
+  width: 85%;
   float: right;
-  position: relative;
-  right: calc((85% - (15% + 620px))/2);
 `;
 
 const carouselDiv:string = css`
-  width: calc(15% + 620px);
+  width: 80%;
   margin-bottom: 140px;
   float: right;
-  position: relative;
-  right: calc((85% - (15% + 620px))/2);
+  
 `;
 
 
