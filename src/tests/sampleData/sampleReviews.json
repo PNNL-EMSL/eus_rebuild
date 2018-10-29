@@ -1,0 +1,34 @@
+{
+  "proposals": [
+    {
+      "id": 1,
+      "title": "Sample Proposal 1 - Dual proposal",
+      "criterion": [],
+      "users": ["admin", "user"]
+    },
+    {
+      "id": 2,
+      "title": "Sample Proposal 2 - Admin only",
+      "criterion": [],
+      "users": ["admin"]
+    },
+    {
+      "id": 3,
+      "title": "Sample Proposal 3 - User Only",
+      "criterion": [],
+      "users": ["user"]
+    },
+    {
+      "id": 4,
+      "title": "Sample Proposal 4 - Many Criterion",
+      "criterion": [],
+      "users": ["admin" ]
+    },
+    {
+      "id": 5,
+      "title": "Sample Proposal 5 - Few Criterion",
+      "criterion": [],
+      "users": ["admin"]
+    }
+  ]
+}
