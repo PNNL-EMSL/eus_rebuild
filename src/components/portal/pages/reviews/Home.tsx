@@ -3,21 +3,49 @@ import PortalPageBase from 'components/portal/pages/PortalPageBase';
 import ReviewLoad from 'components/portal/pages/reviews/Load';
 // import ReviewsNew from 'components/portal/pages/reviews/New';
 import { Button } from 'antd'
+import moment from 'moment';
 
 import sampleReviews from 'tests/sampleData/sampleReviews.json';
 import {portalContentStyle, buttonMargin} from 'styles/base';
 
 export default class ReviewsHome extends PortalPageBase {
+  static allProposals = sampleReviews.proposals;
+  static allReviews = ReviewsHome.createReviewsForProposals(ReviewsHome.allProposals);
+
+  static createReviewsForProposals(proposals) {
+    proposals.forEach((proposal) => {
+      const reviews:any[] = [];
+      proposal.users.forEach((user) => {
+        reviews.push(ReviewsHome.createReview(proposal, user));
+      });
+      proposal.reviews = reviews;
+    });
+    return proposals;
+  }
+
+  static createReview(proposal, user, panel=false) {
+    const reviewObj = {
+      propId: proposal.id,
+      proposalTitle: proposal.title,
+      user,
+      author: proposal.primaryAuthor,
+      criterion: JSON.parse(JSON.stringify(proposal.criterion.filter((criterion) => (criterion.panel === panel)))),
+      dueDate: moment().add(7, 'days').format('MM-DD-YYYY'),
+      reviewerType: panel ? 'Panel Reviewer' : 'Primary',
+      reviewStatus: 'notStarted',
+    };
+    return reviewObj;
+  }
+
   constructor(props) {
     super(props);
 
     this.state = {
       curUser: 'admin',
-      allReviews: sampleReviews.proposals
-    }
+    };
 
     this.navigateToNew = this.navigateToNew.bind(this);
-    this.getProposalList = this.getProposalList.bind(this);
+    this.getReviewList = this.getReviewList.bind(this);
     this.handleChangeToUser = this.handleChangeToUser.bind(this);
     this.handleChangeToAdmin = this.handleChangeToAdmin.bind(this);
     this.handleChangeToGuest = this.handleChangeToGuest.bind(this);
@@ -37,17 +65,29 @@ export default class ReviewsHome extends PortalPageBase {
     )
   }
   
-  renderLoadReview(proposalId) {
+  renderLoadReview(proposalId, reviewId) {
+    const review = ReviewsHome.allReviews[proposalId].reviews[reviewId];
+    console.log('loadReview', review);
     return (
       <div key="load">
         Loading Review for Proposal {proposalId}
-        <ReviewLoad proposalId={proposalId} {...this.props} />
+        <ReviewLoad review={review} {...this.props} />
       </div>
     );
   }
 
-  getProposalList() {
-    const filtered = this.state.allReviews.filter((item) => item.users.includes(this.state.curUser));
+  getReviewList() {
+    const filtered:any[] = [];
+    ReviewsHome.allReviews.forEach((proposal) => {
+      console.log('80, reviews/home', proposal);
+      if(proposal.reviewers !== 'complete') {
+        proposal.reviews.forEach((review) => {
+          if (review.user === this.state.curUser) {
+            filtered.push(review);
+          }
+        });
+      }
+    });
     return filtered;
   }
 
@@ -68,13 +108,26 @@ export default class ReviewsHome extends PortalPageBase {
       // TODO: Add two-three proposals to review for two different users.
       // TODO: At least one of these proposals should have both users as reviewer
       // TODO: Should be able to show "completed reviews" for this shared proposal
-    const proposals = this.getProposalList();
+    const reviews = this.getReviewList();
     const content:JSX.Element[] = [];
-    proposals.forEach((proposal) => {
+    reviews.forEach((review) => {
+      console.log('107, reviews/home', review);
       content.push(
         <tr>
-          <td>{proposal.id}</td>
-          <td>{proposal.title}</td>
+          <td>{review.proposalTitle}</td>
+          <td>{moment().add(((Math.floor(Math.random() * 7) + 3)), 'days').format('MM-DD-YYYY')}</td>
+          <td>{review.reviewerType}</td>
+          <td>
+            <i>{review.reviewStatus}</i>
+            {review.reviewStatus !== 'Not Started' ? (
+              <div>
+              <div>{review.score}</div>
+              <Link to={review.propId+'_'+review.id} >Continue Review</Link>
+              </div>
+            ) : (
+              <Link to={review.propId+'_'+review.id} >Begin Review</Link>
+            )}
+          </td>
         </tr>
       );
     });
@@ -82,8 +135,10 @@ export default class ReviewsHome extends PortalPageBase {
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
-            <th>Proposal ID</th>
             <th>Proposal Title</th>
+            <td>Due Date</td>
+            <th>Reviewer Type</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
