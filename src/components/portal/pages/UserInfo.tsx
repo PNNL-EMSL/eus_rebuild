@@ -60,6 +60,7 @@ static propTypes = {
     };
 
     static VALIDATOR = new UserProfileValidator();
+    static FORM_ERRORS = "Fill out remaining form items then click submit button again"
 
     GET_USER_INFO = gql`
     {
@@ -151,6 +152,7 @@ static propTypes = {
           this.submitChanges = this.submitChanges.bind(this);
           this.validateForm = this.validateForm.bind(this);
           this.saveChangesToDatabase = this.saveChangesToDatabase.bind(this);
+          this.submitDisabledIs = this.submitDisabledIs.bind(this);
     }
 
 
@@ -160,8 +162,6 @@ static propTypes = {
     //     return <Component {...newProps}>
     //   }
 
-
-    
 
     handleSuffixChange(e) {
         const user = this.state.user;
@@ -303,13 +303,53 @@ static propTypes = {
         });
       }
 
+
+
     displayErrors(errors) {
         const errorArray:string[] = [];
         errors.forEach((error) => {
           errorArray[error.field] = error.tooltip;
         });
         this.setState({errors: errorArray});
-    }  
+    }
+
+
+    // submitButtonDisabledIs(numErrors) {
+    //     console.log("Submit Button Disabled Called");
+    //     console.log("Number of Errors", numErrors);
+    //     let disabledIs = false;
+    //     if (numErrors > 0) {
+    //         disabledIs = true;
+    //     }
+
+    //     console.log("Disabled", disabledIs);
+    //     return disabledIs;
+    // }
+
+    // displayFormErrorText(errors) {
+    //     let errorString = "";
+    //     if (errors.length > 0) {
+    //         errorString = UserInfo.FORM_ERRORS;
+    //     }
+
+    //     return errorString
+    // }
+
+
+        
+    submitDisabledIs() {
+        let disabledIs = false;
+        const numErrors = Object.keys(this.state.errors).length
+        console.log("Submit Disabled Is Called");
+        console.log("Number of Errors", numErrors);
+
+        if (numErrors > 0) {
+            disabledIs = true;
+        }
+
+        console.log("Disabled Is Equals", disabledIs);
+        return disabledIs;
+    }
 
  
     submitChanges(e) {
@@ -322,9 +362,11 @@ static propTypes = {
             this.saveChangesToDatabase(); 
         }
 
+        // else if (errors.length > 0) {
+        //     alert('Missing values in form submission')
+        // }
+
         this.displayErrors(errors);           
-
-
     }
 
     blankToUndefined(user) {
@@ -464,12 +506,12 @@ static propTypes = {
                 <FormItem {...formItemLayout} label="Dual Citizenship">
                     Needs to be implemented
                 </FormItem> 
-                <Button type="primary" onClick={this.submitChanges}>Submit All Changes</Button>
+                <Button type="primary" onClick={this.submitChanges} disabled={this.submitDisabledIs()}>Submit All Changes</Button>
                 
 
             </Form>
             </TabPane>
-            <TabPane tab="Professional" key="2">
+            <TabPane tab={"Professional"} key="2">
             <Form>
                 <AntDesignSelect
                     label="Profession"
@@ -557,7 +599,7 @@ static propTypes = {
                     {errors.email && (<FormError error={errors.email}/>)}    
     
                 </FormItem>
-                <Button type="primary" onClick={this.submitChanges}>Submit All Changes</Button>
+                <Button type="primary" onClick={this.submitChanges} disabled={this.submitDisabledIs()}>Submit All Changes</Button>
 
             </Form>
             </TabPane>
