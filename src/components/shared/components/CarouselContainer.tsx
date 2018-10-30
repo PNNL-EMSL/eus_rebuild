@@ -2,7 +2,7 @@ import React, { Component} from 'react';
 import CarouselItem from 'components/shared/components/CarouselItem';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Slider from 'react-slick';
-import "../../../../node_modules/slick-carousel/slick/slick.css"; 
+import "../../../../node_modules/slick-carousel/slick/slick.css";
 import "../../../../node_modules/slick-carousel/slick/slick-theme.css";
 import {css} from 'emotion';
 
@@ -14,7 +14,7 @@ export default class CarouselContainer extends Component<any, any> {
     constructor(props) {
         super(props);
     }
-    
+
     render() {
       const content:JSX.Element[] = [];
       this.props.settings.filter((item) => (item.display)).sort((a,b) => (a.order - b.order)).forEach((item) => {
@@ -26,7 +26,7 @@ export default class CarouselContainer extends Component<any, any> {
       const settings = {
         dots: true,
         infinite: true,
-        slidesToShow: 3,
+        slidesToShow: 4,
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 2000,
@@ -36,7 +36,7 @@ export default class CarouselContainer extends Component<any, any> {
       }
 
         return (
-            <Slider {...settings} style={{display: 'inline-grid !important'}}> 
+            <Slider {...settings} style={{display: 'inline-grid !important'}}>
                 {content}
             </Slider>
         )

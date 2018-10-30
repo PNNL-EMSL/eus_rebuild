@@ -1,7 +1,7 @@
 import TileContainer from 'components/shared/components/TileContainer';
-import {colorLightGrey, colorYellow, colorRed} from 'styles/base';
+import {colorWhite, colorYellow, colorRed} from 'styles/base';
 
-const normal = colorLightGrey;
+const normal = colorWhite;
 const upcoming = colorYellow;
 const urgent = colorRed;
 
