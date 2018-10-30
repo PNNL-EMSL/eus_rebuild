@@ -1,0 +1,10 @@
+{"ProfessionTypes": [
+  {"value":"pi" , "label": "High School Student"},
+  {"value":"copi" , "label": "Undergraduate Student"},
+  {"value":"survey" , "label": ""},
+  {"value":"postDoc" , "label": "Postdoc"},
+  {"value":"faculty" , "label": "Faculty/Staff"},
+  {"value":"sciEng" , "label": "Research Scientist/Engineer"},
+  {"value":"professional" , "label": "Professional"},
+  {"value":"other" , "label": "Other"}
+]}

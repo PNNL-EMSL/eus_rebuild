@@ -14,8 +14,10 @@
     "noImplicitThis": true,
     "noImplicitAny": false,
     "strictNullChecks": true,
+    "resolveJsonModule": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "baseUrl": "src"

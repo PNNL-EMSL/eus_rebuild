@@ -1,29 +1,27 @@
-// import { Menu } from 'antd';
+import React, {Component} from 'react';
 import { css, injectGlobal } from 'emotion';
-import styled from 'react-emotion'
-import * as React from 'react';
-import { withRouter, Switch, Route } from 'react-router-dom';
-import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
-import ExternalStyleSheets from 'components/core/ExternalStyleSheets';
+import { withRouter, Switch, Route } from 'react-router-dom';
 
-// import { colorBlack, colorLightGreen, colorDarkGreen } from 'styles/base';
+import ProposalHome from 'components/portal/pages/proposals/Home';
+import Publications from 'components/portal/pages/Publications';
+import UserInfo from 'components/portal/pages/UserInfo';
+import Training from 'components/portal/pages/Training';
+import ScheduleExperiments from 'components/portal/pages/ScheduleExperiments';
+import GetData from 'components/portal/pages/GetData';
+import SubmitSample from 'components/portal/pages/SubmitSample';
+import ProvideFeedback from 'components/portal/pages/ProvideFeedback';
+import PortalHome from 'components/portal/pages/PortalHome';
+import AdminHome from 'components/admin/pages/AdminHome';
+import MessageSettings from 'components/admin/pages/MessageSettings';
+import AccessError from 'components/shared/pages/AccessError';
+import InvalidPage from 'components/shared/pages/InvalidPage';
+import UserAdmin from 'components/admin/pages/UserAdmin';
 
-import Login from 'components/pages/Login';
-import Proposals from 'components/pages/Proposals';
-import Publications from 'components/pages/Publications';
-import UserInfo from 'components/pages/UserInfo';
-import Training from 'components/pages/Training';
-import ScheduleExperiments from 'components/pages/ScheduleExperiments';
-import GetData from 'components/pages/GetData';
-import UserHome from 'components/pages/UserHome';
-import MessageSettings from 'components/pages/MessageSettings';
-import AccessError from 'components/pages/AccessError';
-import UserAdmin from 'components/pages/UserAdmin';
-import NavMenu from 'components/core/NavMenu';
+import ManageCallsHome from 'components/admin/pages/manageCalls/Home';
 
-import logo from 'images/emsl_logo_notag.jpg';
+import ExternalStyleSheets from 'components/shared/components//ExternalStyleSheets';
+import {colorDarkGrey} from 'styles/base';
 
 // Define global styles
 injectGlobal`
@@ -47,52 +45,8 @@ const app: string = css`
   display: flex;
   flex: 1;
   flex-direction: column;
-  height: 100%;
-`;
-
-const header: string = css`
-  padding: 5px 20px 5px 10px;
-  display: flex;
-  flex: 0 0 auto;
-  flex-direction: row;
-  background-color: white;
-  align-items: center;
-  max-width: 1078px;
-`;
-const footer: string = css`
-  padding: 5px 20px 5px 10px;
-  display: flex;
-  flex: 0 0 auto;
-  flex-direction: row;
-  background-color: white;
-  align-items: center;
-  max-width: 1078px;
-`;
-const titleContainer: string = css`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  margin-left: 10px;
-  margin-top: -15px;
-`;
-const title: string = css`
-  font-weight: 800;
-  font-size: 28px;
-  text-shadow: 2px 2px 8px #aaa;
-`;
-const content: string = css`
-  margin: 5px 20px 15px 100px;
-  max-width: 958px;
-`;
-
-const Logo = styled('img')`
-  height: 80px;
-`;
-
-const logout: string = css`
-  text-align: right;
-  float: right;
-  width: 72%;
+  background-color: ${colorDarkGrey};
+  min-height: 100%;
 `;
 
 /**
@@ -104,31 +58,10 @@ const logout: string = css`
  * properly with the withRouter HOC.
  * TODO: not sure how the prop interface declarations work...
  */
-class App extends React.Component<any, any> {
+class App extends Component<any, any> {
   static propTypes = {
     location: PropTypes.object.isRequired
   };
-
-  // Query to get the necessary information about the logged in user.
-  GET_HEADER_INFORMATION = gql`
-    {
-      CurrentUser @client {
-        userName,
-        roleLevel
-      }
-      navStyle @client
-    }
-  `;
-
-  // Slim query used for checking that the user is logged in, and redirecting if not.
-  GET_USER_LOGGED_IN = gql`
-    {
-      CurrentUser @client {
-        userName,
-        roleLevel
-      }
-    }
-  `;
   
   constructor(props) {
     super(props);
@@ -137,162 +70,152 @@ class App extends React.Component<any, any> {
     };
 
     // Page Renderers
-    this.renderLogin = this.renderLogin.bind(this);
-    this.renderHomePage = this.renderHomePage.bind(this);
+    this.renderIndexPage = this.renderIndexPage.bind(this);
+    this.renderPortalPage = this.renderPortalPage.bind(this);
+    this.renderAdminPage = this.renderAdminPage.bind(this);
     this.renderProposals = this.renderProposals.bind(this);
+    this.renderNewProposal = this.renderNewProposal.bind(this);
+    this.renderExistingProposal = this.renderExistingProposal.bind(this);
     this.renderPublications = this.renderPublications.bind(this);
     this.renderUserInfo = this.renderUserInfo.bind(this);
     this.renderTraining = this.renderTraining.bind(this);
     this.renderExperiments = this.renderExperiments.bind(this);
     this.renderGetData = this.renderGetData.bind(this);
+    this.renderSubmitSample = this.renderSubmitSample.bind(this);
+    this.renderProvideFeedback = this.renderProvideFeedback.bind(this);
     this.renderMessageSettings = this.renderMessageSettings.bind(this);
     this.renderUserAdmin = this.renderUserAdmin.bind(this);
-
-    // Redirection functions
-    this.redirectToLogin = this.redirectToLogin.bind(this);
-    this.redirectToAccessError = this.redirectToAccessError.bind(this);
+    this.renderCallManagement = this.renderCallManagement.bind(this);
 
     // Action handlers
     this.logoutHandler = this.logoutHandler.bind(this);
     this.navTypeHandler = this.navTypeHandler.bind(this);
 
-    this.userIsLoggedIn = this.userIsLoggedIn.bind(this);
   }
 
   logoutHandler() {
     this.props.client.writeData({data: {CurrentUser: []}});
-    return this.redirectToLogin();
   }
 
   navTypeHandler(styleTo) {
-    this.props.client.writeData({ data: { navStyle: styleTo }});
+    this.props.client.writeData({ data: { navCollapsed: styleTo }});
   }
 
   /*************************
    * Render pages section
    *************************/
 
-  renderLogin() {
-    return (<Login {...this.props} />);
+  renderIndexPage() {
+    this.props.history.push('/Portal');
+    return null;
+  }
+  renderPortalPage() {
+    return (<PortalHome navStyle={this.state.navMenuType} {...this.props} restricted={true}/>);
+  }
+  renderAdminPage() {
+    return (<AdminHome navStyle={this.state.navMenuType} {...this.props} restricted={true} roleLevel={999}/>);
   }
 
-  renderHomePage() {
-    return this.userIsLoggedIn(<UserHome navStyle={this.state.navMenuType} {...this.props}/>);
+  renderProposals({match, location}) {
+    console.log('match:', match);
+    console.log('location:', location);
+    return (<ProposalHome {...this.props} restricted={true}/>);
   }
 
-  renderProposals() {
-    return this.userIsLoggedIn(<Proposals {...this.props}/>);
+  renderNewProposal({match}) {
+    console.log('match:', match);
+    return (<ProposalHome {...this.props} restricted={true} type='new' />);
+    // return (<ProposalNew {...this.props} restricted={true}/>);
+  }
+
+  renderExistingProposal({match}) {
+    console.log('match:', match);
+    return (<ProposalHome {...this.props} restricted={true} id={match.params.id} />);
+    // return (<ProposalExisting {...this.props} restricted={true} id={match.params.id} />);
   }
 
   renderPublications() {
-    return this.userIsLoggedIn(<Publications {...this.props}/>);
+    return (<Publications {...this.props} restricted={true}/>);
   }
 
   renderUserInfo() {
-    return this.userIsLoggedIn(<UserInfo {...this.props}/>);
+    return (<UserInfo {...this.props} restricted={true}/>);
   }
 
   renderTraining() {
-    return this.userIsLoggedIn(<Training {...this.props}/>);
+    return (<Training {...this.props} restricted={true}/>);
   }
 
   renderExperiments() {
-    return this.userIsLoggedIn(<ScheduleExperiments {...this.props}/>, 10);
+    return (<ScheduleExperiments {...this.props} restricted={true}/>);
   }
 
   renderGetData() {
-    return this.userIsLoggedIn(<GetData {...this.props}/>)
+    return (<GetData {...this.props} restricted={true}/>)
   }
-  
+
+  renderSubmitSample() {
+    return (<SubmitSample {...this.props} restricted={true}/>)
+  }
+
+  renderProvideFeedback() {
+    return (<ProvideFeedback {...this.props} restricted={true}/>)
+  }
+
   renderMessageSettings() {
-    return this.userIsLoggedIn(<MessageSettings {...this.props}/>, 999);
+    return (<MessageSettings {...this.props} restricted={true}/>);
   }
 
   renderUserAdmin() {
-    return this.userIsLoggedIn(<UserAdmin {...this.props} />, 999);
+    return (<UserAdmin {...this.props} restricted={true}/>);
   }
 
-  userIsLoggedIn(html, role=0) {
-    const query = this.GET_USER_LOGGED_IN;
-    const data = this.props.client.readQuery({query}).CurrentUser;
-    if(data.length === 0) {
-      return this.redirectToLogin();
-    } else if(data[0].roleLevel < role) {
-      // Display access denied
-      return this.redirectToAccessError();
-    } else {
-      return html;
-    }
+  renderCallManagement() {
+    return (<ManageCallsHome {...this.props} restricted={true} />);
   }
 
-  redirectToLogin() {
-    this.props.history.push('/login');
-    return null;
+  createPortalRoutes() {
+    let portalRouteNum = 0;
+    return [
+      (<Route key={portalRouteNum++} exact path="/" component={this.renderIndexPage} />),
+      (<Route key={portalRouteNum++} exact path="/Portal" component={this.renderPortalPage} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/proposals" component={this.renderProposals} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/proposals/new" component={this.renderNewProposal} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/proposals/:id" component={this.renderExistingProposal} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/publications" component={this.renderPublications} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/userInfo" component={this.renderUserInfo} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/training" component={this.renderTraining} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/scheduleExperiments" component={this.renderExperiments} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/getData" component={this.renderGetData} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/SubmitSample" component={this.renderSubmitSample} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/ProvideFeedback" component={this.renderProvideFeedback} />)
+    ];
   }
 
-  redirectToAccessError() {
-    this.props.history.push('/accessError');
-    return null;
+  createAdminRoutes() {
+    let adminRouteNum = 0;
+    return [
+      (<Route key={adminRouteNum++} exact path="/EUSAdmin" component={this.renderAdminPage} />),
+      (<Route key={adminRouteNum++} exact path="/EUSAdmin/user_services/message_system" component={this.renderMessageSettings} />),
+      (<Route key={adminRouteNum++} exact path="/EUSAdmin/user_services/users" component={this.renderUserAdmin} />),
+      (<Route key={adminRouteNum++} exact path="/EUSAdmin/user_services/calls" component={this.renderCallManagement} />),
+    ];
   }
+
 
   public render() {
+    const portalRoutes = this.createPortalRoutes();
+    const adminRoutes = this.createAdminRoutes();
+
     return (
       <div className={app}>
         <ExternalStyleSheets />
-        <Query query={this.GET_HEADER_INFORMATION}>
-          {({loading, error, data}) => {
-            if(loading) {
-              return <p>Loading...</p>;
-            } else if(error) {
-              return <p>Error...</p>;
-            } else {
-              return (
-                <div className={header}>
-                  <div className={titleContainer}>
-                  <span>
-                     <Logo src={logo} alt="logo"/>
-                    <div className={title}>EMSL User Portal</div>
-                    {
-                      data.CurrentUser.length !== 0 ? (
-                        <div className={logout}>
-                          <div>Welcome {data.CurrentUser[0].userName}</div>
-                          <div onClick={this.logoutHandler}>Sign out</div>
-                        </div>
-                      ) : (<div />)
-                    }
-                  </span>
-                    <NavMenu
-                      navMenuType={data.navStyle}
-                      pathname={this.props.location.pathname}
-                      navChangeHandler={this.navTypeHandler}
-                    />
-                  </div>
-                </div>
-              );
-            }
-          }}
-        </Query>
-        <div className={content}>
-          <Switch>
-            <Route exact path="/" component={this.renderHomePage} />
-            <Route exact path="/home" component={this.renderHomePage}/>
-            <Route exact path="/login" component={this.renderLogin}/>
-            <Route exact path="/proposals" component={this.renderProposals} />
-            <Route exact path="/publications" component={this.renderPublications} />
-            <Route exact path="/userInfo" component={this.renderUserInfo} />
-            <Route exact path="/training" component={this.renderTraining} />
-            <Route exact path="/scheduleExperiments" component={this.renderExperiments} />
-            <Route exact path="/getData" component={this.renderGetData} />
-            <Route exact path="/messageSystem" component={this.renderMessageSettings} />
-            <Route exact path="/userAdmin" component={this.renderUserAdmin} />
-            <Route exact path="/accessError" component={AccessError} />
-          </Switch>
-        </div>
-        <div className={footer}>
-          <p>
-            Footer should be taken from the existing eusi.emsl.pnl.gov/Portal/ styles
-          </p>
-        </div>
+        <Switch>
+          {portalRoutes}
+          {adminRoutes}
+          <Route exact path="/accessError" component={AccessError} />
+          <Route component={InvalidPage} />
+        </Switch>
       </div>
     );
   }
