@@ -305,12 +305,13 @@ static propTypes = {
 
 
 
-    displayErrors(errors) {
+    displayErrors(errors=this.state.errors) {
         const errorArray:string[] = [];
         errors.forEach((error) => {
           errorArray[error.field] = error.tooltip;
         });
-        this.setState({errors: errorArray});
+        // this.setState({errors: errorArray});
+        return errorArray
     }
 
 
@@ -337,9 +338,9 @@ static propTypes = {
 
 
         
-    submitDisabledIs() {
+    submitDisabledIs(errors) {
         let disabledIs = false;
-        const numErrors = Object.keys(this.state.errors).length
+        const numErrors = Object.keys(errors).length
         console.log("Submit Disabled Is Called");
         console.log("Number of Errors", numErrors);
 
@@ -351,7 +352,6 @@ static propTypes = {
         return disabledIs;
     }
 
- 
     submitChanges(e) {
         e.preventDefault();
 
@@ -365,8 +365,9 @@ static propTypes = {
         // else if (errors.length > 0) {
         //     alert('Missing values in form submission')
         // }
+        this.setState({errors})
 
-        this.displayErrors(errors);           
+        // this.displayErrors(errors);           
     }
 
     blankToUndefined(user) {
@@ -460,7 +461,14 @@ static propTypes = {
       };
 
       const user = this.state.user;
-      const errors = this.state.errors;
+      let errors;
+      if(this.state.errors.length !== 0) {
+          const rawErrors = this.validateForm();
+          errors = this.displayErrors(rawErrors);
+      } else {
+          errors = []
+      }
+    //   const errors = this.state.errors;
       console.log("Errors", errors)
       return (
       <div  className={portalContentStyle}>
@@ -506,7 +514,7 @@ static propTypes = {
                 <FormItem {...formItemLayout} label="Dual Citizenship">
                     Needs to be implemented
                 </FormItem> 
-                <Button type="primary" onClick={this.submitChanges} disabled={this.submitDisabledIs()}>Submit All Changes</Button>
+                <Button type="primary" onClick={this.submitChanges} disabled={this.submitDisabledIs(errors)}>Submit All Changes</Button>
                 
 
             </Form>
@@ -599,7 +607,7 @@ static propTypes = {
                     {errors.email && (<FormError error={errors.email}/>)}    
     
                 </FormItem>
-                <Button type="primary" onClick={this.submitChanges} disabled={this.submitDisabledIs()}>Submit All Changes</Button>
+                <Button type="primary" onClick={this.submitChanges} disabled={this.submitDisabledIs(errors)}>Submit All Changes</Button>
 
             </Form>
             </TabPane>
