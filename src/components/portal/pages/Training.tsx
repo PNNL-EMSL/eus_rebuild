@@ -1,6 +1,7 @@
 import React from 'react';
 import {css} from 'emotion';
 import PortalPageBase from 'components/portal/pages/PortalPageBase';
+import TrainingLinks from 'components/portal/components/training/TrainingLinks';
 
 import {colorLightGrey} from 'styles/base';
 
@@ -11,11 +12,30 @@ const trainingFooter: string = css`
   text-align: center;
 `;
 
+const trainingLinks: string = css`
+    width: 70%;
+    margin: auto;
+`;
+
+
 export default class Training extends PortalPageBase {
-  renderContent() {
+    renderTile() {
+        const query = this.GET_USER_ROLE;
+        const role = this.props.client.readQuery({ query }).CurrentUser[0].roleLevel;
+        return (
+            <div>
+                <TrainingLinks role={role} {...this.props} />
+            </div>
+        );
+    };
+
+    renderContent() {
         return (
             <div>
                 <h1>Training Due</h1>
+                <div className={trainingLinks}>
+                    {this.renderTile()}
+                </div>
                 <div className={trainingFooter}>
                     Note: Training records listed here may take 24 hours to update. If any training is
                     due, the links will direct you to PNNL's training site where you'll be asked to

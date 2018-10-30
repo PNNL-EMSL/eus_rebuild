@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NavigationTile from 'components/core/NavigationTile';
+import NavigationTile from 'components/shared/components/NavigationTile';
 import { css } from 'emotion';
 
 const tileContainer: string = css`
