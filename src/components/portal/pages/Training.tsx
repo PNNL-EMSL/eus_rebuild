@@ -1,40 +1,51 @@
 import React from 'react';
 import {css} from 'emotion';
 import PortalPageBase from 'components/portal/pages/PortalPageBase';
-import TrainingLinks from 'components/portal/components/training/TrainingLinks';
+import TrainingLink from 'components/portal/components/training/TrainingLinks';
+
+import pnnlLogo from 'images/PNNL_Logo_grey_transparent.png';
+import iops from 'images/iops_logo.png';
 
 import {colorLightGrey} from 'styles/base';
 
 const trainingFooter: string = css`
-  width: 70%;
+  width: 65%;
   margin: 0 auto 140px auto;
   color: ${colorLightGrey};
   text-align: center;
 `;
 
 const trainingLinks: string = css`
-    width: 70%;
+    width: 50%;
     margin: auto;
+    h1 {
+        color: white;
+    };
 `;
 
 
 export default class Training extends PortalPageBase {
-    renderTile() {
-        const query = this.GET_USER_ROLE;
-        const role = this.props.client.readQuery({ query }).CurrentUser[0].roleLevel;
-        return (
-            <div>
-                <TrainingLinks role={role} {...this.props} />
-            </div>
-        );
-    };
 
     renderContent() {
         return (
             <div>
-                <h1>Training Due</h1>
                 <div className={trainingLinks}>
-                    {this.renderTile()}
+                    <TrainingLink
+                        img={pnnlLogo}
+                        title='Formal'
+                        link='//psportal.pnl.gov/psp/paprod/EMPLOYEE/ELM/c/PNL_LM_SS_LEARNING.PNL_MY_LEARNING.GBL'
+                        linkText='PNNL Online Training site'
+                        username='8706363'
+                        password='87TRN_km'
+                    />
+                    <TrainingLink
+                        img={iops}
+                        title='Lab Specific'
+                        link='//iops.pnl.gov/'
+                        linkText='IOPS Training site'
+                        username='H8706363'
+                        password='8706363'
+                    />
                 </div>
                 <div className={trainingFooter}>
                     Note: Training records listed here may take 24 hours to update. If any training is
