@@ -23,6 +23,6 @@ export default class PortalTileContainer extends TileContainer {
     {id: 3, span: 14, endInnerRow: true, height: 100, width: 240, background: normal, visibleBy:1, text: 'Get Data', img: getData, path: '/Portal/getData'},
     {id: 4, span: 9, startInnerRow: true, height: 100, width: 150, background: normal, visibleBy:10, text: 'Schedule Experiments', img: scheduleExperiments, path: '/Portal/scheduleExperiments'},
     {id: 5, span: 14, endInnerRow: true, height: 100, width: 240, background: normal, visibleBy:1, text: 'Sample Status', img: sampleStatus, path: '/Portal/sampleStatus'},
-    {id: 6, span: 8, height: 210, count: 6, width: 200, background: normal, visibleBy:1, text: 'Reviews', img: reviews, path: '/Portal/userInfo'},
+    {id: 6, span: 8, height: 210, count: 6, width: 200, background: normal, visibleBy:1, text: 'Reviews', img: reviews, path: '/Portal/reviews'},
   ];
 }
