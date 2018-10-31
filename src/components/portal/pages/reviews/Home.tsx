@@ -149,12 +149,12 @@ export default class ReviewsHome extends PortalPageBase {
   }
 
   renderContent() {
-    const filteredProposals = this.getProposalList();
-    const numReviews = filteredProposals.length;
+    const filteredReviews = this.getReviewList();
+    const numReviews = filteredReviews.length;
     // Query the database to get the number of reviews associated with the current user
     const content:JSX.Element[] = [];
     if(this.props.id) {
-      content.push(this.renderLoadReview(this.props.id));
+      content.push(this.renderLoadReview(this.props.id, 1));
     } else {
       if (numReviews > 0) {
         content.push(this.renderProposalReviewList());
