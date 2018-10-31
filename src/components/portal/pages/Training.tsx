@@ -10,7 +10,7 @@ import {colorLightGrey} from 'styles/base';
 
 const trainingFooter: string = css`
   width: 65%;
-  margin: 0 auto 140px auto;
+  margin: 50px auto 140px auto;
   color: ${colorLightGrey};
   text-align: center;
 `;
@@ -25,6 +25,13 @@ const trainingLinks: string = css`
 
 
 export default class Training extends PortalPageBase {
+
+    /**
+     * TODO: Get Traning due from server...
+     * function getTrainingDue(props) {
+     *
+     * }
+     */
 
     renderContent() {
         return (
