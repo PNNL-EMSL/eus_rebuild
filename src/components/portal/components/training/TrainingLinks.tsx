@@ -6,6 +6,7 @@ import {colorDarkGrey} from 'styles/base';
 
 const trainingButton: string = css`
     width: 99%;
+    min-width: 680px;
     height: 180px;
     border-radius: 15px 50px;
     box-shadow: 5px 5px 15px 10px rgba(0, 0, 0, 0.4);
@@ -35,6 +36,7 @@ const trainingText: string = css`
     margin-top: 45px;
     width: 60%;
     float: right;
+    padding-right: 20px;
     h2 {
         margin: 0;
         padding-bottom: 5px;
@@ -62,7 +64,7 @@ export default  class TrainingLinks extends Component<any, any> {
                     </div>
                     <div className={trainingText}>
                         <h2>{this.props.title} Training is Due!</h2>
-                        <span>Get started at the <a href={this.props.link}>{this.props.linkText}</a> using:</span>
+                        <span>Get started at the {this.props.linkText} using:</span>
                         <p>Username: <strong>{this.props.username}</strong></p>
                         <p>Password: <strong>{this.props.password}</strong></p>
                     </div>
