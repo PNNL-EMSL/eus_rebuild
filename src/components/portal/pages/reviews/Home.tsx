@@ -43,6 +43,7 @@ export default class ReviewsHome extends PortalPageBase {
       id: reviewNum,
       proposalTitle: proposal.title,
       user,
+      fileUploaded: false,
       authors: proposal.authors,
       criterion: criteria,
       reviewSummary: '',

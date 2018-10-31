@@ -147,11 +147,6 @@ export const Logo = styled('img')`
   height: 80px;
 `;
 
-export const sliderStyle: string = css`
-  padding-left: 10% !important;
-  padding-right: 10% !important;
-`;
-
 export const modalTableStyle: string = css`
   width: 830px;
   margin-bottom: 20px;

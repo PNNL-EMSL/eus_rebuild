@@ -1,20 +1,13 @@
 import React, {Component} from 'react';
+import ReviewValidator from 'components/shared/components/validator/ReviewValidator';
 
-import { Slider, Input, Form } from 'antd';
-import { sliderStyle, sectionHeaderStyle } from 'styles/base';
-
-const marks = {
-  0: "0",
-  1: "1",
-  2: "2",
-  3: "3",
-  4: "4",
-  5: "5",
-};
+import { Slider, Input, Form, Button } from 'antd';
+import { sectionHeaderStyle } from 'styles/base';
 
 const TextArea = Input.TextArea;
 const FormItem = Form.Item;
 
+const marks = {0: "0", 1: "1", 2: "2", 3: "3", 4: "4", 5: "5"};
 const textAreaLayout = {
   labelCol: {
     sm: { span: 4 },
@@ -22,21 +15,24 @@ const textAreaLayout = {
   wrapperCol: {
     sm: { span: 16 },
   },
-}
+};
 
 export default class ReviewLoad extends Component<any, any> {
+  static VALIDATOR = new ReviewValidator();
+  
   constructor(props) {
     super(props);
 
     this.state = {
-      fileUploaded: false,
       review: this.props.review,
+      errors: [],
     };
 
     this.handleCriterionScoreChange = this.handleCriterionScoreChange.bind(this);
     this.handleCriterionCommentChange = this.handleCriterionCommentChange.bind(this);
     this.handleReviewSummaryChange = this.handleReviewSummaryChange.bind(this);
     this.handleConflictChange = this.handleConflictChange.bind(this);
+    this.handleFileUpload = this.handleFileUpload.bind(this);
 
     this.renderCriterion = this.renderCriterion.bind(this);
     this.renderSummary = this.renderSummary.bind(this);
@@ -45,38 +41,54 @@ export default class ReviewLoad extends Component<any, any> {
 
   saveReview() {
     const review = this.state.review;
-    // set the review status as In Progress
+    // validate the form
+    const errors = this.validateReview(review);
+    if(errors.length === 0) {
+      // if it passes validation, review status should be 'complete'
+      review.reviewStatus = 'Complete';
+    } else {
+      // else, review status is "in progress"
+      review.reviewStatus = 'In Progress';
+    }
 
     this.props.updateReview(review.propId, review.id, review);
+    this.setState({review, errors});
   }
 
   submitReview() {
     const review = this.state.review;
     // Validate the form
+    const errors = this.validateReview(review);
     // If the form passes validation
     // Set the reviewStatus as Submitted
 
     this.props.updateReview(review.propId, review.id, review);
+    this.setState({review})
   }
 
-  validateReview() {
-    console.log('Do the validation logic');
+  validateReview(review) {
+    return ReviewLoad.VALIDATOR.doValidate(review, 'reviewForm');
   }
 
   handleCriterionScoreChange(id, value) {
-    console.log('criterionScoreChange', id, value);
     const criteria = this.state.review.criterion;
     criteria.find((crit) => crit.id === id).score = value;
     this.setState({review: this.state.review});
   }
 
   handleCriterionCommentChange(id, value) {
-    console.log('criterionCommentChange', id, value);
     const criteria = this.state.review.criterion;
     criteria.find((crit) => crit.id === id).comment = value;
     this.setState({review: this.state.review});
   }
 
+  handleFileUpload() {
+    console.log('errors', this.validateReview(this.state.review));
+    this.state.review.fileUploaded = true;
+    this.setState({review: this.state.review});
+    console.log('errors', this.validateReview(this.state.review));
+  }
+  
   handleReviewSummaryChange(e) {
     this.state.review.reviewSummary = e.target.value;
     this.setState({review: this.state.review});
@@ -108,10 +120,10 @@ export default class ReviewLoad extends Component<any, any> {
           <h4 className={sectionHeaderStyle}>{criterion.title + ' - ' + criterion.weight + '%'}</h4>
           <p>{criterion.text}</p>
           <Form>
-            <FormItem className={sliderStyle}>
+            <FormItem  {...textAreaLayout} label="Score" required={true}>
               <Slider marks={marks} step={0.1} max={5} included={false} onAfterChange={scoreChange}/>
             </FormItem>
-            <FormItem {...textAreaLayout} label="Comments" colon={true} required={!this.state.fileUploaded}>
+            <FormItem {...textAreaLayout} label="Comments" colon={true} required={!this.state.review.fileUploaded}>
               <TextArea value={criterion.comment} onChange={commentChange}/>
             </FormItem>
           </Form>
@@ -129,7 +141,7 @@ export default class ReviewLoad extends Component<any, any> {
           Please provide an overall summary of your assessment, including any recommendations regarding this proposal.
         </p>
         <Form>
-          <FormItem {...textAreaLayout} label="Summary Comments" colon={true} required={!this.state.fileUploaded}>
+          <FormItem {...textAreaLayout} label="Summary Comments" colon={true} required={!this.state.review.fileUploaded}>
             <TextArea value={this.state.review.reviewSummary} onChange={this.handleReviewSummaryChange}/>
           </FormItem>
         </Form>
@@ -188,6 +200,12 @@ export default class ReviewLoad extends Component<any, any> {
             form for the proposal type you are reviewing. If you aren't sure which one you should use, please contact
             the User Support Office (509-371-6003 or <a href="mailto:emsl@pnnl.gov">emsl@pnnl.gov</a>).
           </p>
+          <br/>
+          <Form>
+            <FormItem {...textAreaLayout} label="Attach Document">
+              <Button onClick={this.handleFileUpload}>Upload File</Button>
+            </FormItem>
+          </Form>
         </div>
         <ul>
           <li>
