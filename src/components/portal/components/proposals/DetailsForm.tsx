@@ -4,6 +4,7 @@ import AntDesignSelect from 'components/shared/components/AntDesignSelect';
 import ProposalTypeSelect from 'components/portal/components/proposals/ProposalTypeSelect';
 import ResearchAreas from 'components/portal/components/proposals/ResearchAreas.json';
 import ProposalTypes from 'components/portal/components/proposals/ProposalTypes.json';
+import moment from 'moment';
 import {DatePicker, Input, Radio, Form} from 'antd';
 
 const FormItem = Form.Item;
@@ -94,7 +95,7 @@ export default class DetailsForm extends WizardPage {
   }
 
   handleDateChange(startDate) {
-    console.log(startDate);
+    startDate = startDate.format('MMMM DD, YYYY');
     this.setState({startDate});
   }
 
@@ -125,7 +126,7 @@ export default class DetailsForm extends WizardPage {
   render() {
     const data = this.state;
     const dateFormat = 'MMMM DD, YYYY';
-    console.log('debug');
+    const startDate = data.startDate !== undefined ? moment(data.startDate, dateFormat) : undefined;
     const formItemLayout = {
       labelCol: {
         sm: { span: 6 },
@@ -154,8 +155,8 @@ export default class DetailsForm extends WizardPage {
               otherValue={data.researchOther}
               handleChange={this.handleAreaChange}
               handleInput={this.handleAreaOther}
-              validateSelect={errors && errors.some((error) => (error.name === 'researchArea'))}
-              validateSelectOther={errors && errors.some((error) => (error.name === 'researchOther'))}
+              validateSelect={errors && errors.some((error) => (error.field === 'researchArea'))}
+              validateSelectOther={errors && errors.some((error) => (error.field === 'researchOther'))}
               required={true}
             />
           <FormItem 
@@ -210,7 +211,7 @@ export default class DetailsForm extends WizardPage {
             label="Preferred Start Date" 
             required={true}
           >
-            <DatePicker defaultValue={data.startDate} format={dateFormat} onChange={this.handleDateChange}/>
+            <DatePicker defaultValue={startDate} format={dateFormat} onChange={this.handleDateChange}/>
           </FormItem>
           <hr />
           <FormItem 

@@ -62,7 +62,7 @@ export default class PortalHeader extends HeaderBase {
     return (
       <div>
         <span className={headerSpan}>
-          <Logo src={logo} alt="logo"/>
+          <Link to="/Portal" ><Logo src={logo} alt="logo"/></Link>
           <Polygon src={polygon} alt="polygon" />
           <p className={headerText}>USER PORTAL</p>  
             {
