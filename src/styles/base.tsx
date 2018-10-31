@@ -66,7 +66,7 @@ export const portalContentStyle: string = css`
 
 export const contentStyle: string = css`
   margin: 0px 20px 150px 20px;
-  max-width: 1024px;
+  max-width: 100%;
   top: 100px;
   position: relative;
 `;
