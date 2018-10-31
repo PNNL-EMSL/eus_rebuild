@@ -166,7 +166,7 @@ export default class ReviewsHome extends PortalPageBase {
       <div className={portalContentStyle}>
         <Button className={buttonMargin} type="primary" onClick={this.handleChangeToAdmin}>View as 'admin'</Button>
         <Button className={buttonMargin} type="primary" onClick={this.handleChangeToUser}>View as 'user'</Button>
-        <Button className={buttonMargin} type="primary" onClick={this.handleChangeToGuest}>View as 'guest'</Button>
+        <Button className={buttonMargin} type="primary" onClick={this.handleChangeToGuest}>View as 'Science Panel Lead'</Button>
         {content}
       </div>
     )
