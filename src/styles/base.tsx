@@ -116,6 +116,18 @@ export const buttonMargin: string = css`
   margin: 10px;
 `;
 
+export const declineButton: string = css`
+  ${buttonMargin};
+  background: ${colorRed} !important;
+  color: ${colorWhite} !important;
+`;
+
+export const acceptButton: string = css`
+  ${buttonMargin};
+  background: ${colorLightGreen} !important;
+  color: ${colorWhite} !important;
+`;
+
 export const twoLineButton: string = css`
   height: 45px !important;
 `;
@@ -125,8 +137,19 @@ export const errorStyle: string = css`
   line-height: 1.5;
 `;
 
+export const sectionHeaderStyle: string = css`
+  background: ${colorLightGreen};
+  padding: 10px;
+  color: ${colorWhite};
+`;
+
 export const Logo = styled('img')`
   height: 80px;
+`;
+
+export const sliderStyle: string = css`
+  padding-left: 10% !important;
+  padding-right: 10% !important;
 `;
 
 export const modalTableStyle: string = css`
