@@ -57,12 +57,11 @@ export default class AdminHeader extends HeaderBase {
     super(props);
   }
 
-
   renderContent(data) {
     return (
       <div>
         <span className={headerSpan}>
-          <Logo src={logo} alt="logo"/>
+          <Link to="/EUSAdmin"><Logo src={logo} alt="logo" /></Link>
           <Polygon src={polygon} alt="polygon" />
           <p className={headerText}>EMSL USER ADMIN</p>
           {

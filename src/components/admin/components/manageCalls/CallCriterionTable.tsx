@@ -1,24 +1,34 @@
 import React, {Component} from 'react';
 import CallCriterionRow from 'components/admin/components/manageCalls/CallCriterionRow';
 import NewCallCriterion from 'components/admin/components/manageCalls/NewCallCriterion';
-import {Button, Modal} from 'antd';
-import {buttonMargin} from 'styles/base';
+import {Button, Modal, Form, Input} from 'antd';
+import {buttonMargin, modalTableStyle} from 'styles/base';
 
 import SampleCriteria from 'components/admin/components/manageCalls/SampleCriteria.json';
 
+const FormItem = Form.Item;
+
 export default class CallCriterionTable extends Component<any, any>{
+  static EXISTING = SampleCriteria.SampleCriteria;
+
   constructor(props) {
     super(props);
     
     this.state = {
       showExistingModal: false,
-      showNewModal: false
+      showNewModal: false,
+      filterInput: ''
     };
-    
-    this.getCriteriaRows = this.getCriteriaRows.bind(this);
+
     this.showNewCriteriaModal = this.showNewCriteriaModal.bind(this);
     this.showExistingCriteriaModal = this.showExistingCriteriaModal.bind(this);
     this.closeModals = this.closeModals.bind(this);
+    this.handleFilterChange = this.handleFilterChange.bind(this);
+    this.applyEvenWeights = this.applyEvenWeights.bind(this);
+    this.getCriteriaRows = this.getCriteriaRows.bind(this);
+    this.getExistingCriteria = this.getExistingCriteria.bind(this);
+    this.addToCriteria = this.addToCriteria.bind(this);
+    
   }
 
   showNewCriteriaModal() {
@@ -30,70 +40,131 @@ export default class CallCriterionTable extends Component<any, any>{
   }
   
   closeModals() {
-    this.setState({showNewModal: false, showExistingModal: false});
+    this.setState({showNewModal: false, showExistingModal: false, filterInput: ''});
   }
 
-
+  handleFilterChange(e) {
+    this.setState({filterInput: e.target.value});
+  }
+  
+  applyEvenWeights() {
+    const evenWeight = Math.round(100 / this.props.criteria.length);
+    let runningTotal = 0;
+    const instance = this;
+    this.props.criteria.forEach((criteria, index) => {
+      if((instance.props.criteria.length - 1 !== index)) {
+        criteria.weight = evenWeight;
+      } else {
+        criteria.weight = 100 - runningTotal;
+      }
+      instance.props.handleCriteriaChange(criteria);
+      runningTotal += evenWeight;
+    })
+  }
   
   getCriteriaRows() {
     const rows:JSX.Element[] = [];
     let index = 0;
-    this.props.criteria.forEach((item) => {
+    this.props.criteria.forEach((item, itemIndex) => {
       rows.push(
         <CallCriterionRow
           key={index++}
           data={item}
-          handleWeightChange={this.props.handleWeightChange}
-          handlePanelReviewChange={this.props.handlePanelReviewChange}
+          itemIndex
+          first={itemIndex === 0}
+          last={itemIndex === (this.props.criteria.length - 1)}
+          handleCriteriaChange={this.props.handleCriteriaChange}
+          moveUp={this.props.moveUp}
+          moveDown={this.props.moveDown}
           removeCriterion={this.props.onRemove}
         />);
     });
-    
     return rows;
   }
   
   getExistingCriteria() {
     const rows:JSX.Element[] = [];
     let index = 0;
-    SampleCriteria.SampleCriteria.forEach((item) => {
+    CallCriterionTable.EXISTING.forEach((item) => {
       if(this.props.criteria.findIndex((selected) => (selected.title === item.title)) === -1) {
-        rows.push(
-          <CallCriterionRow
-            key={index++}
-            data={item}
-            handleWeightChange={this.props.handleWeightChange}
-            handlePanelReviewChange={this.props.handlePanelReviewChange}
-            addCriterion={this.props.onAdd}
-            add={true}
-          />);
+        if(item.title.toLowerCase().includes(this.state.filterInput.toLowerCase()) || item.text.toLowerCase().includes(this.state.filterInput.toLowerCase())) {
+          rows.push(
+            <CallCriterionRow
+              key={index++}
+              data={item}
+              addCriterion={this.props.onAdd}
+              add={true}
+            />);
+        }
       }
     });
-
     return rows;
+  }
+
+  addToCriteria(data) {
+    const existing = CallCriterionTable.EXISTING;
+    // read data from SampleCriteria.json
+
+    data.id = existing.length + 1;
+    existing.push(data);
+    // splice in data passed in
+    // as part of above, update id in data to be new id
+
+
+    // write all data back to SampleCriteria.json
+
+    const criteriaCopy = JSON.parse(JSON.stringify(data));
+    this.props.onAdd(criteriaCopy);
+    this.closeModals();
   }
 
   render() {
     const content = this.getCriteriaRows();
     const existingContent = this.getExistingCriteria();
+    const formItemLayout = {
+      labelCol: {
+        sm: { span: 5 },
+      },
+      wrapperCol: {
+        sm: { span: 17 },
+      },
+    };
     return(
       <div>
         <Button type="primary" className={buttonMargin} onClick={this.showExistingCriteriaModal}>Add Existing Criteria</Button>
         <Button type="primary" className={buttonMargin} onClick={this.showNewCriteriaModal}>Create New Criteria</Button>
+        <Button type="primary" className={buttonMargin} disabled={this.props.criteria.length === 0} onClick={this.applyEvenWeights}>Apply weights evenly</Button>
         <Modal
           title="Create New Criterion"
           visible={this.state.showNewModal}
-          onOk={this.props.onAdd}
+          footer={null}
           onCancel={this.closeModals}
+          width={700}
         >
-          <NewCallCriterion onAdd={this.props.onAdd}/>
+          <NewCallCriterion onAdd={this.addToCriteria}/>
         </Modal>
         <Modal
           title="Add Existing Criterion"
           visible={this.state.showExistingModal}
-          onOk={this.props.onAdd}
+          footer={null}
           onCancel={this.closeModals}
+          width={900}
         >
-          <table>
+          <Form>
+            <FormItem label="Search filter" {...formItemLayout}>
+              <Input value={this.state.filterInput} onChange={this.handleFilterChange} />
+            </FormItem>
+          </Form>
+          <table className={modalTableStyle} >
+            <thead>
+            <tr>
+              <th style={{width: '270px'}}>Criteria title</th>
+              <th style={{width: '300px'}}>Criteria Description</th>
+              <th style={{width: '95px'}} >Default Weight (%)</th>
+              <th style={{width: '75px'}}>Show to External Reviewers by Default?</th>
+              <th style={{width: '30px'}}/>
+            </tr>
+            </thead>
             <tbody>
               {existingContent}
             </tbody>
@@ -103,10 +174,11 @@ export default class CallCriterionTable extends Component<any, any>{
           <table className="table table-striped table-bordered">
             <thead>
               <tr>
-                <th>Criteria title</th>
-                <th>Criteria Description</th>
+                <th style={{width: '270px'}}>Criteria title</th>
+                <th style={{width: '300px'}}>Criteria Description</th>
                 <th style={{width: '95px'}} >Weight (%)</th>
-                <th style={{width: '75px'}}>Show to Review Panel?</th>
+                <th style={{width: '75px'}}>Show to External Reviewers?</th>
+                <th style={{width: '30px'}}/>
                 <th style={{width: '30px'}}/>
               </tr>
             </thead>
