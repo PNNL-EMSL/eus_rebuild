@@ -14,6 +14,9 @@ const quickLinksMenu: string = css`
 const quickLinkContainer: string = css`
   &:hover {
     background-color: ${colorLightGrey};
+    span {
+      color: ${colorLightOrange};
+    }
   }
   height: 2.5em;
   width: 100%;
