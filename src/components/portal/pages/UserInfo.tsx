@@ -514,7 +514,6 @@ static propTypes = {
                 <FormItem {...formItemLayout} label="Dual Citizenship">
                     Needs to be implemented
                 </FormItem> 
-                <Button type="primary" onClick={this.submitChanges} disabled={this.submitDisabledIs(errors)}>Submit All Changes</Button>
                 
 
             </Form>
@@ -609,11 +608,15 @@ static propTypes = {
                     {errors.email && (<FormError error={errors.email}/>)}    
     
                 </FormItem>
-                <Button type="primary" onClick={this.submitChanges} disabled={this.submitDisabledIs(errors)}>Submit All Changes</Button>
+                
 
             </Form>
             </TabPane>
         </Tabs>
+        
+        {Object.keys(errors).length > 0 && (<FormError error="Please fill out the remaining required fields on both the Personal and Professional tabs. "/>)}
+        <Button type="primary" onClick={this.submitChanges} disabled={this.submitDisabledIs(errors)}>Submit All Changes</Button>
+      
       </div>
     );
 
