@@ -23,8 +23,10 @@ export default class UserProfileValidator extends ValidatorBase {
                 {func: this.validateNotEmptyOrUndefined, field: "stateOrProv", tooltip: "Please enter your institution's state or providence"},
                 {func: this.validateNotEmptyOrUndefined, field: "postalCode", tooltip: "Please enter your institution's postal code"},
                 {func: this.validateNotEmptyOrUndefined, field: "phone", tooltip: "Please enter your business phone"},
-                {func: this.validatePhoneNumberFormat, field: "phone", tooltip: "Incorrect phone number format"},
-                {func: this.validateNotEmptyOrUndefined, field: "email", tooltip: "Please enter your business email"}
+                {func: this.validatePhoneAndFaxNumberFormat, field: "phone", tooltip: "Incorrect phone number format"},
+                {func: this.validatePhoneAndFaxNumberFormat, field: "fax", tooltip: "Incorrect fax number format"},
+                {func: this.validateNotEmptyOrUndefined, field: "email", tooltip: "Please enter your business email"},
+                {func: this.validateEmailFormat, field: "email", tooltip: "Please enter a valid email address"}
                 
             ]
 
@@ -33,7 +35,7 @@ export default class UserProfileValidator extends ValidatorBase {
     
     };
 
-    validatePhoneNumberFormat(data, field, tooltip) {
+    validatePhoneAndFaxNumberFormat(data, field, tooltip) {
         if (data !== undefined && data !== "") {
             if (!data.match(/^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/g)) {
                 return {field, tooltip};
@@ -43,24 +45,13 @@ export default class UserProfileValidator extends ValidatorBase {
         return undefined;
     }
 
-    validatePrefix(data, tooltip) {
-        if(data.prefix === undefined || data.prefix === 'other' && data.prefixOther === '') {
-          return {field: "prefix", tooltip};
+    validateEmailFormat(data, field, tooltip) {
+        if (data !== undefined && data !== "") {
+            if (!data.match(/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$/)) {
+                return {field, tooltip}
+            }
         }
-        return undefined;
-      }
 
-    // validateProfession(data, tooltip) {
-    //     if(data.prefix === undefined || data.prefix === 'other' && data.prefixOther === '') {
-    //       return {field: "profession", tooltip};
-    //     }
-    //     return undefined;
-    // }
-
-    validateInstitutionType(data, tooltip) {
-        if(data.prefix === undefined || data.prefix === 'other' && data.prefixOther === '') {
-          return {field: "institutionType", tooltip};
-        }
         return undefined;
     }
 

@@ -598,8 +598,10 @@ static propTypes = {
                     <Input defaultValue={user.phone} onChange={this.handlePhoneChange}/>  
                     {errors.phone && (<FormError error={errors.phone}/>)}    
                 </FormItem>
-                <FormItem {...formItemLayout} label="Business fax number">
-                    <Input defaultValue={user.fax} onChange={this.handleFaxChange}/>    
+                <FormItem {...formItemLayout} label="Business fax number" 
+                    validateStatus={errors && errors.fax ? 'error' : undefined}>
+                    <Input defaultValue={user.fax} onChange={this.handleFaxChange}/>
+                    {errors.fax && (<FormError error={errors.fax}/>)}    
                 </FormItem>
                 <FormItem {...formItemLayout} required={true} label="Business email address"
                     validateStatus={errors && errors.email ? 'error' : undefined} >                    
