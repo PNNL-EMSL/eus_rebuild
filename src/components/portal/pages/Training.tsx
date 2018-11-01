@@ -6,13 +6,16 @@ import TrainingLink from 'components/portal/components/training/TrainingLinks';
 import pnnlLogo from 'images/PNNL_Logo_grey_transparent.png';
 import iops from 'images/iops_logo.png';
 
-import {colorLightGrey} from 'styles/base';
+import {colorLightGrey, colorLightOrange} from 'styles/base';
 
 const trainingFooter: string = css`
   width: 65%;
   margin: 50px auto 140px auto;
   color: ${colorLightGrey};
   text-align: center;
+  a, a:hover {
+      color: ${colorLightOrange};
+  }
 `;
 
 const trainingLinks: string = css`
