@@ -29,6 +29,7 @@ const newsDiv:string = css`
 
 const mainContent:string = css`
   width: 83%;
+  min-width: 860px;
   float: right;
   display: inline-block;
 `;
