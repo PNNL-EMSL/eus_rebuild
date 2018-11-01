@@ -8,7 +8,6 @@ import styled from 'react-emotion';
 
 export const colorBlack = ' #0D1B2A';
 export const colorRed = '#BE5959';
-export const colorDarkGreenSubMenu = '#1e4647';
 
 export const colorLightGrey = '#E1E1E3';
 export const colorDisabled = '#AAAAAA';
@@ -84,6 +83,7 @@ export const adminFormContentStyle: string = css`
   background: ${colorWhite};
   overflow: auto;
   max-height: calc(100vh - 180px);
+  min-height: calc(100vh - 180px);
   margin: 20px;
   padding: 20px;
 `;
@@ -112,6 +112,38 @@ export const fontAwesomeContainerStyle: string = css`
   min-height: 100px
 `;
 
+export const buttonMargin: string = css`
+  margin: 10px;
+`;
+
+export const twoLineButton: string = css`
+  height: 45px !important;
+`;
+
+export const errorStyle: string = css`
+  color: ${colorRed};
+  line-height: 1.5;
+`;
+
 export const Logo = styled('img')`
   height: 80px;
+`;
+
+export const modalTableStyle: string = css`
+  width: 830px;
+  margin-bottom: 20px;
+  background-color: transparent;
+  border: 1px solid #ddd;
+  border-spacing: 0;
+  border-collapse: collapse;
+  tbody>tr:nth-of-type(odd) {
+    background-color: #f9f9f9
+  }
+  tbody>tr>td, thead>tr>th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+  }
+  
 `;
