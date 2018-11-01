@@ -1,5 +1,4 @@
 import ValidatorBase from 'components/shared/components/validator/ValidatorBase';
-import moment from 'moment';
 
 export default class ReviewValidator extends ValidatorBase {
 

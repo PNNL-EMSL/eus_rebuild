@@ -143,6 +143,14 @@ export const sectionHeaderStyle: string = css`
   color: ${colorWhite};
 `;
 
+export const conflictSectionStyle: string = css`
+  margin-left: 10%;
+  margin-right: 10%;
+  background: ${colorLightOrange};
+  padding: 20px;
+  border: ${colorBlack} solid 1px;
+`;
+
 export const Logo = styled('img')`
   height: 80px;
 `;

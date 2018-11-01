@@ -1,7 +1,7 @@
 import React from 'react';
 import PortalPageBase from 'components/portal/pages/PortalPageBase';
 import ReviewLoad from 'components/portal/pages/reviews/Load';
-// import ReviewsNew from 'components/portal/pages/reviews/New';
+import FormError from 'components/shared/components/FormError';
 import { Button, Checkbox } from 'antd'
 import {Link} from 'react-router-dom';
 import moment from 'moment';
@@ -51,6 +51,7 @@ export default class ReviewsHome extends PortalPageBase {
       dueDate: moment().add(((Math.floor(Math.random() * 7) + 3)), 'days').format('MM-DD-YYYY'),
       reviewerType: panel ? 'Panel Reviewer' : 'Primary',
       reviewStatus: 'Not Started',
+      reviewPanel: panel
     };
     return reviewObj;
   }
@@ -61,6 +62,8 @@ export default class ReviewsHome extends PortalPageBase {
     this.state = {
       curUser: 'admin',
       selectedReviewList: [],
+      submissionError: false,
+      submissionErrorText: '',
     };
 
     this.navigateToNew = this.navigateToNew.bind(this);
@@ -68,6 +71,9 @@ export default class ReviewsHome extends PortalPageBase {
     this.handleChangeToUser = this.handleChangeToUser.bind(this);
     this.handleChangeToAdmin = this.handleChangeToAdmin.bind(this);
     this.handleChangeToGuest = this.handleChangeToGuest.bind(this);
+    this.handleCreateForPanel = this.handleCreateForPanel.bind(this);
+    this.handleSubmitChecked = this.handleSubmitChecked.bind(this);
+    this.handleDeclineChecked = this.handleDeclineChecked.bind(this);
     this.renderProposalReviewList = this.renderProposalReviewList.bind(this);
     this.updateReview = this.updateReview.bind(this);
   }
@@ -76,9 +82,33 @@ export default class ReviewsHome extends PortalPageBase {
     this.props.history.push('/Portal/reviews/new');
   }
   
-  updateReview(propId, reviewId, review) {
+  updateReview(propId, reviewId, review, redirect=false) {
     ReviewsHome.allReviews[propId-1].reviews[reviewId-1] = review;
-    this.props.history.push('/Portal/reviews/');
+    ReviewsHome.allReviews[propId-1].reviews[reviewId-1].criterion = review.criterion;
+    if(redirect) {
+      this.props.history.push('/Portal/reviews');
+    }
+  }
+
+  checkProposalReviews() {
+    ReviewsHome.allReviews.forEach((proposal) => {
+      let allReviewsComplete = true;
+      let panelReviewCreated = false;
+      proposal.reviews.forEach((review) => {
+        if(review.reviewStatus !== 'Submitted' && review.reviewStatus !== 'Submitted - hide') {
+          allReviewsComplete = false;
+        } else {
+          review.reviewStatus = 'Submitted - hide';
+        }
+        if(review.reviewsType === 'Panel Reviewer') {
+          panelReviewCreated = true;
+        }
+      });
+      if(allReviewsComplete && !panelReviewCreated) {
+        proposal.reviews.push(ReviewsHome.createReview(proposal, proposal.panelReview, proposal.reviews.length+1, true))
+      }
+    });
+    this.setState(this.state);
   }
 
   renderNoReviews() {
@@ -95,7 +125,6 @@ export default class ReviewsHome extends PortalPageBase {
   
   renderLoadReview(proposalId, reviewId) {
     const review = ReviewsHome.allReviews[proposalId-1].reviews[reviewId-1];
-    console.log('loadReview', review);
     return (
       <div key="load">
         <ReviewLoad review={review} {...this.props} updateReview={this.updateReview} />
@@ -106,7 +135,6 @@ export default class ReviewsHome extends PortalPageBase {
   getReviewList() {
     const filtered:any[] = [];
     ReviewsHome.allReviews.forEach((proposal) => {
-      console.log('80, reviews/home', proposal);
       if(proposal.reviewers !== 'complete') {
         proposal.reviews.forEach((review) => {
           if (review.user === this.state.curUser) {
@@ -130,6 +158,60 @@ export default class ReviewsHome extends PortalPageBase {
     this.setState({curUser: 'guest'});
   }
 
+  handleSubmitChecked() {
+    let submitError = false;
+    let errorText = '';
+    if(this.state.selectedReviewList.length === 0) {
+      submitError = true;
+      errorText = 'Please select at least one review to submit';
+    }
+    this.state.selectedReviewList.forEach((id) => {
+      const propId = id.split('_')[0];
+      const reviewId = id.split('_')[1];
+      const review = ReviewsHome.allReviews[propId-1].reviews[reviewId-1];
+      if(review.reviewStatus === 'Complete') {
+        review.reviewStatus = 'Submitted';
+      } else if(review.reviewStatus === 'Not Started' || review.reviewStatus === 'In Progress') {
+        submitError = true;
+        errorText = 'Unable to submit reviews which are not complete. Complete reviews have been submitted';
+      }
+    });
+    this.setState({submissionError: submitError, submissionErrorText: errorText});
+  }
+
+  handleDeclineChecked() {
+    let submitError = false;
+    let errorText = '';
+    if(this.state.selectedReviewList.length === 0) {
+      submitError = true;
+      errorText = 'Please select at least one review to decline';
+    }
+    this.state.selectedReviewList.forEach((id) => {
+      const propId = id.split('_')[0];
+      const reviewId = id.split('_')[1];
+      const review = ReviewsHome.allReviews[propId-1].reviews[reviewId-1];
+      review.reviewStatus = 'Decline - hide';
+    });
+    this.setState({submissionError: submitError, submissionErrorText: errorText});
+  }
+
+  handleCreateForPanel() {
+    this.checkProposalReviews();
+  }
+
+  calculateReviewScore(review) {
+    let reviewScore = 0;
+    let sumWeights = 0;
+    review.criterion.forEach((criterion) => {
+      sumWeights += criterion.weight;
+    });
+    review.criterion.forEach((criterion) => {
+      reviewScore += criterion.score !== undefined ? (criterion.score * criterion.weight) / sumWeights : 0;
+    });
+    // If there are no scores yet, we don't want to display this in the summary.
+    return reviewScore === 0 ? undefined : reviewScore.toPrecision(3);
+  }
+
   renderProposalReviewList() {
     // Get the list of proposal reviews for current user
       // TODO: Add two-three proposals to review for two different users.
@@ -138,10 +220,9 @@ export default class ReviewsHome extends PortalPageBase {
     const reviews = this.getReviewList();
     const content:JSX.Element[] = [];
     const instance = this;
+
     reviews.forEach((review) => {
-      console.log('107, reviews/home', review);
       function addToSelected(e) {
-        console.log('checkbox Change, review, checked', review, e.target.checked);
         const selectedReviewList = instance.state.selectedReviewList;
         if(e.target.checked) {
           selectedReviewList.push(review.propId+'_'+review.id);
@@ -150,29 +231,41 @@ export default class ReviewsHome extends PortalPageBase {
         }
         instance.setState({selectedReviewList})
       }
+      if(!review.reviewStatus.includes('hide')) {
+        const score = instance.calculateReviewScore(review);
 
-      content.push(
-        <tr>
-          <td><Checkbox checked={this.state.selectedReviewList.includes(review.propId + '_' + review.id)} onChange={addToSelected} /></td>
-          <td>{review.proposalTitle}</td>
-          <td>{review.authors[0]}</td>
-          <td>{review.dueDate}</td>
-          <td>{review.reviewerType}</td>
-          <td>
-            <div>
-              <i>{review.reviewStatus}</i>
-            </div>
-            {review.reviewStatus !== 'Not Started' ? (
+        let statusLinkText = '';
+        if(review.reviewStatus === 'Not Started') {
+          statusLinkText = 'Start Review';
+        } else if(review.reviewStatus === 'Submitted') {
+          statusLinkText = 'View Review';
+        } else {
+          statusLinkText = 'Continue Review';
+        }
+        content.push(
+          <tr>
+            <td style={{textAlign: 'center'}}>
+              <Checkbox
+                checked={this.state.selectedReviewList.includes(review.propId + '_' + review.id)}
+                onChange={addToSelected}
+              />
+            </td>
+            <td>{review.proposalTitle}</td>
+            <td>{review.authors[0]}</td>
+            <td>{review.dueDate}</td>
+            <td>{review.reviewerType}</td>
+            <td>
               <div>
-                <div>{review.score}</div>
-                <Link to={'/Portal/reviews/' + review.propId+'_'+review.id} >Continue Review</Link>
+                <i>{review.reviewStatus}</i>
               </div>
-            ) : (
-              <Link to={'/Portal/reviews/' + review.propId+'_'+review.id} >Start Review</Link>
-            )}
-          </td>
-        </tr>
-      );
+              <div>
+                {score !== undefined && (<div>{score} / 5.00</div>)}
+                <Link to={'/Portal/reviews/' + review.propId+'_'+review.id}>{statusLinkText}</Link>
+              </div>
+            </td>
+          </tr>
+        );
+      }
     });
 
     function handleSelectAll() {
@@ -202,19 +295,24 @@ export default class ReviewsHome extends PortalPageBase {
         <Button className={buttonMargin} type="primary" onClick={this.handleChangeToAdmin}>View as 'admin'</Button>
         <Button className={buttonMargin} type="primary" onClick={this.handleChangeToUser}>View as 'user'</Button>
         <Button className={buttonMargin} type="primary" onClick={this.handleChangeToGuest}>View as 'Science Panel Lead'</Button>
+
+        <Button style={{float: 'right'}} className={buttonMargin} type="primary" onClick={this.handleCreateForPanel}>Create Science Panel from submitted</Button>
         <h3>Reviews</h3>
         <ol>
           <li>To read the complete proposal details, click the  Review Package link in the Proposal Column</li>
           <li>To review the proposal, click the review link in the Status Column</li>
         </ol>
+        <div style={{textAlign: 'center'}}>
+          {this.state.submissionError && (<FormError error={this.state.submissionErrorText} />)}
+        </div>
         <div>
           Select:
           <Button className={buttonMargin} onClick={handleSelectAll} >All</Button>
           <Button className={buttonMargin} onClick={handleSelectCompleted} >Completed</Button>
           <Button className={buttonMargin} onClick={handleSelectNone} >None</Button>
           <span style={{float: 'right'}}>
-            <Button className={acceptButton}>Submit selected reviews</Button>
-            <Button className={declineButton}>Decline selected reviews</Button>
+            <Button className={acceptButton} onClick={this.handleSubmitChecked}>Submit selected reviews</Button>
+            <Button className={declineButton} onClick={this.handleDeclineChecked}>Decline selected reviews</Button>
           </span>
         </div>
         <table className="table table-striped table-bordered">
@@ -244,7 +342,6 @@ export default class ReviewsHome extends PortalPageBase {
     if(this.props.id) {
       const propId = this.props.id.split('_')[0];
       const reviewId = this.props.id.split('_')[1];
-      console.log('load', this.props.id, propId, reviewId);
       content.push(this.renderLoadReview(propId, reviewId));
     } else {
       if (numReviews > 0) {
