@@ -63,7 +63,7 @@ export default  class TrainingLinks extends Component<any, any> {
                         <img src={this.props.img} />
                     </div>
                     <div className={trainingText}>
-                        <h2>{this.props.title} Training is Due!</h2>
+                        <h2>{this.props.title} Training is Due</h2>
                         <span>Get started at the {this.props.linkText} using:</span>
                         <p>Username: <strong>{this.props.username}</strong></p>
                         <p>Password: <strong>{this.props.password}</strong></p>
