@@ -44,6 +44,7 @@ const carouselInfos = [
     id: 1,
     text: 'First carousel item',
     imgUrl: 'https://us-east-1.tchyn.io/snopes-production/uploads/2017/12/science-stock-image.png',
+    webUrl: 'https://www.emsl.pnl.gov/emslweb/',
     order: 1,
     display: true,
     __typename: 'CarouselInfoItem',
@@ -52,7 +53,44 @@ const carouselInfos = [
     id: 2,
     text: 'Second carousel item',
     imgUrl: 'https://www.thegreatcourses.com/media/catalog/product/cache/1/image/800x600/0f396e8a55728e79b48334e699243c07/1/3/1350---base_image_1.1474391708.jpg',
+    webUrl: 'https://www.emsl.pnl.gov/emslweb/',
     order: 2,
+    display: true,
+    __typename: 'CarouselInfoItem',
+  },
+  {
+    id: 3,
+    text: 'Third carousel item',
+    imgUrl: 'http://www.pngmart.com/files/4/Science-PNG-Picture.png',
+    webUrl: 'https://www.emsl.pnl.gov/emslweb/',
+    order: 3,
+    display: true,
+    __typename: 'CarouselInfoItem',
+  },
+  {
+    id: 4,
+    text: 'First carousel item',
+    imgUrl: 'https://us-east-1.tchyn.io/snopes-production/uploads/2017/12/science-stock-image.png',
+    webUrl: 'https://www.emsl.pnl.gov/emslweb/',
+    order: 4,
+    display: true,
+    __typename: 'CarouselInfoItem',
+  },
+  {
+    id: 5,
+    text: 'Second carousel item',
+    imgUrl: 'https://www.thegreatcourses.com/media/catalog/product/cache/1/image/800x600/0f396e8a55728e79b48334e699243c07/1/3/1350---base_image_1.1474391708.jpg',
+    webUrl: 'https://www.emsl.pnl.gov/emslweb/',
+    order: 5,
+    display: true,
+    __typename: 'CarouselInfoItem',
+  },
+  {
+    id: 6,
+    text: 'Third carousel item',
+    imgUrl: 'http://www.pngmart.com/files/4/Science-PNG-Picture.png',
+    webUrl: 'https://www.emsl.pnl.gov/emslweb/',
+    order: 6,
     display: true,
     __typename: 'CarouselInfoItem',
   }
@@ -63,6 +101,26 @@ const users = [
     userName: 'superadmin',
     password: 'admin',
     email: 'admin@test.com',
+    name: "Super Admin",
+    prefix: "",
+    suffix: "",
+    primaryCitzenship: "",
+    dualCitizenship: "",
+    department: "",
+    businessAddrL1: "",
+    businessAddrL2: "",
+    country: "",
+    stateOrProv: "",
+    city: "",
+    postalCode: "",
+    phone: "",
+    fax: "",
+    institutionType: "",
+    institution: "Admin institution",
+    orcid: "12345",
+    orcidPermissions: "Y",
+    profession: "Professional",
+    professionOther: "",
     roleLevel: 999,
     __typename: 'User',
   },
@@ -70,6 +128,26 @@ const users = [
     userName: 'admin',
     password: 'admin',
     email: 'admin@test.com',
+    name: "Admin User",
+    prefix: "Dr",
+    suffix: "Jr",
+    primaryCitzenship: "USA",
+    dualCitizenship: "",
+    department: "CS",
+    businessAddrL1: "123 Main Street",
+    businessAddrL2: "#345",
+    country: "USA",
+    stateOrProv: "Washington",
+    city: "Richland",
+    postalCode: "99352",
+    phone: "123-456-7890",
+    fax: "098-765-4321",
+    institutionType: "Academia",
+    institution: "Admin institution",
+    orcid: "12346",
+    orcidPermissions: "N",
+    profession: "Professional",
+    professionOther: "",
     roleLevel: 999,
     __typename: 'User',
   },
@@ -77,6 +155,26 @@ const users = [
     userName: 'guest',
     password: 'password',
     email: 'guest@outside.net',
+    name: "Guest User",
+    prefix: "",
+    suffix: "",
+    primaryCitzenship: "",
+    dualCitizenship: "",
+    department: "",
+    businessAddrL1: "",
+    businessAddrL2: "",
+    country: "",
+    stateOrProv: "",
+    city: "",
+    postalCode: "",
+    phone: "",
+    fax: "",
+    institutionType: "",
+    institution: "",
+    orcid: "",
+    orcidPermissions: "",
+    profession: "",
+    professionOther: "",
     roleLevel: 1,
     __typename: 'User',
   },
@@ -84,16 +182,30 @@ const users = [
     userName: 'user',
     password: 'password',
     email: 'user@registered.gov',
+    name: "Registered User",
+    institution: "PNNL",
+    prefix: "",
+    suffix: "",
+    primaryCitzenship: "",
+    dualCitizenship: "",
+    department: "",
+    businessAddrL1: "",
+    businessAddrL2: "",
+    country: "",
+    stateOrProv: "",
+    city: "",
+    postalCode: "",
+    phone: "",
+    fax: "",
+    institutionType: "",
+    orcid: "",
+    orcidPermissions: "",
+    profession: "",
+    professionOther: "",
     roleLevel: 10,
     __typename: 'User',
   }
 ];
-
-const adminUser = {
-  userName: 'admin',
-  roleLevel: 999,
-  __typename: 'CurrentUser'
-}
 
 // This defines default values and resolvers for any local client variables that are not passed through
 // to the server.
@@ -103,7 +215,7 @@ const clientState = {
     CarouselInfos: carouselInfos,
     Users: users,
     navStyle: 'tiles',
-    CurrentUser: [adminUser],
+    CurrentUser: [users[1]],
   },
   resolvers: {
     Mutation: {
@@ -111,8 +223,8 @@ const clientState = {
         cache.writeData({data: {isLoggedIn: loggedIn, userName}});
         return null;
       },
-      updateNavType: (_, {navStyle}, {cache}) => {
-        cache.writeData({data: {navStyle}});
+      updateNavType: (_, {navCollapsed}, {cache}) => {
+        cache.writeData({data: {navCollapsed}});
         return null;
       }
     }
@@ -126,9 +238,9 @@ const client = new ApolloClient({
   clientState
 });
 
-// This is the starting point to the react application.  It will 
+// This is the starting point to the react application.  It will
 // render the App component into the <div id="root"></div> element
-// of the html.  The template html used by webpack can be found in the 
+// of the html.  The template html used by webpack can be found in the
 // public folder, sibling to src and node_modules.
 ReactDOM.render(
   <BrowserRouter>
@@ -139,9 +251,8 @@ ReactDOM.render(
   document.getElementById('root') as HTMLElement
 );
 
-// This comes with create-react-app by default.  It allows us to 
-// register javascript as a service worker in the browser, which 
+// This comes with create-react-app by default.  It allows us to
+// register javascript as a service worker in the browser, which
 // caches content to allow user to interact with the app in low or no
 // internet connectivity.
 registerServiceWorker();
-

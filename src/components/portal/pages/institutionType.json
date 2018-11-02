@@ -1,0 +1,11 @@
+{"InstitutionType": [
+    {"value":"acd" , "label": "Acadamia"},
+    {"value":"bc" , "label": "Battelle Columbus"},
+    {"value":"doeLab" , "label": "DOE Laboratory (Other than PNNL)"},
+    {"value":"emsl" , "label": "Evironmental Molecular Sciences Lab (EMSL)"},
+    {"value":"fnl" , "label": "Foreign National Laboratory"},
+    {"value":"oga" , "label": "Other Government Agency"},
+    {"value":"pnnl" , "label": "Pacific Northwest National Laboratory (PNNL)"},
+    {"value":"private" , "label": "Private Industry"},
+    {"value":"other" , "label": "Other"}
+  ]}

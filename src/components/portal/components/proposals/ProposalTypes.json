@@ -1,0 +1,8 @@
+{"ProposalTypes": [
+  {"value": "general", "label": "General"},
+  {"value": "partner", "label": "Partner Proposal"},
+  {"value": "calls", "label": "Current Calls", "subGroup": [
+    {"value": "cat", "label": "CAT"},
+    {"value": "pnc", "label": "PNC"}
+  ]}
+]}

@@ -1,0 +1,59 @@
+{
+  "capability": [
+    {"value": "nmr", "label": "NMR"},
+    {"value": "mscf_pilot", "label": "MSCF-Pilot"},
+    {"value": "other", "label": "New Call Theme..."}
+  ],
+  "cat": [
+    {"value": "catalysis", "label": "Catalysis"},
+    {"value": "other", "label": "New Call Theme..."}
+  ],
+  "emsl": [
+
+    {"value": "other", "label": "New Call Theme..."}
+  ],
+  "emsl-arm_joint": [
+
+    {"value": "other", "label": "New Call Theme..."}
+  ],
+  "ficus_jgi-emsl": [
+
+    {"value": "other", "label": "New Call Theme..."}
+  ],
+  "general_cycle": [
+
+    {"value": "other", "label": "New Call Theme..."}
+  ],
+  "grand_challenge": [
+
+    {"value": "other", "label": "New Call Theme..."}
+  ],
+  "jgi-emsl_joint": [
+
+    {"value": "other", "label": "New Call Theme..."}
+  ],
+  "partner": [
+
+    {"value": "other", "label": "New Call Theme..."}
+  ],
+  "research_campaign": [
+
+    {"value": "other", "label": "New Call Theme..."}
+  ],
+  "science_area_research": [
+
+    {"value": "other", "label": "New Call Theme..."}
+  ],
+  "science_theme_research": [
+
+    {"value": "other", "label": "New Call Theme..."}
+  ],
+  "special_science": [
+
+    {"value": "other", "label": "New Call Theme..."}
+  ],
+  "other": [
+    {"value": "other", "label": "New Call Theme..."}
+  ]
+
+}

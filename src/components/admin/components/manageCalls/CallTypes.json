@@ -1,0 +1,16 @@
+{"CallTypes": [
+  {"value": "capability", "label": "Capability"},
+  {"value": "cat", "label": "CAT"},
+  {"value": "emsl", "label": "EMSL"},
+  {"value": "emsl-arm_joint", "label": "EMSL-ARM Joint "},
+  {"value": "ficus_jgi-emsl", "label": "FICUS JGI-EMSL"},
+  {"value": "general_cycle", "label": "General Cycle"},
+  {"value": "grand_challenge", "label": "Grand Challenge"},
+  {"value": "jgi-emsl_joint", "label": "JGI-EMSL Joint Call"},
+  {"value": "partner", "label": "Partner"},
+  {"value": "research_campaign", "label": "Research Campaign"},
+  {"value": "science_area_research", "label": "Science Area Research"},
+  {"value": "science_theme_research", "label": "Science Theme Research"},
+  {"value": "special_science", "label": "Special Science"},
+  {"value": "other", "label": "New Call Type..."}
+]}
