@@ -122,6 +122,54 @@ export default class ReviewsHome extends PortalPageBase {
   }
 
   /**
+   * Set the given reviews to Declined and instruct the user to tell the User Office about this change
+   * @param ids - IDs to set to Decline
+   */
+  declineSubmitted(ids) {
+    const content: JSX.Element[] = [];
+    const instance = this;
+    ids.forEach((id) => {
+      const propId = id.split('_')[0];
+      const reviewId = id.split('_')[1];
+      const review = ReviewsHome.allReviews[propId-1].reviews[reviewId-1];
+      review.reviewStatus = 'Decline - hide';
+      content.push(<li>{review.proposalTitle}</li>)
+    });
+    confirm({
+      title: 'Inform User Office of Decline',
+      content: (
+        <div>
+          Please contact the User Office regarding your declining of reviews for the following proposals:
+          <ul>
+            {content}
+          </ul>
+        </div>
+      ),
+      onOk() {
+        instance.setState({submissionError: instance.state.submissionError});
+      }
+    })
+  }
+
+  /**
+   * Calculate the weighted average of scores for the review
+   * @param review
+   * @returns {string}
+   */
+  calculateReviewScore(review) {
+    let reviewScore = 0;
+    let sumWeights = 0;
+    review.criterion.forEach((criterion) => {
+      sumWeights += criterion.weight;
+    });
+    review.criterion.forEach((criterion) => {
+      reviewScore += criterion.score !== undefined ? (criterion.score * criterion.weight) / sumWeights : 0;
+    });
+    // If there are no scores yet, we don't want to display this in the summary.
+    return reviewScore === 0 ? undefined : reviewScore.toPrecision(3);
+  }
+
+  /**
    * Bound functions section start
    */
 
@@ -199,33 +247,6 @@ export default class ReviewsHome extends PortalPageBase {
     this.setState({submissionError: submitError, submissionErrorText: errorText});
   }
 
-  declineSubmitted(ids) {
-    const content: JSX.Element[] = [];
-    const instance = this;
-    ids.forEach((id) => {
-      const propId = id.split('_')[0];
-      const reviewId = id.split('_')[1];
-      const review = ReviewsHome.allReviews[propId-1].reviews[reviewId-1];
-      console.log('status prior to decline', review.reviewStatus);
-      review.reviewStatus = 'Decline - hide';
-      content.push(<li>{review.proposalTitle}</li>)
-    });
-    confirm({
-      title: 'Inform User Office of Decline',
-      content: (
-        <div>
-          Please contact the User Office regarding your declining of reviews for the following proposals:
-          <ul>
-            {content}
-          </ul>
-        </div>
-      ),
-      onOk() {
-        instance.setState({submissionError: instance.state.submissionError});
-      }
-    })
-  }
-
   /**
    * Declines all the reviews which the user had selected.
    * If at least one of the reviews selected is "Submitted", a modal will be displayed to inform the user to contact
@@ -268,19 +289,6 @@ export default class ReviewsHome extends PortalPageBase {
       // confirm("Please contact the User Office regarding your declining of reviews for the following proposals:")
     }
     this.setState({submissionError: submitError, submissionErrorText: errorText});
-  }
-
-  calculateReviewScore(review) {
-    let reviewScore = 0;
-    let sumWeights = 0;
-    review.criterion.forEach((criterion) => {
-      sumWeights += criterion.weight;
-    });
-    review.criterion.forEach((criterion) => {
-      reviewScore += criterion.score !== undefined ? (criterion.score * criterion.weight) / sumWeights : 0;
-    });
-    // If there are no scores yet, we don't want to display this in the summary.
-    return reviewScore === 0 ? undefined : reviewScore.toPrecision(3);
   }
 
   renderProposalReviewList() {
