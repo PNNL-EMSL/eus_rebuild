@@ -2,12 +2,14 @@ import React from 'react';
 import PortalPageBase from 'components/portal/pages/PortalPageBase';
 import ReviewLoad from 'components/portal/pages/reviews/Load';
 import FormError from 'components/shared/components/FormError';
-import { Button, Checkbox } from 'antd'
+import { Button, Checkbox, Modal } from 'antd'
 import {Link} from 'react-router-dom';
 import moment from 'moment';
 
 import sampleReviews from 'tests/sampleData/sampleReviews.json';
 import {portalContentStyle, buttonMargin, declineButton, acceptButton} from 'styles/base';
+
+const confirm = Modal.confirm;
 
 export default class ReviewsHome extends PortalPageBase {
   static allProposals = sampleReviews.proposals;
@@ -50,7 +52,7 @@ export default class ReviewsHome extends PortalPageBase {
       reviewConflicts: '',
       dueDate: moment().add(((Math.floor(Math.random() * 7) + 3)), 'days').format('MM-DD-YYYY'),
       reviewerType: panel ? 'Panel Reviewer' : 'Primary',
-      reviewStatus: 'Not Started',
+      reviewStatus: 'Submitted',
       reviewPanel: panel
     };
     return reviewObj;
@@ -66,7 +68,7 @@ export default class ReviewsHome extends PortalPageBase {
       submissionErrorText: '',
     };
 
-    this.navigateToNew = this.navigateToNew.bind(this);
+    this.updateReview = this.updateReview.bind(this);
     this.getReviewList = this.getReviewList.bind(this);
     this.handleChangeToUser = this.handleChangeToUser.bind(this);
     this.handleChangeToAdmin = this.handleChangeToAdmin.bind(this);
@@ -75,19 +77,6 @@ export default class ReviewsHome extends PortalPageBase {
     this.handleSubmitChecked = this.handleSubmitChecked.bind(this);
     this.handleDeclineChecked = this.handleDeclineChecked.bind(this);
     this.renderProposalReviewList = this.renderProposalReviewList.bind(this);
-    this.updateReview = this.updateReview.bind(this);
-  }
-
-  navigateToNew() {
-    this.props.history.push('/Portal/reviews/new');
-  }
-  
-  updateReview(propId, reviewId, review, redirect=false) {
-    ReviewsHome.allReviews[propId-1].reviews[reviewId-1] = review;
-    ReviewsHome.allReviews[propId-1].reviews[reviewId-1].criterion = review.criterion;
-    if(redirect) {
-      this.props.history.push('/Portal/reviews');
-    }
   }
 
   checkProposalReviews() {
@@ -122,7 +111,7 @@ export default class ReviewsHome extends PortalPageBase {
       </div>
     )
   }
-  
+
   renderLoadReview(proposalId, reviewId) {
     const review = ReviewsHome.allReviews[proposalId-1].reviews[reviewId-1];
     return (
@@ -132,20 +121,43 @@ export default class ReviewsHome extends PortalPageBase {
     );
   }
 
+  /**
+   * Bound functions section start
+   */
+
+  /**
+   *
+   * @param propId - ID of the proposal the review belongs to
+   * @param reviewId - ID of the review
+   * @param review - Content of the review
+   * @param redirect - Flag for if to return to the Reviews Home page, true if submission was successful
+   */
+  updateReview(propId, reviewId, review, redirect=false) {
+    ReviewsHome.allReviews[propId-1].reviews[reviewId-1] = review;
+    ReviewsHome.allReviews[propId-1].reviews[reviewId-1].criterion = review.criterion;
+    if(redirect) {
+      this.props.history.push('/Portal/reviews');
+    }
+  }
+
+  /**
+   * Returns a list of reviews for the current user
+   */
   getReviewList() {
     const filtered:any[] = [];
     ReviewsHome.allReviews.forEach((proposal) => {
-      if(proposal.reviewers !== 'complete') {
-        proposal.reviews.forEach((review) => {
-          if (review.user === this.state.curUser) {
-            filtered.push(review);
-          }
-        });
-      }
+      proposal.reviews.forEach((review) => {
+        if (review.user === this.state.curUser && !review.reviewStatus.includes('hide')) {
+          filtered.push(review);
+        }
+      });
     });
     return filtered;
   }
 
+  /**
+   * Input handlers for testing purposes only
+   */
   handleChangeToUser() {
     this.setState({curUser: 'user'});
   }
@@ -158,6 +170,14 @@ export default class ReviewsHome extends PortalPageBase {
     this.setState({curUser: 'guest'});
   }
 
+  handleCreateForPanel() {
+    this.checkProposalReviews();
+  }
+
+  /**
+   * Submits all the reviews which the user had selected if and only if the review status is "Complete".
+   * If a review is not complete, it will not be submitted, and the user will be informed as such
+   */
   handleSubmitChecked() {
     let submitError = false;
     let errorText = '';
@@ -179,9 +199,44 @@ export default class ReviewsHome extends PortalPageBase {
     this.setState({submissionError: submitError, submissionErrorText: errorText});
   }
 
+  declineSubmitted(ids) {
+    const content: JSX.Element[] = [];
+    const instance = this;
+    ids.forEach((id) => {
+      const propId = id.split('_')[0];
+      const reviewId = id.split('_')[1];
+      const review = ReviewsHome.allReviews[propId-1].reviews[reviewId-1];
+      console.log('status prior to decline', review.reviewStatus);
+      review.reviewStatus = 'Decline - hide';
+      content.push(<li>{review.proposalTitle}</li>)
+    });
+    confirm({
+      title: 'Inform User Office of Decline',
+      content: (
+        <div>
+          Please contact the User Office regarding your declining of reviews for the following proposals:
+          <ul>
+            {content}
+          </ul>
+        </div>
+      ),
+      onOk() {
+        instance.setState({submissionError: instance.state.submissionError});
+      }
+    })
+  }
+
+  /**
+   * Declines all the reviews which the user had selected.
+   * If at least one of the reviews selected is "Submitted", a modal will be displayed to inform the user to contact
+   * the User Services office.
+   */
   handleDeclineChecked() {
     let submitError = false;
     let errorText = '';
+    let declineSubmitted = false;
+    const instance = this;
+    const submittedIds:string[] = []
     if(this.state.selectedReviewList.length === 0) {
       submitError = true;
       errorText = 'Please select at least one review to decline';
@@ -190,13 +245,29 @@ export default class ReviewsHome extends PortalPageBase {
       const propId = id.split('_')[0];
       const reviewId = id.split('_')[1];
       const review = ReviewsHome.allReviews[propId-1].reviews[reviewId-1];
-      review.reviewStatus = 'Decline - hide';
+      if(review.reviewStatus === 'Submitted' ) {
+        if(declineSubmitted === false) {
+          confirm({
+            title: 'Confirm Decline of Submitted Reviews',
+            content: 'One or more of the reviews you selected to decline have already been submitted. ' +
+            'Do you want to decline to review these as well?',
+            onOk() {
+              instance.declineSubmitted(submittedIds)
+            }
+          });
+          declineSubmitted = true;
+        }
+        submittedIds.push(id);
+        // Create confirmation box for if they want to decline already submitted reviews
+        // If yes, keep track of this and show the User Services info message to the user afterward.
+      } else {
+        review.reviewStatus = 'Decline - hide';
+      }
     });
+    if(declineSubmitted) {
+      // confirm("Please contact the User Office regarding your declining of reviews for the following proposals:")
+    }
     this.setState({submissionError: submitError, submissionErrorText: errorText});
-  }
-
-  handleCreateForPanel() {
-    this.checkProposalReviews();
   }
 
   calculateReviewScore(review) {
@@ -214,9 +285,6 @@ export default class ReviewsHome extends PortalPageBase {
 
   renderProposalReviewList() {
     // Get the list of proposal reviews for current user
-      // TODO: Add two-three proposals to review for two different users.
-      // TODO: At least one of these proposals should have both users as reviewer
-      // TODO: Should be able to show "completed reviews" for this shared proposal
     const reviews = this.getReviewList();
     const content:JSX.Element[] = [];
     const instance = this;

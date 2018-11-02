@@ -78,7 +78,6 @@ class App extends Component<any, any> {
     this.renderNewProposal = this.renderNewProposal.bind(this);
     this.renderExistingProposal = this.renderExistingProposal.bind(this);
     this.renderReviews = this.renderReviews.bind(this);
-    this.renderNewReview = this.renderNewReview.bind(this);
     this.renderExistingReview = this.renderExistingReview.bind(this);
     this.renderPublications = this.renderPublications.bind(this);
     this.renderUserInfo = this.renderUserInfo.bind(this);
@@ -137,10 +136,6 @@ class App extends Component<any, any> {
   renderReviews() {
     return (<ReviewsHome {...this.props} restricted={true}/>);
   }
-
-  renderNewReview() {
-    return (<ReviewsHome {...this.props} restricted={true} type="new" />);
-  }
   
   renderExistingReview({match}) {
     return (<ReviewsHome {...this.props} restricted={true} id={match.params.id} />);
@@ -195,7 +190,6 @@ class App extends Component<any, any> {
       (<Route key={portalRouteNum++} exact path="/Portal/proposals/new" component={this.renderNewProposal} />),
       (<Route key={portalRouteNum++} exact path="/Portal/proposals/:id" component={this.renderExistingProposal} />),
       (<Route key={portalRouteNum++} exact path="/Portal/reviews" component={this.renderReviews} />),
-      (<Route key={portalRouteNum++} exact path="/Portal/reviews/new" component={this.renderNewReview} />),
       (<Route key={portalRouteNum++} exact path="/Portal/reviews/:id" component={this.renderExistingReview} />),
       (<Route key={portalRouteNum++} exact path="/Portal/publications" component={this.renderPublications} />),
       (<Route key={portalRouteNum++} exact path="/Portal/user_info" component={this.renderUserInfo} />),
