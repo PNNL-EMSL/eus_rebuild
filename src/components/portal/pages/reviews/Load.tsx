@@ -9,7 +9,13 @@ const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const TextArea = Input.TextArea;
 
-const marks = {0: "0", 1: "1", 2: "2", 3: "3", 4: "4", 5: "5"};
+const marks = {
+  0: "",
+  1: "1 - Questionable Impact",
+  2: "2 - Fundamentally Sound",
+  3: "3 - Good",
+  4: "4 - Excellent",
+  5: "5 - Outstanding"};
 const textAreaLayout = {
   labelCol: {
     sm: { span: 6 },
@@ -29,6 +35,7 @@ export default class ReviewLoad extends Component<any, any> {
       review: this.props.review,
       errors: [],
       submitError: false,
+      changesMade: false,
     };
 
     this.saveReview = this.saveReview.bind(this);
@@ -59,7 +66,7 @@ export default class ReviewLoad extends Component<any, any> {
     }
 
     this.props.updateReview(review.propId, review.id, review);
-    this.setState({review, errors: ReviewLoad.VALIDATOR.displayErrors(errors)});
+    this.setState({review, errors: ReviewLoad.VALIDATOR.displayErrors(errors), changesMade: false});
   }
 
   submitReview() {
@@ -75,7 +82,7 @@ export default class ReviewLoad extends Component<any, any> {
       this.props.updateReview(review.propId, review.id, review, true);
     }
 
-    this.setState({review, errors: ReviewLoad.VALIDATOR.displayErrors(errors), submitErrors});
+    this.setState({review, errors: ReviewLoad.VALIDATOR.displayErrors(errors), submitErrors, changesMade: false});
   }
 
   validateReview(review) {
@@ -85,33 +92,33 @@ export default class ReviewLoad extends Component<any, any> {
   handleCriterionScoreChange(id, value) {
     const criteria = this.state.review.criterion;
     criteria.find((crit) => crit.id === id).score = value;
-    this.setState({review: this.state.review});
+    this.setState({review: this.state.review, changesMade: true});
   }
 
   handleCriterionCommentChange(id, value) {
     const criteria = this.state.review.criterion;
     criteria.find((crit) => crit.id === id).comment = value;
-    this.setState({review: this.state.review});
+    this.setState({review: this.state.review, changesMade: true});
   }
 
   handleFileUpload() {
     this.state.review.fileUploaded = true;
-    this.setState({review: this.state.review});
+    this.setState({review: this.state.review, changesMade: true});
   }
 
   handleResourcesUpdate(e) {
     this.state.review.reviewResources = e.target.value;
-    this.setState({review: this.state.review});
+    this.setState({review: this.state.review, changesMade: true});
   }
   
   handleReviewSummaryChange(e) {
     this.state.review.reviewSummary = e.target.value;
-    this.setState({review: this.state.review});
+    this.setState({review: this.state.review, changesMade: true});
   }
 
   handleConflictChange(e) {
     this.state.review.reviewConflict = e.target.value;
-    this.setState({review: this.state.review});
+    this.setState({review: this.state.review, changesMade: true});
   }
 
   renderCriterion() {
@@ -127,14 +134,25 @@ export default class ReviewLoad extends Component<any, any> {
     const fileUploaded = this.state.review.fileUploaded;
     this.props.review.criterion.forEach((criterion) => {
       function scoreChange(e) {
+        // If the value is under the minimum, we need to clear it out and snap back to 0
+        if(e < 1) {
+          e = 0;
+        }
         instance.handleCriterionScoreChange(criterion.id, e);
       }
       function commentChange(e) {
         instance.handleCriterionCommentChange(criterion.id, e.target.value)
       }
+      function tipFormatter(value) {
+        if(value < 1) {
+          return null;
+        } else {
+          return value;
+        }
+      }
       content.push(
-        <div key={keyNum++}>
-          <h4 className={sectionHeaderStyle}>{criterion.title + ' - ' + criterion.weight + '%'}</h4>
+        <div key={keyNum}>
+          <h4 className={sectionHeaderStyle}>{'Criterion ' + keyNum++ + ': ' + criterion.title + ' - ' + criterion.weight + '%'}</h4>
           <p style={{marginLeft: '8%', marginRight: '8%'}}>{criterion.text}</p>
           <Form>
             <FormItem
@@ -142,7 +160,18 @@ export default class ReviewLoad extends Component<any, any> {
               label="Score"
               required={true}
             >
-              <Slider marks={marks} step={0.1} max={5} included={false} onAfterChange={scoreChange} defaultValue={criterion.score}/>
+              <div style={{marginBottom: '56px'}}>
+                <Slider
+                  marks={marks}
+                  step={0.1}
+                  max={5}
+                  included={false}
+                  onChange={scoreChange}
+                  defaultValue={criterion.score}
+                  value={criterion.score}
+                  tipFormatter={tipFormatter}
+                />
+              </div>
               {errors && errors.criterionScore && criterion.score === undefined && (<FormError error={errors.criterionScore}/>)}
               </FormItem>
             <FormItem
@@ -170,10 +199,12 @@ export default class ReviewLoad extends Component<any, any> {
         <Form>
           <FormItem
             {...textAreaLayout}
+            label="Resource Allocation"
+            required={true}
           >
             <RadioGroup defaultValue={this.state.review.reviewResources} onChange={this.handleResourcesUpdate}>
-              <Radio value="full">Staff and Resources</Radio>
-              <Radio value="partial">Resources Only</Radio>
+              <Radio value="full">Approve</Radio>
+              <Radio value="partial">Limited</Radio>
               <Radio value="deny">Deny</Radio>
             </RadioGroup>
           </FormItem>
@@ -227,6 +258,75 @@ export default class ReviewLoad extends Component<any, any> {
     )
   }
 
+  renderReviewerText() {
+    return (
+      <div>
+        <p >
+          Evaluate this proposal by completing the form below. Your identity as a reviewer of this proposal will be
+          kept confidential to the maximum extent possible. Peer Review comments will be available anonymously to the
+          PIs and Participants. Self identifiers, inappropriate language, and/or any attachments that aren't
+          associated with the review will be removed.
+        </p>
+        <p >
+          For each criterion please use the slide bar tool to rate the proposal and then provide detailed comments on
+          the quality of this proposal to support your rating, noting specifically the proposal's strengths and
+          weaknesses. As guidance, a list of potential considerations that you might employ in your evaluation follows
+          each criterion. Please comment on only those that are relevant to this proposal and for which you feel
+          qualified to make a judgment.
+        </p>
+        <p >
+          We prefer you to enter your review comments directly into the web-based form below. However, if needed, you
+          may attach your comments in Adobe PDF format instead of filling out the individual comment fields. A PDF
+          containing all criterion that you must comment on has been provided for you. Please select the appropriate
+          form for the proposal type you are reviewing. If you aren't sure which one you should use, please contact
+          the User Support Office (509-371-6003 or <a href="mailto:emsl@pnnl.gov">emsl@pnnl.gov</a>).
+        </p>
+        <br/>
+        <Form>
+          <FormItem {...textAreaLayout} label="Attach Document">
+            <Button onClick={this.handleFileUpload}>Upload File</Button>
+          </FormItem>
+        </Form>
+      </div>
+    )
+  }
+
+  renderPanelText() {
+    return (
+      <div>
+        <p>
+          TODO: REPLACE THE TEXT WITH THE CORRECT TEXT FOR THE PANEL REVIEW
+        </p>
+        <p >
+          Evaluate this proposal by completing the form below. Your identity as a reviewer of this proposal will be
+          kept confidential to the maximum extent possible. Peer Review comments will be available anonymously to the
+          PIs and Participants. Self identifiers, inappropriate language, and/or any attachments that aren't
+          associated with the review will be removed.
+        </p>
+        <p >
+          For each criterion please use the slide bar tool to rate the proposal and then provide detailed comments on
+          the quality of this proposal to support your rating, noting specifically the proposal's strengths and
+          weaknesses. As guidance, a list of potential considerations that you might employ in your evaluation follows
+          each criterion. Please comment on only those that are relevant to this proposal and for which you feel
+          qualified to make a judgment.
+        </p>
+        <p >
+          We prefer you to enter your review comments directly into the web-based form below. However, if needed, you
+          may attach your comments in Adobe PDF format instead of filling out the individual comment fields. A PDF
+          containing all criterion that you must comment on has been provided for you. Please select the appropriate
+          form for the proposal type you are reviewing. If you aren't sure which one you should use, please contact
+          the User Support Office (509-371-6003 or <a href="mailto:emsl@pnnl.gov">emsl@pnnl.gov</a>).
+        </p>
+        <br/>
+        <Form>
+          <FormItem {...textAreaLayout} label="Attach Panel Review Document">
+            <Button onClick={this.handleFileUpload}>Upload File</Button>
+          </FormItem>
+        </Form>
+      </div>
+    )
+  }
+
   render() {
     const review = this.state.review;
     return(
@@ -236,34 +336,15 @@ export default class ReviewLoad extends Component<any, any> {
             <b>Authors:</b>&nbsp;{review.authors.join(', ')}
           </div>
           <br />
-          <div>
-            <p >
-              Evaluate this proposal by completing the form below. Your identity as a reviewer of this proposal will be
-              kept confidential to the maximum extent possible. Peer Review comments will be available anonymously to the
-              PIs and Participants. Self identifiers, inappropriate language, and/or any attachments that aren't
-              associated with the review will be removed.
-            </p>
-            <p >
-              For each criterion please use the slide bar tool to rate the proposal and then provide detailed comments on
-              the quality of this proposal to support your rating, noting specifically the proposal's strengths and
-              weaknesses. As guidance, a list of potential considerations that you might employ in your evaluation follows
-              each criterion. Please comment on only those that are relevant to this proposal and for which you feel
-              qualified to make a judgment.
-            </p>
-            <p >
-              We prefer you to enter your review comments directly into the web-based form below. However, if needed, you
-              may attach your comments in Adobe PDF format instead of filling out the individual comment fields. A PDF
-              containing all criterion that you must comment on has been provided for you. Please select the appropriate
-              form for the proposal type you are reviewing. If you aren't sure which one you should use, please contact
-              the User Support Office (509-371-6003 or <a href="mailto:emsl@pnnl.gov">emsl@pnnl.gov</a>).
-            </p>
-            <br/>
-            <Form>
-              <FormItem {...textAreaLayout} label="Attach Document">
-                <Button onClick={this.handleFileUpload}>Upload File</Button>
-              </FormItem>
-            </Form>
-          </div>
+          {!review.reviewPanel ? (
+            <div>
+              {this.renderReviewerText()}
+            </div>
+          ) : (
+            <div>
+              {this.renderPanelText()}
+            </div>
+          )}
           <ul>
             <li>
               <a
@@ -303,12 +384,18 @@ export default class ReviewLoad extends Component<any, any> {
         <hr />
         {this.renderSummary()}
         <hr />
-        {this.renderConflicts()}
+        {!review.reviewPanel && (
+          <div>
+            {this.renderConflicts()}
+          </div>
+        )}
         <hr />
-        {this.state.submitErrors && (<FormError error="Review is incomplete and could not be submitted. Please correct these errors before attempting again"/>)}
+        {this.state.submitErrors && (
+          <FormError error="Review is incomplete and could not be submitted but was saved. Please correct these errors before attempting again"/>
+        )}
         <div style={{textAlign: 'center'}}>
-          <Button className={buttonMargin} type="primary" onClick={this.saveReview}>Save Review</Button>
-          <Button className={buttonMargin} type="primary" onClick={this.submitReview}>Submit Review</Button>
+          <Button className={buttonMargin} type="primary" disabled={!this.state.changesMade} onClick={this.saveReview}>Save Review</Button>
+          <Button className={buttonMargin} type="primary" disabled={!this.state.changesMade} onClick={this.submitReview}>Save and Submit Review</Button>
         </div>
       </div>
     )

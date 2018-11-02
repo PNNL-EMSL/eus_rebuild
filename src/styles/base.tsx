@@ -134,6 +134,7 @@ export const twoLineButton: string = css`
 
 export const errorStyle: string = css`
   color: ${colorRed};
+  text-align: center;
   line-height: 1.5;
 `;
 
