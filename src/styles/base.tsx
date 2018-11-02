@@ -14,6 +14,7 @@ export const colorDisabled = '#AAAAAA';
 export const colorDarkGrey = '#616265';
 export const colorWhite = '#FFFFFF';
 export const colorLightOrange = '#F2A928';
+export const colorBurntOrange = '#CC5500';
 export const colorYellow = '#FFD700';
 export const colorLightGreen = '#719500';
 export const colorDarkGreen = '#53682B';
@@ -145,5 +146,5 @@ export const modalTableStyle: string = css`
     line-height: 1.42857143;
     vertical-align: top;
   }
-  
+
 `;

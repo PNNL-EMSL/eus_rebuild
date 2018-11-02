@@ -2,7 +2,7 @@ import React from 'react';
 import {css} from 'emotion';
 import PortalPageBase from 'components/portal/pages/PortalPageBase';
 
-import {portalContentStyle, colorDarkGreen, colorLightOrange, colorDarkGrey, colorBlack} from 'styles/base';
+import {portalContentStyle, colorDarkGreen, colorLightOrange, colorBurntOrange, colorDarkGrey, colorBlack} from 'styles/base';
 import calendar from 'images/portalTileIcons/schedule_experiment.png';
 import sample from 'images/portalTileIcons/proposals_projects.png';
 
@@ -60,7 +60,6 @@ const proposals: string = css`
     background-color: #f9f9f9
   }
   tbody>tr>td, thead>tr>th {
-    border: 1px solid #ddd;
     padding: 8px;
     line-height: 1.42857143;
     vertical-align: top;
@@ -69,10 +68,10 @@ const proposals: string = css`
     }
     a {
       vertical-align: 1em;
-      color: ${colorLightOrange};
+      color: ${colorBurntOrange};
       img {
         width: 40px;
-        opacity: 0.7;
+        opacity: 0.8;
       }
       &:hover {
         img {
@@ -81,6 +80,14 @@ const proposals: string = css`
       }
     }
   }
+`;
+
+const proposalTitle: string = css`
+  width: 50%;
+`;
+
+const sampleAndSchedule: string = css`
+  width: 25%;
 `;
 
 const sampleProposals = [
@@ -109,14 +116,14 @@ export default class ScheduleExperiments extends PortalPageBase {
   renderProposalRows() {
     const rows = sampleProposals.map((proposal, index) =>
       <tr key={index}>
-        <td>
+        <td className={proposalTitle}>
           <p>#{proposal.id} - {proposal.title}</p>
           <p>
             <span>Requests: {proposal.requests}</span><br />
             Booked: {proposal.booked}
           </p>
         </td>
-        <td>
+        <td className={sampleAndSchedule}>
           <a href={'/Portal/rest/resource/proposal/'+proposal.id}><img src={calendar} />Schedule Experiment</a>
         </td>
         <td>
