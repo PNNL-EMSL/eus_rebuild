@@ -5,7 +5,7 @@ import { withRouter, Switch, Route } from 'react-router-dom';
 
 import ProposalHome from 'components/portal/pages/proposals/Home';
 import ReviewsHome from 'components/portal/pages/reviews/Home';
-import Publications from 'components/portal/pages/Publications';
+import PublicationsHome from 'components/portal/pages/publications/Home';
 import UserInfo from 'components/portal/pages/UserInfo';
 import Training from 'components/portal/pages/Training';
 import ScheduleExperiments from 'components/portal/pages/ScheduleExperiments';
@@ -142,7 +142,7 @@ class App extends Component<any, any> {
   }
   
   renderPublications() {
-    return (<Publications {...this.props} restricted={true}/>);
+    return (<PublicationsHome {...this.props} restricted={true}/>);
   }
 
   renderUserInfo() {
