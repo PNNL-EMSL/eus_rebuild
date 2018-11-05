@@ -52,7 +52,7 @@ const app: string = css`
 /**
  * The App component creates the main layout for the application,
  * including the top navbar.
- * 
+ *
  * With typescript, we must declare that this component takes
  * RouteComponentProps in order to get router props injected
  * properly with the withRouter HOC.
@@ -62,7 +62,7 @@ class App extends Component<any, any> {
   static propTypes = {
     location: PropTypes.object.isRequired
   };
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -185,10 +185,10 @@ class App extends Component<any, any> {
       (<Route key={portalRouteNum++} exact path="/Portal/publications" component={this.renderPublications} />),
       (<Route key={portalRouteNum++} exact path="/Portal/userInfo" component={this.renderUserInfo} />),
       (<Route key={portalRouteNum++} exact path="/Portal/training" component={this.renderTraining} />),
-      (<Route key={portalRouteNum++} exact path="/Portal/scheduleExperiments" component={this.renderExperiments} />),
-      (<Route key={portalRouteNum++} exact path="/Portal/getData" component={this.renderGetData} />),
-      (<Route key={portalRouteNum++} exact path="/Portal/SubmitSample" component={this.renderSubmitSample} />),
-      (<Route key={portalRouteNum++} exact path="/Portal/ProvideFeedback" component={this.renderProvideFeedback} />)
+      (<Route key={portalRouteNum++} exact path="/Portal/schedule_Experiments" component={this.renderExperiments} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/get_data" component={this.renderGetData} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/Submit_Sample" component={this.renderSubmitSample} />),
+      (<Route key={portalRouteNum++} exact path="/Portal/Provide_Feedback" component={this.renderProvideFeedback} />)
     ];
   }
 
@@ -222,4 +222,3 @@ class App extends Component<any, any> {
 }
 
 export default withRouter(App);
-
