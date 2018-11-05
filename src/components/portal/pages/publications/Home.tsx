@@ -1,5 +1,6 @@
 import React from 'react';
 import PortalPageBase from 'components/portal/pages/PortalPageBase';
+import FormError from 'components/shared/components/FormError';
 
 import {Collapse, Form, Input, Upload, Button} from 'antd';
 import * as $ from 'jquery';
@@ -31,8 +32,10 @@ export default class PublicationsHome extends PortalPageBase {
     super(props);
 
     this.state = {
-      publicationDOI: '',
+      publicationDOI: '10.1038/nrd842',
       publicationDOISubmitted: false,
+      publicationDOILoading: false,
+      publicationDOIError: false,
       publicationCitation: '',
     };
 
@@ -48,11 +51,26 @@ export default class PublicationsHome extends PortalPageBase {
 
   submitPublicationDOI() {
     // CROSS REF TO GET THE CITATION
+    this.setState({publicationDOILoading: true});
+    let citation = '';
+    let publicationDOISubmitted = false;
+    let publicationDOIError = false;
     $.ajax({
-      url: 'http://dx.doi.org/10.1038/nrd842',
-      accept: 'application/citeproc+json',
-      crossDomain: true,
-    })
+      url: 'https://search.crossref.org/citation?format=mla&doi='+this.state.publicationDOI
+    }).done((data) => {
+      publicationDOISubmitted = true;
+      citation = data;
+      console.log(data)
+    }).fail(() => {
+      publicationDOIError = true;
+    }).always(() => {
+      this.setState({
+        publicationCitation: citation,
+        publicationDOILoading: false,
+        publicationDOIError,
+        publicationDOISubmitted,
+      });
+    });
   }
 
   updatePublicationCitation(e) {
@@ -71,13 +89,36 @@ export default class PublicationsHome extends PortalPageBase {
         <Panel key='1' className={collapseHeaderStyle} header={header}>
           <div>
             <Form>
-              <FormItem {...textAreaLayout} label="Publication DOI">
-                <FormItem {...textAreaLayout} label={<Input value={this.state.publicationDOI} onChange={this.updatePublicationDOI}/>}>
+              <FormItem
+                {...textAreaLayout}
+                label="Publication DOI"
+                validateStatus={data.publicationDOIError === true ? 'error' : undefined}
+              >
+                <FormItem
+                  {...textAreaLayout}
+                  label={
+                    <Input
+                      value={this.state.publicationDOI}
+                      onChange={this.updatePublicationDOI}
+                    />
+                  }
+                >
                   <Button onClick={this.submitPublicationDOI}>Get Citation from DOI</Button>
                 </FormItem>
+                {data.publicationDOIError && (
+                  <FormError error="There was an error querying CrossRef for this DOI. Please double check and try again"/>
+                )}
               </FormItem>
-              <FormItem {...textAreaLayout} label="Citation">
-                <TextArea value={this.state.publicationCitation} onChange={this.updatePublicationCitation} disabled={data.publicationDOISubmitted} />
+              <FormItem
+                {...textAreaLayout}
+                label="Citation"
+                validateStatus={data.publicationDOILoading === true ? 'validating' : undefined}
+              >
+                <TextArea
+                  value={this.state.publicationCitation}
+                  onChange={this.updatePublicationCitation}
+                  disabled={data.publicationDOISubmitted}
+                />
               </FormItem>
               <FormItem>
                 <Dragger {...fileUploadProps}>
