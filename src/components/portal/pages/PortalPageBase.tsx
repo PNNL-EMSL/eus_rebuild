@@ -10,11 +10,17 @@ import {contentStyle} from 'styles/base';
 const breadcrumb:string = css`
     top: 95px !important;
     position: relative;
-    left: 20px !important; 
+    left: 20px !important;
   `;
 
 export default abstract class PortalPageBase extends PageBase {
   abstract renderContent();
+
+  renderBreadcrumb() {
+    return(
+      <BreadcrumbBar {...this.props} />
+    )
+  }
 
   renderPage() {
     const content = this.renderContent();
@@ -23,7 +29,7 @@ export default abstract class PortalPageBase extends PageBase {
       <div>
         <PortalHeader {...this.props} logoutHandler={this.logoutHandler} />
         <div className={breadcrumb}>
-          <BreadcrumbBar {...this.props} />
+          {this.renderBreadcrumb()}
         </div>
         <div className={contentStyle} >
           {content}

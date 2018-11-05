@@ -1,5 +1,6 @@
 import React from 'react';
 import PortalPageBase from 'components/portal/pages/PortalPageBase';
+import BreadcrumbBar from 'components/shared/components/BreadcrumbBar';
 import ReviewLoad from 'components/portal/pages/reviews/Load';
 import FormError from 'components/shared/components/FormError';
 import { Button, Checkbox, Modal } from 'antd'
@@ -79,6 +80,36 @@ export default class ReviewsHome extends PortalPageBase {
     this.renderProposalReviewList = this.renderProposalReviewList.bind(this);
   }
 
+  renderBreadcrumb() {
+    if(this.props.id) {
+      const propId = this.props.id.split('_')[0];
+      const reviewId = this.props.id.split('_')[1];
+      const review = this.getReview(propId, reviewId);
+      return(
+        <BreadcrumbBar {...this.props}
+          myRoutes = {[
+            {
+              path: 'Portal',
+              breadcrumbName: 'Portal'
+            },
+            {
+              path: 'reviews',
+              breadcrumbName: 'Reviews'
+            },
+            {
+              path: this.props.id,
+              breadcrumbName: review.proposalTitle+', '+review.authors[0]
+            }
+          ]}
+        />
+      )
+    } else {
+      return(
+        <BreadcrumbBar {...this.props} />
+      )
+    }
+  }
+
   checkProposalReviews() {
     ReviewsHome.allReviews.forEach((proposal) => {
       let allReviewsComplete = true;
@@ -119,6 +150,10 @@ export default class ReviewsHome extends PortalPageBase {
         <ReviewLoad review={review} {...this.props} updateReview={this.updateReview} />
       </div>
     );
+  }
+
+  getReview(proposalId, reviewId) {
+    return ReviewsHome.allReviews[proposalId-1].reviews[reviewId-1];
   }
 
   /**
