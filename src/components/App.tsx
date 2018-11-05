@@ -53,7 +53,7 @@ const app: string = css`
 /**
  * The App component creates the main layout for the application,
  * including the top navbar.
- * 
+ *
  * With typescript, we must declare that this component takes
  * RouteComponentProps in order to get router props injected
  * properly with the withRouter HOC.
@@ -63,7 +63,7 @@ class App extends Component<any, any> {
   static propTypes = {
     location: PropTypes.object.isRequired
   };
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -136,11 +136,11 @@ class App extends Component<any, any> {
   renderReviews() {
     return (<ReviewsHome {...this.props} restricted={true}/>);
   }
-  
+
   renderExistingReview({match}) {
     return (<ReviewsHome {...this.props} restricted={true} id={match.params.id} />);
   }
-  
+
   renderPublications() {
     return (<Publications {...this.props} restricted={true}/>);
   }
@@ -231,4 +231,3 @@ class App extends Component<any, any> {
 }
 
 export default withRouter(App);
-

@@ -21,22 +21,32 @@ const breadcrumbEnd:string = css`
 export default class BreadcrumbBar extends Component<any, any> {
 
   render() {
-    const myRoutes:any[] = []
-    this.props.location.pathname.split('/').filter((pathPiece) => (pathPiece.length > 0)).forEach((path) => (myRoutes.push({path})));
+    let myRoutes:any[] = []
+    if(this.props.myRoutes) {
+      // myRoutes should be object of {path, breadcrumbName} per accepted route of Ant Design Breadcrumb
+      myRoutes = this.props.myRoutes;
+    } else {
+      this.props.location.pathname.split('/').filter((pathPiece) => (pathPiece.length > 0)).forEach((path) => (
+        myRoutes.push(
+          {
+            path,
+            breadcrumbName: path.split('_').map((word) => (word.charAt(0).toUpperCase() + word.slice(1))).join(' ')
+          }
+        )
+      ));
+    }
+    console.log(myRoutes);
 
     function itemRender(route, params, routes, paths) {
       const last = routes.indexOf(route) === routes.length - 1;
-      const labelPieces:any[] = [];
-      route.path.split('_').forEach((word) => (labelPieces.push(word.charAt(0).toUpperCase() + word.slice(1))));
-      const label = labelPieces.join(' ');
       return last ?
-        <span className={breadcrumbEnd}>{label}</span> :
-        <Link to={'/'+paths.join('/')} className={breadcrumbLink}>{label}</Link>
+        <span className={breadcrumbEnd}>{route.breadcrumbName}</span> :
+        <Link to={'/'+paths.join('/')} className={breadcrumbLink}>{route.breadcrumbName}</Link>
     }
     return (
       <div>
         {myRoutes.length > 1 && (
-          <Breadcrumb className={breadcrumb} itemRender={itemRender} routes={myRoutes} />
+          <Breadcrumb className={breadcrumb} itemRender={itemRender} routes={myRoutes} separator="&raquo;" />
         )}
       </div>
     )

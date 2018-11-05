@@ -10,11 +10,37 @@ import {contentStyle} from 'styles/base';
 const breadcrumb:string = css`
     top: 95px !important;
     position: relative;
-    left: 20px !important; 
+    left: 20px !important;
   `;
 
 export default abstract class PortalPageBase extends PageBase {
   abstract renderContent();
+
+  // For pages where breadcrumb does not directly match location path, renderBreadcrumb should be
+  // overridden.  Suggested layout:
+  //
+  // renderBreadcrumb() {
+  //   if( <condition of custom breadbrumbs> ) {
+  //     <BreadcrumbBar {...this.props}
+  //       myRoutes = {[
+  //         {
+  //           path: <Path Text>
+  //           breadcrumbName: <Custom Name>
+  //         }
+  //        <similiar...>
+  //       ]}
+  //     />
+  //   } else {
+  //     <BreadcrumbBar {...this.props} />
+  //   }
+  // }
+  // (See src/components/portal/pages/reviews/Home.tsx, 83 for implemented example)
+  //
+  renderBreadcrumb() {
+    return(
+      <BreadcrumbBar {...this.props} />
+    )
+  }
 
   renderPage() {
     const content = this.renderContent();
@@ -23,7 +49,7 @@ export default abstract class PortalPageBase extends PageBase {
       <div>
         <PortalHeader {...this.props} logoutHandler={this.logoutHandler} />
         <div className={breadcrumb}>
-          <BreadcrumbBar {...this.props} />
+          {this.renderBreadcrumb()}
         </div>
         <div className={contentStyle} >
           {content}
