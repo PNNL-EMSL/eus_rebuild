@@ -1,0 +1,79 @@
+{
+  "proposals": [
+    {
+      "id": 1,
+      "title": "Sample Proposal 1 - Dual proposal",
+      "authors": ["Primary Author 1", "Secondary Author 53"],
+      "criterion": [
+        {"id": 1, "title": "Criterion1", "shortTitle": "Crit1", "text": "Criterion 1 text for display to user for guidance.", "weight": 50, "panel": false},
+        {"id": 2, "title": "Criterion2", "shortTitle": "Crit2", "text": "Criterion 2 text for display to user for guidance.", "weight": 10, "panel": false},
+        {"id": 3, "title": "Criterion3", "shortTitle": "Crit3", "text": "Criterion 3 text for display to user for guidance.", "weight": 10, "panel": false},
+        {"id": 4, "title": "Criterion4", "shortTitle": "Crit4", "text": "Criterion 4 text for display to user for guidance.", "weight": 20, "panel": false},
+        {"id": 5, "title": "Criterion5", "shortTitle": "Crit5", "text": "Criterion 5 text for display to user for guidance.", "weight": 10, "panel": true}
+      ],
+      "reviewers": "peer",
+      "users": ["admin", "user"],
+      "panelReview": "guest"
+    },
+    {
+      "id": 2,
+      "title": "Sample Proposal 2 - Admin only",
+      "authors": ["Primary Author 1", "Secondary Author 53"],
+      "criterion": [
+        {"id": 1, "title": "Criterion1", "shortTitle": "Crit1", "text": "Criterion 1 text for display to user for guidance.", "weight": 50, "panel": false},
+        {"id": 2, "title": "Criterion2", "shortTitle": "Crit2", "text": "Criterion 2 text for display to user for guidance.", "weight": 10, "panel": false},
+        {"id": 3, "title": "Criterion3", "shortTitle": "Crit3", "text": "Criterion 3 text for display to user for guidance.", "weight": 10, "panel": false},
+        {"id": 4, "title": "Criterion4", "shortTitle": "Crit4", "text": "Criterion 4 text for display to user for guidance.", "weight": 20, "panel": false},
+        {"id": 5, "title": "Criterion5", "shortTitle": "Crit5", "text": "Criterion 5 text for display to user for guidance.", "weight": 10, "panel": true}
+      ],
+      "reviewers": "peer",
+      "users": ["admin"],
+      "panelReview": "guest"
+    },
+    {
+      "id": 3,
+      "title": "Sample Proposal 3 - User Only",
+      "authors": ["Primary Author 4", "Secondary Author 2"],
+      "criterion": [
+        {"id": 1, "title": "Criterion1", "shortTitle": "Crit1", "text": "Criterion 1 text for display to user for guidance.", "weight": 50, "panel": false},
+        {"id": 2, "title": "Criterion2", "shortTitle": "Crit2", "text": "Criterion 2 text for display to user for guidance.", "weight": 10, "panel": false},
+        {"id": 3, "title": "Criterion3", "shortTitle": "Crit3", "text": "Criterion 3 text for display to user for guidance.", "weight": 10, "panel": false},
+        {"id": 4, "title": "Criterion4", "shortTitle": "Crit4", "text": "Criterion 4 text for display to user for guidance.", "weight": 20, "panel": false},
+        {"id": 5, "title": "Criterion5", "shortTitle": "Crit5", "text": "Criterion 5 text for display to user for guidance.", "weight": 10, "panel": true}
+      ],
+      "reviewers": "peer",
+      "users": ["user"],
+      "panelReview": "guest"
+    },
+    {
+      "id": 4,
+      "title": "Sample Proposal 4 - Many Criterion",
+      "authors": ["Primary Author 10", "Secondary Author 2"],
+      "criterion": [
+        {"id": 1, "title": "Criterion1", "shortTitle": "Crit1", "text": "Criterion 1 text for display to user for guidance.", "weight": 50, "panel": false},
+        {"id": 2, "title": "Criterion2", "shortTitle": "Crit2", "text": "Criterion 2 text for display to user for guidance.", "weight": 10, "panel": false},
+        {"id": 3, "title": "Criterion3", "shortTitle": "Crit3", "text": "Criterion 3 text for display to user for guidance.", "weight": 10, "panel": false},
+        {"id": 4, "title": "Criterion4", "shortTitle": "Crit4", "text": "Criterion 4 text for display to user for guidance.", "weight": 20, "panel": false},
+        {"id": 5, "title": "Criterion5", "shortTitle": "Crit5", "text": "Criterion 5 text for display to user for guidance.", "weight": 10, "panel": true}
+      ],
+      "reviewers": "peer",
+      "users": ["admin" ],
+      "panelReview": "guest"
+    },
+    {
+      "id": 5,
+      "title": "Sample Proposal 5 - Few Criterion",
+      "authors": ["Primary Author 53", "Secondary Author 1"],
+      "criterion": [
+        {"id": 1, "title": "Criterion1", "shortTitle": "Crit1", "text": "Criterion 1 text for display to user for guidance.", "weight": 50, "panel": false},
+        {"id": 2, "title": "Criterion2", "shortTitle": "Crit2", "text": "Criterion 2 text for display to user for guidance.", "weight": 10, "panel": false},
+        {"id": 3, "title": "Criterion3", "shortTitle": "Crit3", "text": "Criterion 3 text for display to user for guidance.", "weight": 10, "panel": false},
+        {"id": 4, "title": "Criterion4", "shortTitle": "Crit4", "text": "Criterion 4 text for display to user for guidance.", "weight": 20, "panel": false},
+        {"id": 5, "title": "Criterion5", "shortTitle": "Crit5", "text": "Criterion 5 text for display to user for guidance.", "weight": 10, "panel": true}
+      ],
+      "reviewers": "peer",
+      "users": ["admin"],
+      "panelReview": "guest"
+    }
+  ]
+}

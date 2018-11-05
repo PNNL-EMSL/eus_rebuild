@@ -58,4 +58,12 @@ export default class ValidatorBase {
     }
     return errors;
   }
+
+  displayErrors(errors) {
+    const errorArray:string[] = [];
+    errors.forEach((error) => {
+      errorArray[error.field] = error.tooltip;
+    });
+    return errorArray;
+  }
 }

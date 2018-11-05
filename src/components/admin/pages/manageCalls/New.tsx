@@ -169,7 +169,7 @@ export default class ManageCallsNew extends Component<any, any> {
       this.props.addCall(this.state.call);
       this.clearState();
     }
-    this.displayErrors(errors);
+    this.setState({errors: ManageCallsNew.VALIDATOR.displayErrors(errors)});
   }
 
   validateCall(call) {
