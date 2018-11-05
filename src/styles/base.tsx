@@ -145,6 +145,18 @@ export const sectionHeaderStyle: string = css`
   color: ${colorWhite};
 `;
 
+export const collapseHeaderStyle: string = css`
+  background: ${colorLightGreen};
+  .ant-collapse-header {
+    color: ${colorWhite} !important;
+    font-size: 20px !important;
+    i {
+      font-size: 20px !important;
+    }
+  }
+  color: ${colorWhite} !important;
+`;
+
 export const conflictSectionStyle: string = css`
   margin-left: 10%;
   margin-right: 10%;
