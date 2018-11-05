@@ -110,9 +110,9 @@ export default class CallRow extends Component<any, any> {
         <td>{call.proposalId}</td>
         <td>{call.numProposals}</td>
         <td>{call.callExtensions.length}</td>
-        <td><Button className={twoLineButton} type="primary" onClick={this.showCriterion}>Manage<br />Criterion</Button></td>
-        <td><Button className={twoLineButton} type="primary" onClick={this.showExtensions}>Manage<br />Extensions</Button></td>
-        <td>
+        <td style={{minWidth: '105px', maxWidth: '105px'}}><Button className={twoLineButton} type="primary" onClick={this.showCriterion}>Manage<br />Criterion</Button></td>
+        <td style={{minWidth: '115px', maxWidth: '115px'}}><Button className={twoLineButton} type="primary" onClick={this.showExtensions}>Manage<br />Extensions</Button></td>
+        <td style={{minWidth: '105px', maxWidth: '105px'}}>
           {this.state.canCloseReviews && (
             <Button className={twoLineButton} type="primary" onClick={this.closeReviews}>Close<br />Reviews</Button>
           )}

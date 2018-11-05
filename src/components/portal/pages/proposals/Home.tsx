@@ -69,6 +69,7 @@ export default class ProposalHome extends PortalPageBase {
 
   renderContent() {
     const numProposals = 0;
+    // Query the Database to get the number of proposals associated with the current user
     const content:JSX.Element[] = [];
     if(this.props.id) {
       content.push(this.renderLoadProposal(this.props.id));
