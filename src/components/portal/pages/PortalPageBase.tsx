@@ -16,6 +16,26 @@ const breadcrumb:string = css`
 export default abstract class PortalPageBase extends PageBase {
   abstract renderContent();
 
+  // For pages where breadcrumb does not directly match location path, renderBreadcrumb should be
+  // overridden.  Suggested layout:
+  //
+  // renderBreadcrumb() {
+  //   if( <condition of custom breadbrumbs> ) {
+  //     <BreadcrumbBar {...this.props}
+  //       myRoutes = {[
+  //         {
+  //           path: <Path Text>
+  //           breadcrumbName: <Custom Name>
+  //         }
+  //        <similiar...>
+  //       ]}
+  //     />
+  //   } else {
+  //     <BreadcrumbBar {...this.props} />
+  //   }
+  // }
+  // (See src/components/portal/pages/reviews/Home.tsx, 83 for implemented example)
+  //
   renderBreadcrumb() {
     return(
       <BreadcrumbBar {...this.props} />
