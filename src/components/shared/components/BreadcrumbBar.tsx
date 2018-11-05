@@ -46,7 +46,7 @@ export default class BreadcrumbBar extends Component<any, any> {
     return (
       <div>
         {myRoutes.length > 1 && (
-          <Breadcrumb className={breadcrumb} itemRender={itemRender} routes={myRoutes} />
+          <Breadcrumb className={breadcrumb} itemRender={itemRender} routes={myRoutes} separator="&raquo;" />
         )}
       </div>
     )
